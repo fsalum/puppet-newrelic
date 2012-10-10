@@ -1,0 +1,10 @@
+extension=newrelic.so
+newrelic.appname = "<%= newrelic_php_conf_appname %>"
+newrelic.enabled = <%= newrelic_php_conf_enabled %>
+newrelic.logfile = <%= newrelic_php_conf_logfile %>
+newrelic.loglevel = <%= newrelic_php_conf_loglevel %>
+newrelic.browser_monitoring.auto_instrument = <%= newrelic_php_conf_browser %>
+newrelic.transaction_tracer.top100 = <%= newrelic_php_conf_transaction %>
+newrelic.error_collector.record_database_errors = <%= newrelic_php_conf_dberrors %>
+newrelic.transaction_tracer.record_sql = "<%= newrelic_php_conf_transactionrecordsql %>"
+newrelic.capture_params = <%= newrelic_php_conf_captureparams %>
