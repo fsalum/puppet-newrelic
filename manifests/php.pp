@@ -1,3 +1,16 @@
+# Class: newrelic::php
+#
+# This class should not be used individually as it uses values and is
+# called from the main class.
+#
+# Parameters:
+#
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#
 class newrelic::php (
   $newrelic_license_key,
   $newrelic_php_package,
@@ -12,6 +25,8 @@ class newrelic::php (
   $newrelic_php_conf_dberrors,
   $newrelic_php_conf_transactionrecordsql,
   $newrelic_php_conf_captureparams,
+  $newrelic_php_package_ensure,
+  $newrelic_php_service_ensure,
 ) {
 
   package { $newrelic_php_package:
@@ -29,19 +44,19 @@ class newrelic::php (
 
   exec { '/usr/bin/newrelic-install':
     path        => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-    command     => "/usr/bin/newrelic-install purge ; NR_INSTALL_SILENT=yes, NR_INSTALL_KEY=$newrelic_license_key /usr/bin/newrelic-install install",
+    command     => "/usr/bin/newrelic-install purge ; NR_INSTALL_SILENT=yes, NR_INSTALL_KEY=${newrelic_license_key} /usr/bin/newrelic-install install",
     provider    => 'shell',
     user        => 'root',
     group       => 'root',
-    unless      => "cat /etc/newrelic/newrelic.cfg | grep $newrelic_license_key",
+    unless      => "cat /etc/newrelic/newrelic.cfg | grep ${newrelic_license_key}",
     require     => Package[$newrelic_php_package],
     notify      => Service[$newrelic_php_service],
   }
 
   file { 'newrelic.ini':
-    path    => "$newrelic_php_conf_dir/newrelic.ini",
+    path    => "${newrelic_php_conf_dir}/newrelic.ini",
     content => template('newrelic/newrelic.ini.erb'),
     require => Exec['/usr/bin/newrelic-install'],
   }
 
-}  
+}

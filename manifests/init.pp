@@ -88,7 +88,7 @@ class newrelic (
   $newrelic_php_conf_dberrors             = '0',
   $newrelic_php_conf_transactionrecordsql = 'off',
   $newrelic_php_conf_captureparams        = '0',
-) { 
+) {
 
   require newrelic::params
 
@@ -113,10 +113,10 @@ class newrelic (
 
   exec { $newrelic_license_key:
     path        => '/bin:/usr/bin',
-    command     => "/usr/sbin/nrsysmond-config --set license_key=$newrelic_license_key",
+    command     => "/usr/sbin/nrsysmond-config --set license_key=${newrelic_license_key}",
     user        => 'root',
     group       => 'root',
-    unless      => "cat /etc/newrelic/nrsysmond.cfg | grep $newrelic_license_key",
+    unless      => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
     require     => Package[$newrelic_package_name],
     notify      => Service[$newrelic_service_name],
   }
@@ -136,6 +136,8 @@ class newrelic (
       newrelic_php_conf_dberrors             => $newrelic_php_conf_dberrors,
       newrelic_php_conf_transactionrecordsql => $newrelic_php_conf_transactionrecordsql,
       newrelic_php_conf_captureparams        => $newrelic_php_conf_captureparams,
+      newrelic_php_package_ensure            => $newrelic_php_package_ensure,
+      newrelic_php_service_ensure            => $newrelic_php_service_ensure,
     }
   }
 
