@@ -1,8 +1,17 @@
 Newrelic Module for Puppet
-===========================
+==========================
 [![Build Status](https://secure.travis-ci.org/fsalum/puppet-newrelic.png)](http://travis-ci.org/fsalum/puppet-newrelic)
 
 This module manages and installs the New Relic Server Monitoring and PHP agents.
+
+IMPORTANT
+---------
+
+If you were using the previous version of this module `0.0.1` you need to change
+how you declare the class because I'm now using defined resource types and I have
+split the Server Monitoring and PHP Agent classes to be easy to maintain.
+
+All the parameters are still the same and new parameters were included.
 
 Quick Start
 -----------
@@ -10,77 +19,22 @@ Quick Start
 To install the Newrelic Server Monitoring and the PHP agent packages, include the following in your manifest file:
 
     node default {
-         class { newrelic:
-           newrelic_license_key        => 'YOUR LICENSE KEY HERE',
-           newrelic_php                => true,
-           newrelic_php_conf_appname   => 'Your PHP Application Name Here',
-    }
+         newrelic::server {
+           'srvXYZ':
+             newrelic_license_key => 'your license key here',
+         }
+
+         newrelic::php {
+           'appXYZ':
+             newrelic_license_key      => 'your license key here',
+             newrelic_php_conf_appname => 'Your PHP Application',
+         }
+    } 
 
 Parameters
 ----------
 
-You can also set some extra parameters to enable or disable a few options:
-
-* `newrelic_service_ensure`
-
-   Specify the service running state. Defaults to 'running'. Possible value is 'stopped'.
-
-* `newrelic_package_ensure`
- 
-   Specify the package update state. Defaults to 'present'. Possible value is 'latest'.
-
-* `newrelic_license_key`
- 
-   Specify your Newrelic License Key.
-
-* `newrelic_php`
- 
-   If set to true will install and configure Newrelic PHP agent. Defaults to false.
-
-* `newrelic_php_package_ensure`
- 
-   Specific the Newrelic PHP package update state. Defaults to 'present'. Possible value is 'latest'.
-
-* `newrelic_php_service_ensure`
- 
-   Specify the Newrelic PHP service running state. Defaults to 'running'. Possible value is 'stopped'.
-
-* `newrelic_php_conf_appname`
- 
-   Sets the name of the application as it will be seen in the New Relic UI
-
-* `newrelic_php_conf_enabled`
- 
-   By default the New Relic PHP agent is enabled for all directories. To disable set it to '0'.
-
-* `newrelic_php_conf_transaction`
- 
-   Turns on the "top 100 slowest calls" tracer. To enable set it to '1'.
-
-* `newrelic_php_conf_logfile`
- 
-   This identifies the file name for logging messages.
-
-* `newrelic_php_conf_loglevel`
- 
-   Sets the level of detail of messages sent to the log file. Possible values: error, warning, info, verbose, debug, verbosedebug.
-
-* `newrelic_php_conf_browser`
- 
-   This enables auto-insertion of the JavaScript fragments for browser monitoring. To disable set it to '0'.
-
-* `newrelic_php_conf_dberrors`
- 
-   It causes MySQL errors from all instrumented MySQL calls to be reported to New Relic. To enable set it to '1'.
-
-* `newrelic_php_conf_transactionrecordsql`
- 
-   When recording transaction traces internally, the full SQL for slow SQL calls is recorded. Possible values: off, raw, obfuscate
-.
-
-* `newrelic_php_conf_captureparams`
- 
-   This will enable the display of parameters passed to a PHP script via the URL. To enable set it to '1'.
+There are a lot of parameters you can customize, check the `.pp` files and the New Relic documentation to understand them.
 
 Author
 ------

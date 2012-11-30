@@ -1,9 +1,12 @@
+# Install New Relic Server Monitoring
+
 node default {
 
-  class { 'newrelic':
-    newrelic_license_key        => '1234567891234567891234567891234567891234',
-    newrelic_php                => true,
-    newrelic_php_conf_appname   => 'Your PHP Application',
+  newrelic::server {
+    'webXYZ-app':
+      newrelic_license_key    => 'your license key here',
+      newrelic_package_ensure => 'latest',
+      newrelic_service_ensure => 'running',
   }
 
 }

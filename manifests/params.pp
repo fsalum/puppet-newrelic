@@ -31,7 +31,6 @@ class newrelic::params {
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
       $newrelic_php_conf_dir  = '/etc/php5/conf.d'
-      include apt
       apt::source { 'newrelic':
         location    => 'http://apt.newrelic.com/debian/',
         repos       => 'newrelic non-free',

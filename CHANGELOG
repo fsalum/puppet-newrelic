@@ -1,2 +1,5 @@
+2012-11-30 - Felipe Salum <fsalum@gmail.com> - 3.0.0
+* Split the Server Monitoring and PHP agent in their own classes
+* Compliance with the New Relic PHP Agent 3.0 changes
 2012-10-10 - Felipe Salum <fsalum@gmail.com> - 0.0.1
 * Initial Forge release
