@@ -84,6 +84,7 @@ define newrelic::php (
 
   package { $newrelic_php_package:
     ensure  => $newrelic_php_package_ensure,
+    require => Class['newrelic::params'],
   }
 
   service { $newrelic_php_service:

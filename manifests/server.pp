@@ -44,9 +44,9 @@ define newrelic::server (
   $newrelic_service_name = $newrelic::params::newrelic_service_name
 
   package { $newrelic_package_name:
-    ensure  => $newrelic_package_ensure,
-    notify  => Service[$newrelic_service_name],
-    require => Apt::Source['newrelic'],
+    ensure   => $newrelic_package_ensure,
+    notify   => Service[$newrelic_service_name],
+    require  => Class['newrelic::params'],
   }
 
   service { $newrelic_service_name:
@@ -54,7 +54,7 @@ define newrelic::server (
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
-    require    => [ Exec[$newrelic_license_key], Package[$newrelic_package_name] ],
+    require    => Exec[$newrelic_license_key],
   }
 
   exec { $newrelic_license_key:
