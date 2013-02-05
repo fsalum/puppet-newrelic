@@ -1,3 +1,5 @@
+2013-02-04 - Felipe Salum <fsalum@gmail.com> - 3.0.2
+* Adding newrelic php agent port on newrelic.ini
 2012-12-06 - Felipe Salum <fsalum@gmail.com> - 3.0.1
 * Adding some ordering in the installation
 2012-11-30 - Felipe Salum <fsalum@gmail.com> - 3.0.0
