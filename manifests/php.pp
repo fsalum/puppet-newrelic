@@ -116,6 +116,7 @@ define newrelic::php (
     content => template('newrelic/newrelic.cfg.erb'),
     require => Exec['/usr/bin/newrelic-install'],
     before  => Service[$newrelic_php_service],
+    notify  => Service[$newrelic_php_service],
   }
 
 }
