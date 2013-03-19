@@ -2,7 +2,9 @@ Newrelic Module for Puppet
 ==========================
 [![Build Status](https://secure.travis-ci.org/fsalum/puppet-newrelic.png)](http://travis-ci.org/fsalum/puppet-newrelic)
 
-This module manages and installs the New Relic Server Monitoring and PHP agents.
+This module manages and installs the New Relic Server Monitoring and PHP agents.  
+
+Supported systems: Debian and RHEL osfamily Linux.
 
 IMPORTANT
 ---------
