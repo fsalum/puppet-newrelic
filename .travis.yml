@@ -16,6 +16,7 @@ env:
   matrix:
   - PUPPET_VERSION=2.7.21
   - PUPPET_VERSION=3.1.1
+  - PUPPET_VERSION=3.2.1
 notifications:
   email: false
 gemfile: Gemfile
