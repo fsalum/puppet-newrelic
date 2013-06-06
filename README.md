@@ -6,6 +6,11 @@ This module manages and installs the New Relic Server Monitoring and PHP agents.
 
 Supported systems: Debian and RHEL osfamily Linux.
 
+Operating System
+----------------
+
+Tested on CentOS 6.3 and Debian Squeeze.
+
 IMPORTANT
 ---------
 
