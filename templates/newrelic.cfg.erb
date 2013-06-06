@@ -51,7 +51,7 @@
 #          which process to monitor or kill.
 # Default: OS-dependent. Uses a filename of newrelic-daemon.pid in the first
 #          directory from the list /var/run or /var/pid that is found.
-pidfile=<%= newrelic_daemon_pidfile %>
+pidfile=<%= @newrelic_daemon_pidfile %>
 
 #
 # Setting: logfile
@@ -61,7 +61,7 @@ pidfile=<%= newrelic_daemon_pidfile %>
 #          will not start up. The amount of information sent to this file is
 #          controlled by the loglevel settings, defined below.
 # Default: /var/log/newrelic/newrelic-daemon.log
-logfile=<%= newrelic_daemon_logfile %>
+logfile=<%= @newrelic_daemon_logfile %>
 
 #
 # Setting: loglevel
@@ -78,7 +78,7 @@ logfile=<%= newrelic_daemon_logfile %>
 #          debug - very verbose, includes messages only relevant to support
 #          verbosedebug - extremely verbose, creates massive log files
 # Default: info
-loglevel=<%= newrelic_daemon_loglevel %>
+loglevel=<%= @newrelic_daemon_loglevel %>
 
 #
 # Setting: port
@@ -90,7 +90,7 @@ loglevel=<%= newrelic_daemon_loglevel %>
 #          the super-user. This is a fundamental OS limitation and not one
 #          imposed by the daemon itself.
 # Default: 33142
-port=<%= newrelic_daemon_port %>
+port=<%= @newrelic_daemon_port %>
 
 #
 # Setting: ssl
@@ -103,7 +103,7 @@ port=<%= newrelic_daemon_port %>
 #          you may need to use the ssl_ca_bundle or ssl_ca_path variables
 #          below.
 # Default: false
-ssl=<%= newrelic_daemon_ssl %>
+ssl=<%= @newrelic_daemon_ssl %>
 
 #
 # Setting: proxy
@@ -120,7 +120,7 @@ ssl=<%= newrelic_daemon_ssl %>
 #          someuser@proxy.mydomain.com:4321
 #          proxy.mydomain.com
 # Default: none
-proxy=<%= newrelic_daemon_proxy %>
+proxy=<%= @newrelic_daemon_proxy %>
 
 #
 # Setting: ssl_ca_bundle
@@ -133,7 +133,7 @@ proxy=<%= newrelic_daemon_proxy %>
 # Default: Looks for one of two files: /etc/pki/tls/certs/ca-bundle.crt or
 #          /etc/ssl/certs/ca-certificates.crt.
 #
-ssl_ca_bundle=<%= newrelic_daemon_ssl_ca_bundle %>
+ssl_ca_bundle=<%= @newrelic_daemon_ssl_ca_bundle %>
 
 #
 # Setting: ssl_ca_path
@@ -142,7 +142,7 @@ ssl_ca_bundle=<%= newrelic_daemon_ssl_ca_bundle %>
 #          installation uses a sub-directory with a list of CA certificates.
 #          Set this variable to point to that directory.
 # Default: /etc/ssl/certs
-ssl_ca_path=<%= newrelic_daemon_ssl_ca_path %>
+ssl_ca_path=<%= @newrelic_daemon_ssl_ca_path %>
 
 #
 # Setting: max_threads
@@ -154,7 +154,7 @@ ssl_ca_path=<%= newrelic_daemon_ssl_ca_path %>
 #          have resource usage (memory, CPU etc.) implications so do not just
 #          increase this arbitrarily.
 # Default: 8
-max_threads=<%= newrelic_daemon_max_threads %>
+max_threads=<%= @newrelic_daemon_max_threads %>
 
 #
 # Setting: collector_host
@@ -166,4 +166,4 @@ max_threads=<%= newrelic_daemon_max_threads %>
 #          circumstances, and then only on instruction from a New Relic sales
 #          person or support staff member.
 # Default: collector.newrelic.com
-collector_host=<%= newrelic_daemon_collector_host %>
+collector_host=<%= @newrelic_daemon_collector_host %>

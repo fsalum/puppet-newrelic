@@ -1,9 +1,35 @@
-2013-02-04 - Felipe Salum <fsalum@gmail.com> - 3.0.2
+## fsalum-newrelic changelog
+
+Release notes for the fsalum-newrelic module.
+
+------------------------------------------
+
+#### 3.0.3 - 2013-06-06
+
+* Fix Puppet 3.2.1 deprecation warnings
+* Update CHANGELOG format
+
+------------------------------------------
+
+#### 3.0.2 - 2013-02-04
+
 * Adding newrelic php agent port on newrelic.ini
-2012-12-06 - Felipe Salum <fsalum@gmail.com> - 3.0.1
+
+------------------------------------------
+
+#### 3.0.1 - 2012-12-06
+
 * Adding some ordering in the installation
-2012-11-30 - Felipe Salum <fsalum@gmail.com> - 3.0.0
+
+------------------------------------------
+
+#### 3.0.0 - 2012-11-30
+
 * Split the Server Monitoring and PHP agent in their own classes
 * Compliance with the New Relic PHP Agent 3.0 changes
-2012-10-10 - Felipe Salum <fsalum@gmail.com> - 0.0.1
+
+------------------------------------------
+
+#### 0.0.1 - 2012-10-10
+
 * Initial Forge release
