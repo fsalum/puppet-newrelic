@@ -119,4 +119,8 @@ define newrelic::php (
     notify  => Service[$newrelic_php_service],
   }
 
+  file { '/var/log/newrelic/':
+    ensure => 'directory',
+  }
+
 }
