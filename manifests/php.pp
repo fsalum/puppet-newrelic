@@ -64,6 +64,7 @@ define newrelic::php (
   $newrelic_php_conf_dberrors             = '0',
   $newrelic_php_conf_transactionrecordsql = 'off',
   $newrelic_php_conf_captureparams        = '0',
+  $newrelic_php_conf_ignoredparams        = '',
   $newrelic_daemon_pidfile                = '/var/run/newrelic-daemon.pid',
   $newrelic_daemon_logfile                = '/var/log/newrelic/newrelic-daemon.log',
   $newrelic_daemon_loglevel               = 'info',
