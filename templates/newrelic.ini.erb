@@ -9,4 +9,5 @@ newrelic.transaction_tracer.detail = <%= @newrelic_php_conf_transaction %>
 newrelic.error_collector.record_database_errors = <%= @newrelic_php_conf_dberrors %>
 newrelic.transaction_tracer.record_sql = "<%= @newrelic_php_conf_transactionrecordsql %>"
 newrelic.capture_params = <%= @newrelic_php_conf_captureparams %>
+newrelic.ignored_params = "<%= @newrelic_php_conf_ignoredparams %>"
 newrelic.daemon.port = <%= @newrelic_daemon_port %>
