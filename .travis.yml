@@ -14,9 +14,12 @@ env:
   - PUBLISHER_LOGIN=fsalum
   - secure: "YfDM8e3Nr255NgOL9zqBGsgd7phq0v13Snf+O8Qxu24Q4MDHcXNmBkKZVfwu\nqCc9ImFpL+mdVQUsM5adKAuf9HEjY0zdTIHF/iPhQFLoRSnfvl67HJ9kykti\nKpmXicorXhZ4GTR3YlZgY3Wm+jXm2PykZicBnOVgwFGeyvcKCD8="
   matrix:
-  - PUPPET_VERSION=2.7.21
+  - PUPPET_VERSION=2.7.25
   - PUPPET_VERSION=3.1.1
-  - PUPPET_VERSION=3.2.1
+  - PUPPET_VERSION=3.2.4
+  - PUPPET_VERSION=3.3.2
+  - PUPPET_VERSION=3.3.2
+  - PUPPET_VERSION=3.4.3
 notifications:
   email: false
 gemfile: Gemfile

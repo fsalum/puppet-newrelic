@@ -4,6 +4,10 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 3.0.4 - 2014-03-07
+
+* New parameter newrelic.ignored_params added (@pataquets)
+
 #### 3.0.3 - 2013-06-06
 
 * Fix Puppet 3.2.1 deprecation warnings
