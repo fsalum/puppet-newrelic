@@ -4,6 +4,9 @@
 #
 # === Parameters
 #
+# [*newrelic_service_enable*]
+#   Specify the service startup state. Defaults to true. Possible value is false.
+#
 # [*newrelic_service_ensure*]
 #   Specify the service running state. Defaults to 'running'. Possible value is 'stopped'.
 #
@@ -35,6 +38,7 @@
 define newrelic::server (
   $newrelic_license_key    = '',
   $newrelic_package_ensure = 'present',
+  $newrelic_service_enable = true,
   $newrelic_service_ensure = 'running',
 ) {
 
@@ -51,7 +55,7 @@ define newrelic::server (
 
   service { $newrelic_service_name:
     ensure     => $newrelic_service_ensure,
-    enable     => true,
+    enable     => $newrelic_service_enable,
     hasrestart => true,
     hasstatus  => true,
     require    => Exec[$newrelic_license_key],
