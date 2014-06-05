@@ -4,6 +4,11 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 3.0.5 - 2014-06-05
+
+* Add 'newrelic_daemon_cfgfile_ensure' parameter (@nbeernink)
+* Add 'newrelic_service_enable' parameter (@pataquets)
+
 #### 3.0.4 - 2014-03-07
 
 * New parameter newrelic.ignored_params added (@pataquets)
