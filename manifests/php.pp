@@ -37,6 +37,8 @@
 # [*newrelic_php_conf_captureparams*]
 #   This will enable the display of parameters passed to a PHP script via the URL. To enable set it to '1'.
 #
+# [*newrelic_daemon_cfgfile_ensure*]
+#   Specify if the Newrelic daemon cfg file state. Defaults to 'present'. Possible value is 'absent'.
 # Actions:
 #
 # Requires:
@@ -65,11 +67,12 @@ define newrelic::php (
   $newrelic_php_conf_transactionrecordsql = 'off',
   $newrelic_php_conf_captureparams        = '0',
   $newrelic_php_conf_ignoredparams        = '',
+  $newrelic_daemon_cfgfile_ensure         = 'present',
   $newrelic_daemon_pidfile                = '/var/run/newrelic-daemon.pid',
   $newrelic_daemon_logfile                = '/var/log/newrelic/newrelic-daemon.log',
   $newrelic_daemon_loglevel               = 'info',
   $newrelic_daemon_port                   = '33142',
-  $newrelic_daemon_ssl                    = 'false',
+  $newrelic_daemon_ssl                    = false,
   $newrelic_daemon_proxy                  = '',
   $newrelic_daemon_ssl_ca_bundle          = '',
   $newrelic_daemon_ssl_ca_path            = '',
@@ -113,6 +116,7 @@ define newrelic::php (
   }
 
   file { '/etc/newrelic/newrelic.cfg':
+    ensure  => $newrelic_daemon_cfgfile_ensure,
     path    => '/etc/newrelic/newrelic.cfg',
     content => template('newrelic/newrelic.cfg.erb'),
     require => Exec['/usr/bin/newrelic-install'],
