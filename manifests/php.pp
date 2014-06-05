@@ -71,7 +71,7 @@ define newrelic::php (
   $newrelic_daemon_logfile                = '/var/log/newrelic/newrelic-daemon.log',
   $newrelic_daemon_loglevel               = 'info',
   $newrelic_daemon_port                   = '33142',
-  $newrelic_daemon_ssl                    = 'false',
+  $newrelic_daemon_ssl                    = false,
   $newrelic_daemon_proxy                  = '',
   $newrelic_daemon_ssl_ca_bundle          = '',
   $newrelic_daemon_ssl_ca_path            = '',
