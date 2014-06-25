@@ -105,15 +105,11 @@ define newrelic::php (
     provider    => 'shell',
     user        => 'root',
     group       => 'root',
-    unless      => "cat ${newrelic_php_conf_dir}/newrelic.ini | grep ${newrelic_license_key}",
+    unless      => "grep ${newrelic_license_key} ${newrelic_php_conf_dir[0]}/newrelic.ini",
     require     => Package[$newrelic_php_package],
   }
 
-  file { 'newrelic.ini':
-    path    => "${newrelic_php_conf_dir}/newrelic.ini",
-    content => template('newrelic/newrelic.ini.erb'),
-    require => Exec['/usr/bin/newrelic-install'],
-  }
+  newrelic_ini { $newrelic_php_conf_dir: }
 
   file { '/etc/newrelic/newrelic.cfg':
     ensure  => $newrelic_daemon_cfgfile_ensure,
@@ -124,4 +120,12 @@ define newrelic::php (
     notify  => Service[$newrelic_php_service],
   }
 
+}
+
+define newrelic_ini {
+  file { "${name}/newrelic.ini":
+    path    => "${name}/newrelic.ini",
+    content => template('newrelic/newrelic.ini.erb'),
+    require => Exec['/usr/bin/newrelic-install'],
+  }
 }

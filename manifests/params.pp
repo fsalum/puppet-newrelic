@@ -18,7 +18,7 @@ class newrelic::params {
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
-      $newrelic_php_conf_dir  = '/etc/php.d'
+      $newrelic_php_conf_dir  = ['/etc/php.d']
       package { 'newrelic-repo-5-3.noarch':
         ensure   => present,
         source   => 'http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm',
@@ -30,7 +30,12 @@ class newrelic::params {
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
-      $newrelic_php_conf_dir  = '/etc/php5/conf.d'
+      if $::operatingsystemrelease == "14.04" {
+        $newrelic_php_conf_dir  = ['/etc/php5/cli/conf.d', '/etc/php5/fpm/conf.d']
+      }
+      else {
+        $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+      }
       apt::source { 'newrelic':
         location    => 'http://apt.newrelic.com/debian/',
         repos       => 'newrelic non-free',
