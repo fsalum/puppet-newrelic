@@ -42,7 +42,7 @@ If you use Ubuntu 14.04 and php5-fpm you can pass an array of directories for PH
            'appXYZ':
              newrelic_license_key  => 'your license key here',
              newrelic_ini_appname  => 'Your PHP Application',
-             newrelic_php_conf_dir => [‘/etc/php5/apache2/conf.d’,’/etc/php5/fpm/conf.d’],
+             newrelic_php_conf_dir => ['/etc/php5/apache2/conf.d','/etc/php5/fpm/conf.d'],
          }
 
 Parameters
