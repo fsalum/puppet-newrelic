@@ -36,10 +36,19 @@
 # Copyright 2012 Felipe Salum, unless otherwise noted.
 #
 define newrelic::server (
-  $newrelic_license_key    = '',
-  $newrelic_package_ensure = 'present',
-  $newrelic_service_enable = true,
-  $newrelic_service_ensure = 'running',
+  $newrelic_package_ensure           = 'present',
+  $newrelic_service_enable           = true,
+  $newrelic_service_ensure           = 'running',
+  $newrelic_license_key              = undef,
+  $newrelic_nrsysmond_loglevel       = undef,
+  $newrelic_nrsysmond_logfile        = undef,
+  $newrelic_nrsysmond_proxy          = undef,
+  $newrelic_nrsysmond_ssl            = undef,
+  $newrelic_nrsysmond_ssl_ca_bundle  = undef,
+  $newrelic_nrsysmond_ssl_ca_path    = undef,
+  $newrelic_nrsysmond_pidfile        = undef,
+  $newrelic_nrsysmond_collector_host = undef,
+  $newrelic_nrsysmond_timeout        = undef,
 ) {
 
   include newrelic
@@ -47,10 +56,37 @@ define newrelic::server (
   $newrelic_package_name = $newrelic::params::newrelic_package_name
   $newrelic_service_name = $newrelic::params::newrelic_service_name
 
+  if ! $newrelic_license_key {
+    fail('You must specify a valid License Key.')
+  }
+
   package { $newrelic_package_name:
     ensure   => $newrelic_package_ensure,
     notify   => Service[$newrelic_service_name],
     require  => Class['newrelic::params'],
+  }
+
+  if ! $newrelic_nrsysmond_logfile {
+    $logdir = '/var/log/newrelic'
+  } else {
+    $logdir = dirname($newrelic_nrsysmond_logfile)
+  }
+
+  file { $logdir:
+    ensure  => directory,
+    owner   => 'newrelic',
+    group   => 'newrelic',
+    require => Package[$newrelic_package_name],
+    before  => Service[$newrelic_service_name],
+  }
+
+  file { '/etc/newrelic/nrsysmond.cfg':
+    ensure  => present,
+    path    => '/etc/newrelic/nrsysmond.cfg',
+    content => template('newrelic/nrsysmond.cfg.erb'),
+    require => Package[$newrelic_package_name],
+    before  => Service[$newrelic_service_name],
+    notify  => Service[$newrelic_service_name],
   }
 
   service { $newrelic_service_name:

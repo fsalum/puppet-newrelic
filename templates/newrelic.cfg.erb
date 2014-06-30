@@ -51,7 +51,10 @@
 #          which process to monitor or kill.
 # Default: OS-dependent. Uses a filename of newrelic-daemon.pid in the first
 #          directory from the list /var/run or /var/pid that is found.
+#pidfile=/var/run/newrelic-daemon.pid
+<%- if @newrelic_daemon_pidfile -%>
 pidfile=<%= @newrelic_daemon_pidfile %>
+<%- end -%>
 
 #
 # Setting: logfile
@@ -61,7 +64,10 @@ pidfile=<%= @newrelic_daemon_pidfile %>
 #          will not start up. The amount of information sent to this file is
 #          controlled by the loglevel settings, defined below.
 # Default: /var/log/newrelic/newrelic-daemon.log
+#logfile=/var/log/newrelic/newrelic-daemon.log
+<%- if @newrelic_daemon_logfile -%>
 logfile=<%= @newrelic_daemon_logfile %>
+<%- end -%>
 
 #
 # Setting: loglevel
@@ -78,32 +84,72 @@ logfile=<%= @newrelic_daemon_logfile %>
 #          debug - very verbose, includes messages only relevant to support
 #          verbosedebug - extremely verbose, creates massive log files
 # Default: info
+#loglevel=info
+<%- if @newrelic_daemon_loglevel -%>
 loglevel=<%= @newrelic_daemon_loglevel %>
+<%- end -%>
 
 #
 # Setting: port
-# Type   : Integer (1-65534)
-# Purpose: Sets the TCP port on which the daemon will listen for connections
-#          from agents (agents in this case includes Apache / php-fpm worker
-#          processes, the command line, or any other agent source). In order
-#          to use a port in the range 1-1023, the daemon must be started by
-#          the super-user. This is a fundamental OS limitation and not one
-#          imposed by the daemon itself.
-# Default: 33142
+# Type   : String or Integer (1-65534)
+# Purpose: Sets how the agent and daemon communicate. How this is set can impact
+#          performance. The default is to use a UNIX-domain socket located at
+#          /tmp/.newrelic.sock. If you want to use UNIX domain sockets then
+#          this value must begin with a "/". If you set this to an integer
+#          value in the range 1-65534, then this will instruct the daemon to
+#          listen on a normal TCP socket on the port specified. This may be
+#          easier to use if you are using a chroot environment.
+#          In order to use a port in the range 1-1023, the daemon must be
+#          started by the super-user. This is a fundamental OS limitation
+#          and not one imposed by the daemon itself.
+# Default: "/tmp/.newrelic.sock"
+#port="/tmp/.newrelic.sock"
+<%- if @newrelic_daemon_port -%>
 port=<%= @newrelic_daemon_port %>
+<%- end -%>
 
 #
 # Setting: ssl
 # Type   : boolean
 # Purpose: If you prefer the daemon to use the secure HTTP (https) protocol
 #          when communicating with the New Relic collector servers, set this
-#          to true. Please note that in order for this to work the daemon must
-#          be able to find a Certificate Authority (CA) list. On startup the
-#          daemon will attempt to find such a list in the usual places, but
-#          you may need to use the ssl_ca_bundle or ssl_ca_path variables
-#          below.
-# Default: false
+#          to true.
+# Default: true (as of version 3.6)
+#ssl=true
+<%- if @newrelic_daemon_ssl -%>
 ssl=<%= @newrelic_daemon_ssl %>
+<%- end -%>
+
+#
+# Setting: ssl_ca_bundle
+# Type   : string
+# Purpose: Sets the location of a file containing CA certificates in PEM
+#          format. When set, the certificates in this file will be used
+#          to authenticate the New Relic collector servers. If ssl_ca_path
+#          is also set (see below), the certificates in this file will be
+#          searched first, followed by the certificates contained in the
+#          ssl_ca_path directory. This setting has no effect when ssl
+#          is set to false.
+# Default: none
+#ssl_ca_bundle=
+<%- if @newrelic_daemon_ssl_ca_bundle -%>
+ssl_ca_bundle=<%= @newrelic_daemon_ssl_ca_bundle %>
+<%- end -%>
+
+#
+# Setting: ssl_ca_path
+# Type   : string
+# Purpose: Sets the location of a directory containing trusted CA certificates
+#          in PEM format. When set, the certificates in this directory will be
+#          used to authenticate the New Relic collector servers. If
+#          ssl_ca_bundle is also set (see above), it will be searched first
+#          followed by the certificates contained in ssl_ca_path. This
+#          setting has no effect when ssl is set to false.
+# Default: none
+#ssl_ca_path=
+<%- if @newrelic_daemon_ssl_ca_path -%>
+ssl_ca_path=<%= @newrelic_daemon_ssl_ca_path %>
+<%- end -%>
 
 #
 # Setting: proxy
@@ -120,41 +166,10 @@ ssl=<%= @newrelic_daemon_ssl %>
 #          someuser@proxy.mydomain.com:4321
 #          proxy.mydomain.com
 # Default: none
+#proxy=
+<%- if @newrelic_daemon_proxy -%>
 proxy=<%= @newrelic_daemon_proxy %>
-
-#
-# Setting: ssl_ca_bundle
-# Type   : string
-# Purpose: If you have the "ssl" option above enabled, and the daemon cannot
-#          find a suitable Certificate Authority (CA) list, this is one of the
-#          options you can use to point it to the CA list to use. If your SSL
-#          installation uses a "bundle" - i.e. a single file which contains a
-#          list of CA's - then this option should point to that bundle file.
-# Default: Looks for one of two files: /etc/pki/tls/certs/ca-bundle.crt or
-#          /etc/ssl/certs/ca-certificates.crt.
-#
-ssl_ca_bundle=<%= @newrelic_daemon_ssl_ca_bundle %>
-
-#
-# Setting: ssl_ca_path
-# Type   : string
-# Purpose: See ssl_ca_bundle above. This option should be used if your SSL
-#          installation uses a sub-directory with a list of CA certificates.
-#          Set this variable to point to that directory.
-# Default: /etc/ssl/certs
-ssl_ca_path=<%= @newrelic_daemon_ssl_ca_path %>
-
-#
-# Setting: max_threads
-# Type   : integer (4-128)
-# Purpose: Internally the daemon uses a "pool" of worker threads to deal with
-#          activity from each connected agent. In certain very busy setups
-#          you may need to increase this number in order to service all of
-#          those connections quickly enough. Each extra thread you create does
-#          have resource usage (memory, CPU etc.) implications so do not just
-#          increase this arbitrarily.
-# Default: 8
-max_threads=<%= @newrelic_daemon_max_threads %>
+<%- end -%>
 
 #
 # Setting: collector_host
@@ -166,4 +181,24 @@ max_threads=<%= @newrelic_daemon_max_threads %>
 #          circumstances, and then only on instruction from a New Relic sales
 #          person or support staff member.
 # Default: collector.newrelic.com
+#collector_host=collector.newrelic.com
+<%- if @newrelic_daemon_collector_host -%>
 collector_host=<%= @newrelic_daemon_collector_host %>
+<%- end -%>
+
+#
+# Setting: auditlog
+# Type   : string
+# Purpose: Sets the name of a file to record all uncompressed, un-encoded
+#          content that is sent from your machine to the New Relic servers.
+#          This includes the full URL for each command along with the payload
+#          delivered with the command. This allows you to satisfy yourself
+#          that the agent is not sending any sensitive data to our servers.
+#          This file must be a different file to the logfile setting above.
+#          If you set it to the same name audit logging will be silently
+#          ignored.
+# Default: None
+#auditlog=/var/log/newrelic/audit.log
+<%- if @newrelic_daemon_auditlog -%>
+auditlog=<%= @newrelic_daemon_auditlog %>
+<%- end -%>

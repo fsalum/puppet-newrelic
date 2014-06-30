@@ -4,6 +4,14 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 4.0.0 - 2014-06-29
+
+* Refactored the module, test before pushing to production
+* Added/Removed/Renamed/Changed parameters
+* Updated template for new settings for newrelic.ini, newrelic.cfg and nrsysmond.cfg
+* Closed PR #7 - Ensure log directory is created
+* Closed PR #13 - Fix PHP conf dir for Ubuntu 14.04
+
 #### 3.0.5 - 2014-06-05
 
 * Add 'newrelic_daemon_cfgfile_ensure' parameter (@nbeernink)
