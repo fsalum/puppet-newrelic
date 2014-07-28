@@ -314,6 +314,24 @@ newrelic.daemon.collector_host = "<%= @newrelic_daemon_collector_host %>"
 <%- end -%>
 
 ;
+; Setting: newrelic.capture_params
+; Type   : boolean
+; Scope  : per-directory
+; Default: false
+; Info   : Enable or disable the capturing of URL parameters. If enabled, then
+;          any variables passed on the URL like (for example ?id=12345) will be
+;          saved with the request and visible in various places in the web UI.
+;          If you tend to pass sensitive information around directly in the URL
+;          then its a good idea to keep this disabled. However, if your URL
+;          parameters are simply used for parameters without sensitive data but
+;          that are meaningful to each transaction then you can enable this.
+;
+#newrelic.capture_params = true
+<%- if @newrelic_ini_capture_params -%>
+newrelic.capture_params = "<%= @newrelic_ini_capture_params %>"
+<%- end -%>
+
+;
 ; Setting: newrelic.daemon.dont_launch
 ; Type   : integer (0, 1, 2 or 3)
 ; Scope  : system
