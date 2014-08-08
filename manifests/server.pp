@@ -94,17 +94,6 @@ define newrelic::server (
     enable     => $newrelic_service_enable,
     hasrestart => true,
     hasstatus  => true,
-    require    => Exec[$newrelic_license_key],
-  }
-
-  exec { $newrelic_license_key:
-    path        => '/bin:/usr/bin',
-    command     => "/usr/sbin/nrsysmond-config --set license_key=${newrelic_license_key}",
-    user        => 'root',
-    group       => 'root',
-    unless      => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
-    require     => Package[$newrelic_package_name],
-    notify      => Service[$newrelic_service_name],
   }
 
 }
