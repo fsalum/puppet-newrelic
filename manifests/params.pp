@@ -33,11 +33,11 @@ class newrelic::params {
       $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
       apt::source { 'newrelic':
         location    => 'http://apt.newrelic.com/debian/',
-        repos       => 'newrelic non-free',
+        repos       => 'non-free',
         key         => '548C16BF',
-        key_source  => 'http://download.newrelic.com/548C16BF.gpg',
+        key_source  => 'https://download.newrelic.com/548C16BF.gpg',
         include_src => false,
-        release     => ' ',
+        release     => 'newrelic',
       }
     }
     default: {
