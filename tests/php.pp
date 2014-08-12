@@ -7,8 +7,7 @@ node default {
   }
   class { '::apache::mod::php': }
 
-  newrelic::server {
-    'srvXYZ':
+  class {'newrelic::server::linux':
       newrelic_license_key => '',
   }
 

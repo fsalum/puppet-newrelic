@@ -1,4 +1,4 @@
-# == Class: newrelic::server
+# == Class: newrelic::server::linux
 #
 # This class installs and configures NewRelic server monitoring.
 #
@@ -20,8 +20,7 @@
 #
 # === Examples
 #
-#  newrelic::server {
-#    'serverXYZ':
+#  class {'newrelic::server::linux':
 #      newrelic_license_key    => 'your license key here',
 #      newrelic_package_ensure => 'latest',
 #      newrelic_service_ensure => 'running',
@@ -35,11 +34,13 @@
 #
 # Copyright 2012 Felipe Salum, unless otherwise noted.
 #
-define newrelic::server (
+class newrelic::server::linux (
   $newrelic_package_ensure           = 'present',
   $newrelic_service_enable           = true,
   $newrelic_service_ensure           = 'running',
   $newrelic_license_key              = undef,
+  $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
+  $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
   $newrelic_nrsysmond_loglevel       = undef,
   $newrelic_nrsysmond_logfile        = undef,
   $newrelic_nrsysmond_proxy          = undef,
@@ -49,14 +50,7 @@ define newrelic::server (
   $newrelic_nrsysmond_pidfile        = undef,
   $newrelic_nrsysmond_collector_host = undef,
   $newrelic_nrsysmond_timeout        = undef,
-) {
-
-  include newrelic
-
-  $newrelic_package_name = $newrelic::params::newrelic_package_name
-  $newrelic_service_name = $newrelic::params::newrelic_service_name
-
-  warning('newrelic::server is deprecated. Please switch to the newrelic::server::linux class.')
+) inherits ::newrelic {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
@@ -96,6 +90,17 @@ define newrelic::server (
     enable     => $newrelic_service_enable,
     hasrestart => true,
     hasstatus  => true,
+    require    => Exec[$newrelic_license_key],
+  }
+
+  exec { $newrelic_license_key:
+    path        => '/bin:/usr/bin',
+    command     => "/usr/sbin/nrsysmond-config --set license_key=${newrelic_license_key}",
+    user        => 'root',
+    group       => 'root',
+    unless      => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
+    require     => Package[$newrelic_package_name],
+    notify      => Service[$newrelic_service_name],
   }
 
 }

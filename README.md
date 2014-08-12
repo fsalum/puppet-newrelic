@@ -24,9 +24,8 @@ Quick Start
 To install the Newrelic Server Monitoring and the PHP agent packages, include the following in your manifest file:
 
     node default {
-         newrelic::server {
-           'srvXYZ':
-             newrelic_license_key => 'your license key here',
+         class {'newrelic::server::linux':
+           newrelic_license_key => 'your license key here',
          }
 
          newrelic::php {
