@@ -28,20 +28,18 @@ To install the Newrelic Server Monitoring and the PHP agent packages, include th
            newrelic_license_key => 'your license key here',
          }
 
-         newrelic::php {
-           'appXYZ':
-             newrelic_license_key  => 'your license key here',
-             newrelic_ini_appname  => 'Your PHP Application',
+         class {'newrelic::agent::php':
+           newrelic_license_key  => 'your license key here',
+           newrelic_ini_appname  => 'Your PHP Application',
          }
     }
 
 If you use Ubuntu 14.04 and php5-fpm you can pass an array of directories for PHP ini files:
 
-         newrelic::php {
-           'appXYZ':
-             newrelic_license_key  => 'your license key here',
-             newrelic_ini_appname  => 'Your PHP Application',
-             newrelic_php_conf_dir => ['/etc/php5/apache2/conf.d','/etc/php5/fpm/conf.d'],
+         class {'newrelic::agent::php':
+           newrelic_license_key  => 'your license key here',
+           newrelic_ini_appname  => 'Your PHP Application',
+           newrelic_php_conf_dir => ['/etc/php5/apache2/conf.d','/etc/php5/fpm/conf.d'],
          }
 
 Parameters
