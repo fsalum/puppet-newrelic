@@ -4,6 +4,14 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 4.0.1 - 2014-08-13
+
+* Added warning for deprecated classes `newrelic::server` and `newrelic::php`
+* PR #16 - Added missing newrelic.capture_params to newrelic.ini.erb (@brentclark)
+* PR #17 - change 'newrelic::server' to be a class (@3flex)
+* PR #18 - tweak apt::source declaration (@3flex)
+* PR #19 - Remove unneeded exec (@3flex)
+
 #### 4.0.0 - 2014-06-29
 
 * Refactored the module, test before pushing to production
