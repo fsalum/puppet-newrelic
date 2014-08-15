@@ -2,11 +2,10 @@
 
 node default {
 
-  newrelic::server {
-    'webXYZ-app':
-      newrelic_license_key    => 'your license key here',
-      newrelic_package_ensure => 'latest',
-      newrelic_service_ensure => 'running',
+  class {'newrelic::server::linux':
+    newrelic_license_key    => '',
+    newrelic_package_ensure => 'latest',
+    newrelic_service_ensure => 'running',
   }
 
 }

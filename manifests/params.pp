@@ -30,7 +30,6 @@ class newrelic::params {
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
-      $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
       apt::source { 'newrelic':
         location    => 'http://apt.newrelic.com/debian/',
         repos       => 'non-free',
@@ -38,6 +37,31 @@ class newrelic::params {
         key_source  => 'https://download.newrelic.com/548C16BF.gpg',
         include_src => false,
         release     => 'newrelic',
+      }
+      case $::operatingsystem {
+        'Debian': {
+          case $::operatingsystemrelease {
+            /^6/: {
+              $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+            }
+            default: {
+              $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
+            }
+          }
+        }
+        'Ubuntu': {
+          case $::operatingsystemrelease {
+            /^(10|12)/: {
+              $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+            }
+            default: {
+              $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
+            }
+          }
+        }
+        default: {
+          $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+        }
       }
     }
     default: {

@@ -7,16 +7,16 @@ if ENV['VAGRANT_HOME'].nil?
 end
 
 newrelic = {
-    :'centos65' => { :memory => '120', :ip => '10.1.2.13', :box => 'puppetlabs/centos-6.5-64-puppet',   :domain => 'newrelic.local' },
-    :'trusty'   => { :memory => '360', :ip => '10.1.2.14', :box => 'ubuntu/trusty64',                   :domain => 'newrelic.local' },
-    :'saucy'    => { :memory => '120', :ip => '10.1.2.15', :box => 'puppetlabs/ubuntu-13.10-64-puppet', :domain => 'newrelic.local' },
-    :'precise'  => { :memory => '120', :ip => '10.1.2.16', :box => 'puppetlabs/ubuntu-12.04-64-puppet', :domain => 'newrelic.local' },
-    :'debian74' => { :memory => '120', :ip => '10.1.2.17', :box => 'puppetlabs/debian-7.4-64-puppet',   :domain => 'newrelic.local' },
+    :'centos5'  => { :memory => '120', :ip => '10.1.2.10', :box => 'puppetlabs/centos-5.10-64-puppet',  :domain => 'newrelic.local' },
+    :'centos65' => { :memory => '120', :ip => '10.1.2.11', :box => 'puppetlabs/centos-6.5-64-puppet',   :domain => 'newrelic.local' },
+    :'precise'  => { :memory => '120', :ip => '10.1.2.20', :box => 'puppetlabs/ubuntu-12.04-64-puppet', :domain => 'newrelic.local' },
+    :'saucy'    => { :memory => '120', :ip => '10.1.2.21', :box => 'puppetlabs/ubuntu-13.10-64-puppet', :domain => 'newrelic.local' },
+    :'trusty'   => { :memory => '360', :ip => '10.1.2.22', :box => 'puppetlabs/ubuntu-14.04-64-puppet', :domain => 'newrelic.local' },
+    :'squeeze'  => { :memory => '120', :ip => '10.1.2.30', :box => 'puppetlabs/debian-6.0.9-64-puppet', :domain => 'newrelic.local' },
+    :'wheezy'   => { :memory => '120', :ip => '10.1.2.31', :box => 'puppetlabs/debian-7.5-64-puppet',   :domain => 'newrelic.local' },
 }
 
 Vagrant::Config.run("2") do |config|
-  config.vbguest.auto_update = false
-  config.hostmanager.enabled = false
 
     newrelic.each_pair do |name, opts|
         config.vm.define name do |n|

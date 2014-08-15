@@ -16,6 +16,9 @@ IMPORTANT
 
 Module version 4.x was refactored. A lot of parameters were added, removed, renamed or changed.
 
+Module version 4.0.1 is moving away from defined classes, deprecation warnings were added.
+Using the new classes is backwards compatible.
+
 Review all the parameters you use before deploying this module in production.
 
 Quick Start
@@ -24,25 +27,22 @@ Quick Start
 To install the Newrelic Server Monitoring and the PHP agent packages, include the following in your manifest file:
 
     node default {
-         newrelic::server {
-           'srvXYZ':
-             newrelic_license_key => 'your license key here',
+         class {'newrelic::server::linux':
+           newrelic_license_key => 'your license key here',
          }
 
-         newrelic::php {
-           'appXYZ':
-             newrelic_license_key  => 'your license key here',
-             newrelic_ini_appname  => 'Your PHP Application',
+         class {'newrelic::agent::php':
+           newrelic_license_key  => 'your license key here',
+           newrelic_ini_appname  => 'Your PHP Application',
          }
     }
 
 If you use Ubuntu 14.04 and php5-fpm you can pass an array of directories for PHP ini files:
 
-         newrelic::php {
-           'appXYZ':
-             newrelic_license_key  => 'your license key here',
-             newrelic_ini_appname  => 'Your PHP Application',
-             newrelic_php_conf_dir => ['/etc/php5/apache2/conf.d','/etc/php5/fpm/conf.d'],
+         class {'newrelic::agent::php':
+           newrelic_license_key  => 'your license key here',
+           newrelic_ini_appname  => 'Your PHP Application',
+           newrelic_php_conf_dir => ['/etc/php5/mods-available/conf.d','/etc/php5/fpm/conf.d'],
          }
 
 Parameters
@@ -57,7 +57,7 @@ Mandatory parameters:
 Copyright and License
 ---------------------
 
-Copyright (C) 2012 Felipe Salum
+Copyright (C) 2014 Felipe Salum
 
 Felipe Salum can be contacted at: fsalum@gmail.com
 

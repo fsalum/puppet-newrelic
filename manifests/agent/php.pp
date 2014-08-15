@@ -1,4 +1,4 @@
-# Class: newrelic::php
+# Class: newrelic::agent::php
 #
 # This class install the New Relic PHP Agent
 #
@@ -19,8 +19,7 @@
 #
 # Sample Usage:
 #
-#  newrelic::php {
-#    'appXYZ':
+#  class {'newrelic::agent::php':
 #      newrelic_license_key        => 'your license key here',
 #      newrelic_php_package_ensure => 'latest',
 #      newrelic_php_service_ensure => 'running',
@@ -31,10 +30,12 @@
 #
 # For detailed explanation about the parameters below see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
 #
-define newrelic::php (
+class newrelic::agent::php (
   $newrelic_php_package_ensure                           = 'present',
   $newrelic_php_service_ensure                           = 'running',
-  $newrelic_php_conf_dir                                 = $newrelic::params::newrelic_php_conf_dir,
+  $newrelic_php_conf_dir                                 = $::newrelic::params::newrelic_php_conf_dir,
+  $newrelic_php_package                                  = $::newrelic::params::newrelic_php_package,
+  $newrelic_php_service                                  = $::newrelic::params::newrelic_php_service,
   $newrelic_license_key                                  = undef,
   $newrelic_ini_appname                                  = undef,
   $newrelic_ini_browser_monitoring_auto_instrument       = undef,
@@ -70,25 +71,7 @@ define newrelic::php (
   $newrelic_daemon_proxy                                 = undef,
   $newrelic_daemon_collector_host                        = undef,
   $newrelic_daemon_auditlog                              = undef,
-  ### Deprecated below
-  $newrelic_php_conf_appname              = undef,
-  $newrelic_php_conf_enabled              = undef,
-  $newrelic_php_conf_transaction          = undef,
-  $newrelic_php_conf_logfile              = undef,
-  $newrelic_php_conf_loglevel             = undef,
-  $newrelic_php_conf_browser              = undef,
-  $newrelic_php_conf_dberrors             = undef,
-  $newrelic_php_conf_transactionrecordsql = undef,
-  $newrelic_php_conf_captureparams        = undef,
-  $newrelic_php_conf_ignoredparams        = undef,
-) {
-
-  include newrelic
-
-  $newrelic_php_package  = $newrelic::params::newrelic_php_package
-  $newrelic_php_service  = $newrelic::params::newrelic_php_service
-
-  warning('newrelic::php is deprecated. Please switch to the newrelic::agent::php class.')
+) inherits ::newrelic {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
@@ -119,38 +102,6 @@ define newrelic::php (
     content => template('newrelic/newrelic.cfg.erb'),
     before  => Service[$newrelic_php_service],
     notify  => Service[$newrelic_php_service],
-  }
-
-  # Fail on renamed/deprecated variables if they are still used
-  if $newrelic_php_conf_appname {
-    fail('Variable $newrelic_php_conf_appname is deprecated, use $newrelic_ini_appname instead.')
-  }
-  if $newrelic_php_conf_browser {
-    fail('Variable $newrelic_php_conf_browser is deprecated, use $newrelic_ini_browser_monitoring_auto_instrument instead.')
-  }
-  if $newrelic_php_conf_captureparams {
-    fail('Variable $newrelic_php_conf_captureparams is deprecated, use $newrelic_ini_capture_params instead.')
-  }
-  if $newrelic_php_conf_dberrors {
-    fail('Variable $newrelic_php_conf_dberrors is deprecated, use $newrelic_ini_error_collector_record_database_errors instead.')
-  }
-  if $newrelic_php_conf_enabled {
-    fail('Variable $newrelic_php_conf_enabled is deprecated, use $newrelic_ini_enabled instead.')
-  }
-  if $newrelic_php_conf_ignoredparams {
-    fail('Variable $newrelic_php_conf_ignoredparams is deprecated, use $newrelic_ini_ignored_params instead.')
-  }
-  if $newrelic_php_conf_logfile {
-    fail('Variable $newrelic_php_conf_logfile is deprecated, use $newrelic_ini_logfile instead.')
-  }
-  if $newrelic_php_conf_loglevel {
-    fail('Variable $newrelic_php_conf_loglevel is deprecated, use $newrelic_ini_loglevel instead.')
-  }
-  if $newrelic_php_conf_transactionrecordsql {
-    fail('Variable $newrelic_php_conf_transactionrecordsql is deprecated, use $newrelic_ini_transaction_tracer_record_sql instead.')
-  }
-  if $newrelic_php_conf_transaction {
-    fail('Variable $newrelic_php_conf_transaction is deprecated, use $newrelic_ini_transaction_tracer_detail instead.')
   }
 
 }
