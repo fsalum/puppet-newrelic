@@ -326,7 +326,7 @@ newrelic.daemon.collector_host = "<%= @newrelic_daemon_collector_host %>"
 ;          parameters are simply used for parameters without sensitive data but
 ;          that are meaningful to each transaction then you can enable this.
 ;
-#newrelic.capture_params = true
+;newrelic.capture_params = true
 <%- if @newrelic_ini_capture_params -%>
 newrelic.capture_params = "<%= @newrelic_ini_capture_params %>"
 <%- end -%>
