@@ -4,6 +4,11 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 4.0.2 - 2014-10-25
+
+Updated LICENSE, added metadata.json and travis puppet validation
+* PR #20 - Fixed PHP deprecated notice (@blaind)
+
 #### 4.0.1 - 2014-08-13
 
 * Added warning for deprecated classes `newrelic::server` and `newrelic::php`
