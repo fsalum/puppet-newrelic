@@ -7,7 +7,7 @@ if ENV['VAGRANT_HOME'].nil?
 end
 
 newrelic = {
-    :'centos5'  => { :memory => '120', :ip => '10.1.2.10', :box => 'puppetlabs/centos-5.10-64-puppet',  :domain => 'newrelic.local' },
+    :'centos5'  => { :memory => '120', :ip => '10.1.2.10', :box => 'puppetlabs/centos-5.11-64-puppet',  :domain => 'newrelic.local' },
     :'centos65' => { :memory => '120', :ip => '10.1.2.11', :box => 'puppetlabs/centos-6.5-64-puppet',   :domain => 'newrelic.local' },
     :'precise'  => { :memory => '120', :ip => '10.1.2.20', :box => 'puppetlabs/ubuntu-12.04-64-puppet', :domain => 'newrelic.local' },
     :'saucy'    => { :memory => '120', :ip => '10.1.2.21', :box => 'puppetlabs/ubuntu-13.10-64-puppet', :domain => 'newrelic.local' },
