@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>puppet-newrelic by fsalum</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">puppet-newrelic</h1>
+        <p class="header">Puppet module to install New Relic Server Monitoring and PHP agents</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/fsalum/puppet-newrelic/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/fsalum/puppet-newrelic/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/fsalum/puppet-newrelic">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/fsalum">fsalum</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="newrelic-module-for-puppet" class="anchor" href="#newrelic-module-for-puppet" aria-hidden="true"><span class="octicon octicon-link"></span></a>Newrelic Module for Puppet</h1>
+
+<p><a href="https://forge.puppetlabs.com/fsalum/newrelic"><img src="https://img.shields.io/puppetforge/v/fsalum/newrelic.svg" alt="puppet-newrelic"></a> <a href="http://travis-ci.org/fsalum/puppet-newrelic"><img src="https://secure.travis-ci.org/fsalum/puppet-newrelic.png" alt="Build Status"></a></p>
+
+<p>This module manages and installs the New Relic Server Monitoring and PHP agents.  </p>
+
+<p>Supported systems: Debian and RHEL osfamily Linux.</p>
+
+<h2>
+<a id="operating-system" class="anchor" href="#operating-system" aria-hidden="true"><span class="octicon octicon-link"></span></a>Operating System</h2>
+
+<p>Tested on CentOS, Debian and Ubuntu.</p>
+
+<h2>
+<a id="important" class="anchor" href="#important" aria-hidden="true"><span class="octicon octicon-link"></span></a>IMPORTANT</h2>
+
+<p>Module version 4.x was refactored. A lot of parameters were added, removed, renamed or changed.</p>
+
+<p>Module version 4.0.1 is moving away from defined classes, deprecation warnings were added.
+Using the new classes is backwards compatible.</p>
+
+<p>Review all the parameters you use before deploying this module in production.</p>
+
+<h2>
+<a id="quick-start" class="anchor" href="#quick-start" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Start</h2>
+
+<p>To install the Newrelic Server Monitoring and the PHP agent packages, include the following in your manifest file:</p>
+
+<pre><code>node default {
+     class {'newrelic::server::linux':
+       newrelic_license_key =&gt; 'your license key here',
+     }
+
+     class {'newrelic::agent::php':
+       newrelic_license_key  =&gt; 'your license key here',
+       newrelic_ini_appname  =&gt; 'Your PHP Application',
+     }
+}
+</code></pre>
+
+<p>If you use Ubuntu 14.04 and php5-fpm you can pass an array of directories for PHP ini files:</p>
+
+<pre><code>     class {'newrelic::agent::php':
+       newrelic_license_key  =&gt; 'your license key here',
+       newrelic_ini_appname  =&gt; 'Your PHP Application',
+       newrelic_php_conf_dir =&gt; ['/etc/php5/mods-available/conf.d','/etc/php5/fpm/conf.d'],
+     }
+</code></pre>
+
+<h2>
+<a id="parameters" class="anchor" href="#parameters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Parameters</h2>
+
+<p>There are a lot of parameters you can customize, check the <code>.pp</code> files and the <a href="https://docs.newrelic.com/docs/php/php-agent-phpini-settings">New Relic documentation</a> to understand them.</p>
+
+<p>Mandatory parameters:</p>
+
+<ul>
+<li>newrelic_license_key</li>
+</ul>
+
+<h2>
+<a id="copyright-and-license" class="anchor" href="#copyright-and-license" aria-hidden="true"><span class="octicon octicon-link"></span></a>Copyright and License</h2>
+
+<p>Copyright (C) 2014 Felipe Salum</p>
+
+<p>Felipe Salum can be contacted at: <a href="mailto:fsalum@gmail.com">fsalum@gmail.com</a></p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at</p>
+
+<pre><code>http://www.apache.org/licenses/LICENSE-2.0
+</code></pre>
+
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
