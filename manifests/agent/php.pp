@@ -59,6 +59,7 @@ class newrelic::agent::php (
   $newrelic_ini_transaction_tracer_threshold             = undef,
   $newrelic_ini_capture_params                           = undef,
   $newrelic_ini_ignored_params                           = undef,
+  $newrelic_ini_webtransaction_name_files                = undef,
   $newrelic_daemon_cfgfile_ensure                        = 'present',
   $newrelic_daemon_dont_launch                           = undef,
   $newrelic_daemon_pidfile                               = undef,

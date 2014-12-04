@@ -607,6 +607,9 @@ newrelic.framework = "<%= @newrelic_ini_framework %>"
 ;          expressions.
 ;
 ;newrelic.webtransaction.name.files = ""
+<%- if @newrelic_ini_webtransaction_name_files -%>
+newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_files %>"
+<%- end -%>
 
 ;
 ; Setting: newrelic.daemon.auditlog
