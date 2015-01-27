@@ -63,9 +63,9 @@ define newrelic::server (
   }
 
   package { $newrelic_package_name:
-    ensure   => $newrelic_package_ensure,
-    notify   => Service[$newrelic_service_name],
-    require  => Class['newrelic::params'],
+    ensure  => $newrelic_package_ensure,
+    notify  => Service[$newrelic_service_name],
+    require => Class['newrelic::params'],
   }
 
   if ! $newrelic_nrsysmond_logfile {

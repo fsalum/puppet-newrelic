@@ -57,9 +57,9 @@ class newrelic::server::linux (
   }
 
   package { $newrelic_package_name:
-    ensure   => $newrelic_package_ensure,
-    notify   => Service[$newrelic_service_name],
-    require  => Class['newrelic::params'],
+    ensure  => $newrelic_package_ensure,
+    notify  => Service[$newrelic_service_name],
+    require => Class['newrelic::params'],
   }
 
   if ! $newrelic_nrsysmond_logfile {
@@ -94,13 +94,13 @@ class newrelic::server::linux (
   }
 
   exec { $newrelic_license_key:
-    path        => '/bin:/usr/bin',
-    command     => "/usr/sbin/nrsysmond-config --set license_key=${newrelic_license_key}",
-    user        => 'root',
-    group       => 'root',
-    unless      => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
-    require     => Package[$newrelic_package_name],
-    notify      => Service[$newrelic_service_name],
+    path    => '/bin:/usr/bin',
+    command => "/usr/sbin/nrsysmond-config --set license_key=${newrelic_license_key}",
+    user    => 'root',
+    group   => 'root',
+    unless  => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
+    require => Package[$newrelic_package_name],
+    notify  => Service[$newrelic_service_name],
   }
 
 }

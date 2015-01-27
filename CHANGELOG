@@ -4,6 +4,11 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 4.0.4 - 2015-01-27
+
+* PR #24 - Add "newrelic.webtransaction.name.files" parameter (@Terr)
+* https://tickets.puppetlabs.com/browse/MODULES-1463 - Fix indentation
+
 #### 4.0.3 - 2014-11-25
 
 * PR #23 - Use the facter value of $::path for newrelic php install (@everestx)

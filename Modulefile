@@ -1,5 +1,5 @@
 name    'fsalum-newrelic'
-version '4.0.3'
+version '4.0.4'
 source 'git://github.com/fsalum/puppet-newrelic.git'
 author 'Felipe Salum'
 license 'Apache License, Version 2.0'
