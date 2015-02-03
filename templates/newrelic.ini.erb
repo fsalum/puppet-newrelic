@@ -123,9 +123,10 @@ newrelic.high_security = <%= @newrelic_ini_high_security %>
 ;          list is considered the 'primary' application name and must be unique
 ;          for each account / license key.
 ;
-;newrelic.appname = "PHP Application"
 <%- if @newrelic_ini_appname -%>
 newrelic.appname = "<%= @newrelic_ini_appname %>"
+<%- else -%>
+newrelic.appname = "PHP Application"
 <%- end -%>
 
 ;
