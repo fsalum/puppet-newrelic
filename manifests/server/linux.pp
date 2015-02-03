@@ -50,7 +50,7 @@ class newrelic::server::linux (
   $newrelic_nrsysmond_pidfile        = undef,
   $newrelic_nrsysmond_collector_host = undef,
   $newrelic_nrsysmond_timeout        = undef,
-) inherits ::newrelic {
+) inherits ::newrelic::params {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
@@ -59,7 +59,7 @@ class newrelic::server::linux (
   package { $newrelic_package_name:
     ensure  => $newrelic_package_ensure,
     notify  => Service[$newrelic_service_name],
-    require => Class['newrelic::params'],
+    require => Class['::newrelic::params'],
   }
 
   if ! $newrelic_nrsysmond_logfile {
@@ -69,7 +69,7 @@ class newrelic::server::linux (
   }
 
   file { $logdir:
-    ensure  => directory,
+    ensure  => 'directory',
     owner   => 'newrelic',
     group   => 'newrelic',
     require => Package[$newrelic_package_name],
@@ -77,8 +77,6 @@ class newrelic::server::linux (
   }
 
   file { '/etc/newrelic/nrsysmond.cfg':
-    ensure  => present,
-    path    => '/etc/newrelic/nrsysmond.cfg',
     content => template('newrelic/nrsysmond.cfg.erb'),
     require => Package[$newrelic_package_name],
     before  => Service[$newrelic_service_name],
@@ -90,15 +88,15 @@ class newrelic::server::linux (
     enable     => $newrelic_service_enable,
     hasrestart => true,
     hasstatus  => true,
-    require    => Exec[$newrelic_license_key],
+    require    => Exec['nrsysmond-config --set license_key'],
   }
 
-  exec { $newrelic_license_key:
+  exec { 'nrsysmond-config --set license_key':
     path    => '/bin:/usr/bin',
     command => "/usr/sbin/nrsysmond-config --set license_key=${newrelic_license_key}",
     user    => 'root',
     group   => 'root',
-    unless  => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
+    unless  => "grep -q ${newrelic_license_key} /etc/newrelic/nrsysmond.cfg",
     require => Package[$newrelic_package_name],
     notify  => Service[$newrelic_service_name],
   }
