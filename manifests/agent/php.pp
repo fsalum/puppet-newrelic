@@ -85,27 +85,31 @@ class newrelic::agent::php (
     require => Class['::newrelic::params'],
   }
 
-  service { $newrelic_php_service:
-    ensure     => $newrelic_php_service_ensure,
-    enable     => $newrelic_php_service_enable,
-    hasrestart => true,
-    hasstatus  => true,
+  if $newrelic_php_service_ensure == 'running'
+  or $newrelic_php_service_ensure == 'stopped' {
+    service { $newrelic_php_service:
+      ensure     => $newrelic_php_service_ensure,
+      enable     => $newrelic_php_service_enable,
+      hasrestart => true,
+      hasstatus  => true,
+      subscribe  => [
+        Newrelic::Php::Newrelic_ini[$newrelic_php_conf_dir],
+        File['/etc/newrelic/newrelic.cfg'],
+      ],
+    }
   }
 
   ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
     exec_path            => $newrelic_php_exec_path,
     newrelic_license_key => $newrelic_license_key,
     content              => template("${module_name}/newrelic.ini.erb"),
-    before               => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
     require              => Package[$newrelic_php_package],
-    notify               => Service[$newrelic_php_service],
   }
 
   file { '/etc/newrelic/newrelic.cfg':
     ensure  => $newrelic_daemon_cfgfile_ensure,
     content => template('newrelic/newrelic.cfg.erb'),
-    before  => Service[$newrelic_php_service],
-    notify  => Service[$newrelic_php_service],
+    require => Package[$newrelic_php_package],
   }
 
 }
