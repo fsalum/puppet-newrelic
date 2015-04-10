@@ -29,11 +29,12 @@ class newrelic::params {
       $newrelic_package_name  = 'newrelic-sysmond'
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
+      $newrelic_key           = '548C16BF'
       $newrelic_php_service   = 'newrelic-daemon'
       apt::source { 'newrelic':
         location    => 'http://apt.newrelic.com/debian/',
         repos       => 'non-free',
-        key         => '548C16BF',
+        key         => $newrelic_key,
         key_source  => 'https://download.newrelic.com/548C16BF.gpg',
         include_src => false,
         release     => 'newrelic',
