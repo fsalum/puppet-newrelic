@@ -81,6 +81,7 @@ class newrelic::agent::php (
 
   package { $newrelic_php_package:
     ensure  => $newrelic_php_package_ensure,
+    notify  => Package[$newrelic_php_package],
     require => Class['newrelic::params'],
   }
 
