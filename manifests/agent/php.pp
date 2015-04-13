@@ -73,6 +73,7 @@ class newrelic::agent::php (
   $newrelic_daemon_proxy                                 = undef,
   $newrelic_daemon_collector_host                        = undef,
   $newrelic_daemon_auditlog                              = undef,
+  $phpfpm_service_name                                   = $::newrelic::params::phpfpm_service_name,
 ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
@@ -89,6 +90,10 @@ class newrelic::agent::php (
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
+  }
+
+  if $phpfpm_service_name != undef {
+    Package[$newrelic_php_package] ~> Service[$phpfpm_service_name]
   }
 
   ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
