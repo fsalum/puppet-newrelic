@@ -141,6 +141,19 @@ collector_host=<%= @newrelic_nrsysmond_collector_host %>
 <%- end -%>
 
 #
+# Option : labels
+# Value  : A dictionary of label names and values for categories that will be
+#          applied to the data sent from this agent. This may also be expressed
+#          as a semicolon delimited string of colon-separated pairs.
+#          For example: labels=Server:One;Data Center:Primary;
+# Default: ""
+#
+#labels=""
+<%- if @newrelic_nrsysmond_labels -%>
+labels=<%= @newrelic_nrsysmond_labels %>
+<%- end -%>
+
+#
 # Option : timeout
 # Value  : How long the monitor should wait to contact the collector host. If
 #          the connection cannot be established in this period of time, the
