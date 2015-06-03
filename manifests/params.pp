@@ -64,8 +64,18 @@ class newrelic::params {
         }
       }
     }
+    'windows': {
+      $bitness                        = regsubst($::architecture,'^x([\d]{2})','\1')
+      $newrelic_package_name          = 'New Relic Server Monitor'
+      $newrelic_service_name          = 'nrsvrmon'
+      $temp_dir                       = 'C:/Windows/temp'
+      $server_monitor_source          = 'http://download.newrelic.com/windows_server_monitor/release/'    
+      $newrelic_dotnet_conf_dir       = 'C:\\ProgramData\\New Relic\\.NET Agent'
+      $newrelic_dotnet_package        = "New Relic .NET Agent (${bitness}-bit)"
+      $newrelic_dotnet_source         = 'http://download.newrelic.com/dot_net_agent/release/'
+    }
     default: {
-      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}, module ${module_name} only support osfamily RedHat and Debian")
+      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}")
     }
   }
 
