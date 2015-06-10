@@ -80,8 +80,8 @@ class newrelic::server::windows (
     notify          => Service[$newrelic_service_name],
     source          => "${temp_dir}\\${destination_file}",
     install_options => [
-      '/L*v', 
-      "${temp_dir}\\NewRelicServerMonitor_install.log", 
+      '/L*v',
+      "${temp_dir}\\NewRelicServerMonitor_install.log",
       {
         'NR_LICENSE_KEY' => $newrelic_license_key
       }
