@@ -79,7 +79,13 @@ class newrelic::server::windows (
     ensure          => $newrelic_package_ensure,
     notify          => Service[$newrelic_service_name],
     source          => "${temp_dir}\\${destination_file}",
-    install_options => ['/L*v', "${temp_dir}\\NewRelicServerMonitor_install.log", {'NR_LICENSE_KEY' => $newrelic_license_key}],
+    install_options => [
+      '/L*v', 
+      "${temp_dir}\\NewRelicServerMonitor_install.log", 
+      {
+        'NR_LICENSE_KEY' => $newrelic_license_key
+      }
+    ],
     require         => Class['newrelic::params'],
   }
 
