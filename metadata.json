@@ -31,6 +31,10 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.1.0"
+    },
+    {
+      "name": "puppet/download_file",
+      "version_requirement": ">= 1.2.1"
     }
   ]
 }
