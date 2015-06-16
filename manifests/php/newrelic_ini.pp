@@ -1,6 +1,7 @@
 # This module should not be used directly. It is used by newrelic::php.
 define newrelic::php::newrelic_ini (
   $newrelic_license_key,
+  $content,
   $exec_path,
 ) {
 
@@ -10,12 +11,12 @@ define newrelic::php::newrelic_ini (
     provider => 'shell',
     user     => 'root',
     group    => 'root',
-    unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
+    unless   => "grep -q ${newrelic_license_key} ${name}/newrelic.ini",
   }
 
   file { "${name}/newrelic.ini":
     path    => "${name}/newrelic.ini",
-    content => template('newrelic/newrelic.ini.erb'),
+    content => $content,
     require => Exec["/usr/bin/newrelic-install ${name}"],
   }
 

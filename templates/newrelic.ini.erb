@@ -123,9 +123,10 @@ newrelic.high_security = <%= @newrelic_ini_high_security %>
 ;          list is considered the 'primary' application name and must be unique
 ;          for each account / license key.
 ;
-;newrelic.appname = "PHP Application"
 <%- if @newrelic_ini_appname -%>
 newrelic.appname = "<%= @newrelic_ini_appname %>"
+<%- else -%>
+newrelic.appname = "PHP Application"
 <%- end -%>
 
 ;
@@ -639,7 +640,7 @@ newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_file
 ;newrelic.transaction_events.enabled = true
 
 ;
-; Setting: attributes.enabled
+; Setting: newrelic.attributes.enabled
 ; Type   : boolean
 ; Scope  : per-directory
 ; Default: true
@@ -649,7 +650,7 @@ newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_file
 ;          configuration settings.  For more information, please refer to:
 ;          https://docs.newrelic.com/docs/subscriptions/agent-attributes
 ;
-;attributes.enabled = true
+;newrelic.attributes.enabled = true
 
 ;
 ; Setting: newrelic.transaction_events.attributes.enabled
@@ -741,3 +742,35 @@ newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_file
 ;
 ;newrelic.browser_monitoring.attributes.include = ""
 ;newrelic.browser_monitoring.attributes.exclude = ""
+
+;
+; Setting: newrelic.feature_flag
+; Type   : string
+; Scope  : system
+; Default: none
+; Info   : Enables experimental features within the PHP agent. These flags are
+;          used to allow testing of features that may be provided in future
+;          versions of the agent. Please note that we may be unable to provide
+;          support for experimental features.
+;
+;newrelic.feature_flag = ""
+
+; Setting: newrelic.labels
+; Type   : string (Use quotes)
+; Scope  : per-directory
+; Default: none
+; Info   : Sets the label names and values to associate with the application.
+;          The list is a semi-colon delimited list of colon-separated name and
+;          value pairs.
+;
+;          There are a maximum of 64 label name/value pairs allowed.
+;
+;          The maximum length of the name and value is 255 characters each. 
+;
+;          Leading or trailing whitespace in the name or value will be trimmed.
+;
+;          UTF-8 characters are allowed.
+;
+;          E.g., "Server:One;Data Center:Primary"
+;
+;newrelic.labels = ""

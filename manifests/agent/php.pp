@@ -33,6 +33,7 @@
 class newrelic::agent::php (
   $newrelic_php_package_ensure                           = 'present',
   $newrelic_php_service_ensure                           = 'running',
+  $newrelic_php_service_enable                           = true,
   $newrelic_php_conf_dir                                 = $::newrelic::params::newrelic_php_conf_dir,
   $newrelic_php_exec_path                                = $::path,
   $newrelic_php_package                                  = $::newrelic::params::newrelic_php_package,
@@ -73,7 +74,7 @@ class newrelic::agent::php (
   $newrelic_daemon_proxy                                 = undef,
   $newrelic_daemon_collector_host                        = undef,
   $newrelic_daemon_auditlog                              = undef,
-) inherits ::newrelic {
+) inherits ::newrelic::params {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
@@ -81,30 +82,34 @@ class newrelic::agent::php (
 
   package { $newrelic_php_package:
     ensure  => $newrelic_php_package_ensure,
-    require => Class['newrelic::params'],
+    require => Class['::newrelic::params'],
   }
 
-  service { $newrelic_php_service:
-    ensure     => $newrelic_php_service_ensure,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true,
+  if $newrelic_php_service_ensure == 'running'
+  or $newrelic_php_service_ensure == 'stopped' {
+    service { $newrelic_php_service:
+      ensure     => $newrelic_php_service_ensure,
+      enable     => $newrelic_php_service_enable,
+      hasrestart => true,
+      hasstatus  => true,
+      subscribe  => [
+        Newrelic::Php::Newrelic_ini[$newrelic_php_conf_dir],
+        File['/etc/newrelic/newrelic.cfg'],
+      ],
+    }
   }
 
   ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
     exec_path            => $newrelic_php_exec_path,
     newrelic_license_key => $newrelic_license_key,
-    before               => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
+    content              => template("${module_name}/newrelic.ini.erb"),
     require              => Package[$newrelic_php_package],
-    notify               => Service[$newrelic_php_service],
   }
 
   file { '/etc/newrelic/newrelic.cfg':
     ensure  => $newrelic_daemon_cfgfile_ensure,
-    path    => '/etc/newrelic/newrelic.cfg',
     content => template('newrelic/newrelic.cfg.erb'),
-    before  => Service[$newrelic_php_service],
-    notify  => Service[$newrelic_php_service],
+    require => Package[$newrelic_php_package],
   }
 
 }
