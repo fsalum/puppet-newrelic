@@ -11,6 +11,8 @@ Operating System
 
 Tested on CentOS, Debian, Ubuntu and Windows.
 
+Windows support added/tested/supported by [malaikah](https://github.com/malaikah).
+
 IMPORTANT
 ---------
 

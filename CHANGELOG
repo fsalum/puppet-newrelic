@@ -4,6 +4,12 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 4.1.0 - 2015-06-15
+
+* PR #37 - Adding support for Windows server agent and .Net agents (@malaikah)
+* PR #36 - Added support for labels parameter (@Vincent--)
+* PR #33 - Cater for puppetlabs apt 2.0.1 refactoring (@brentclark)
+
 #### 4.0.4 - 2015-01-27
 
 * PR #24 - Add "newrelic.webtransaction.name.files" parameter (@Terr)
