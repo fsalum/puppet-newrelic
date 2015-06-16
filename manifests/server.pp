@@ -48,6 +48,7 @@ define newrelic::server (
   $newrelic_nrsysmond_ssl_ca_path    = undef,
   $newrelic_nrsysmond_pidfile        = undef,
   $newrelic_nrsysmond_collector_host = undef,
+  $newrelic_nrsysmond_labels         = undef,
   $newrelic_nrsysmond_timeout        = undef,
 ) {
 
