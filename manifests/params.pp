@@ -1,4 +1,4 @@
-# Class: newrelic::params
+# Class: newrelicnew::params
 #
 # This class configures parameters for the puppet-newrelic module.
 #
