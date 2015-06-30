@@ -1,4 +1,4 @@
-# Class: newrelic::agent::dotnet
+# Class: newrelicnew::agent::dotnet
 #
 # This class install the New Relic .Net Agent
 #
@@ -17,7 +17,7 @@
 #
 # Sample Usage:
 #
-#  class {'newrelic::agent::dotnet':
+#  class {'newrelicnew::agent::dotnet':
 #      newrelic_license_key           => 'your license key here',
 #      newrelic_dotnet_package_ensure => 'latest',
 #    }
@@ -26,20 +26,20 @@
 #
 # For detailed explanation about the parameters below see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
 #
-class newrelic::agent::dotnet (
+class newrelicnew::agent::dotnet (
   $newrelic_dotnet_package_ensure                        = 'present',
-  $newrelic_dotnet_conf_dir                              = $::newrelic::params::newrelic_dotnet_conf_dir,
-  $newrelic_dotnet_package                               = $::newrelic::params::newrelic_dotnet_package,
+  $newrelic_dotnet_conf_dir                              = $::newrelicnew::params::newrelic_dotnet_conf_dir,
+  $newrelic_dotnet_package                               = $::newrelicnew::params::newrelic_dotnet_package,
   $newrelic_license_key                                  = undef,
   $newrelic_daemon_cfgfile_ensure                        = 'present',
-  $temp_dir                                              = $::newrelic::params::temp_dir ,
-  $newrelic_dotnet_source                                = $::newrelic::params::newrelic_dotnet_source,
+  $temp_dir                                              = $::newrelicnew::params::temp_dir ,
+  $newrelic_dotnet_source                                = $::newrelicnew::params::newrelic_dotnet_source,
 ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
   }
-  
+
   case $newrelic_dotnet_package_ensure {
     'absent':   {
       $package_source = false
@@ -56,7 +56,7 @@ class newrelic::agent::dotnet (
       $destination_file = "NewRelicDotNetAgent_${::architecture}_${newrelic_dotnet_package_ensure}.msi"
     }
   }
-  
+
   if $package_source {
     download_file {$destination_file:
       url                   => $package_source,
@@ -69,11 +69,11 @@ class newrelic::agent::dotnet (
   package { $newrelic_dotnet_package:
     ensure  => $newrelic_dotnet_package_ensure,
     source  => "${temp_dir}\\${destination_file}",
-    require => Class['newrelic::params'],
+    require => Class['newrelicnew::params'],
   } ->
   file { "${newrelic_dotnet_conf_dir}\\newrelic.config":
     ensure  => $newrelic_daemon_cfgfile_ensure,
-    content => template('newrelic/newrelic.config.erb'),
+    content => template('newrelicnew/newrelic.config.erb'),
   }
 
 }

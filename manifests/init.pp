@@ -16,7 +16,7 @@
 #
 # Copyright 2012 Felipe Salum, unless otherwise noted.
 #
-class newrelic {
+class newrelicnew {
 
   require newrelic::params
 

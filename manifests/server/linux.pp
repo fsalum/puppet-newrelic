@@ -1,4 +1,4 @@
-# == Class: newrelic::server::linux
+# == Class: newrelicnew::server::linux
 #
 # This class installs and configures NewRelic server monitoring.
 #
@@ -20,7 +20,7 @@
 #
 # === Examples
 #
-#  class {'newrelic::server::linux':
+#  class {'newrelicnew::server::linux':
 #      newrelic_license_key    => 'your license key here',
 #      newrelic_package_ensure => 'latest',
 #      newrelic_service_ensure => 'running',
@@ -34,13 +34,13 @@
 #
 # Copyright 2012 Felipe Salum, unless otherwise noted.
 #
-class newrelic::server::linux (
+class newrelicnew::server::linux (
   $newrelic_package_ensure           = 'present',
   $newrelic_service_enable           = true,
   $newrelic_service_ensure           = 'running',
   $newrelic_license_key              = undef,
-  $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
-  $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
+  $newrelic_package_name             = $::newrelicnew::params::newrelic_package_name,
+  $newrelic_service_name             = $::newrelicnew::params::newrelic_service_name,
   $newrelic_nrsysmond_loglevel       = undef,
   $newrelic_nrsysmond_logfile        = undef,
   $newrelic_nrsysmond_proxy          = undef,
@@ -60,7 +60,7 @@ class newrelic::server::linux (
   package { $newrelic_package_name:
     ensure  => $newrelic_package_ensure,
     notify  => Service[$newrelic_service_name],
-    require => Class['newrelic::params'],
+    require => Class['newrelicnew::params'],
   }
 
   if ! $newrelic_nrsysmond_logfile {
@@ -80,7 +80,7 @@ class newrelic::server::linux (
   file { '/etc/newrelic/nrsysmond.cfg':
     ensure  => present,
     path    => '/etc/newrelic/nrsysmond.cfg',
-    content => template('newrelic/nrsysmond.cfg.erb'),
+    content => template('newrelicnew/nrsysmond.cfg.erb'),
     require => Package[$newrelic_package_name],
     before  => Service[$newrelic_service_name],
     notify  => Service[$newrelic_service_name],

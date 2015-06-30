@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class newrelic::params {
+class newrelicnew::params {
 
   case $::osfamily {
     'RedHat': {

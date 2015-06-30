@@ -1,4 +1,4 @@
-# == Class: newrelic::server
+# == Class: newrelicnew::server
 #
 # This class installs and configures NewRelic server monitoring.
 #
@@ -20,7 +20,7 @@
 #
 # === Examples
 #
-#  newrelic::server {
+#  newrelicnew::server {
 #    'serverXYZ':
 #      newrelic_license_key    => 'your license key here',
 #      newrelic_package_ensure => 'latest',
@@ -35,7 +35,7 @@
 #
 # Copyright 2012 Felipe Salum, unless otherwise noted.
 #
-define newrelic::server (
+define newrelicnew::server (
   $newrelic_package_ensure           = 'present',
   $newrelic_service_enable           = true,
   $newrelic_service_ensure           = 'running',
@@ -54,10 +54,10 @@ define newrelic::server (
 
   include newrelic
 
-  $newrelic_package_name = $newrelic::params::newrelic_package_name
-  $newrelic_service_name = $newrelic::params::newrelic_service_name
+  $newrelic_package_name = $newrelicnew::params::newrelic_package_name
+  $newrelic_service_name = $newrelicnew::params::newrelic_service_name
 
-  warning('newrelic::server is deprecated. Please switch to the newrelic::server::linux class.')
+  warning('newrelicnew::server is deprecated. Please switch to the newrelicnew::server::linux class.')
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
@@ -66,7 +66,7 @@ define newrelic::server (
   package { $newrelic_package_name:
     ensure  => $newrelic_package_ensure,
     notify  => Service[$newrelic_service_name],
-    require => Class['newrelic::params'],
+    require => Class['newrelicnew::params'],
   }
 
   if ! $newrelic_nrsysmond_logfile {

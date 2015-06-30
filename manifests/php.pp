@@ -1,4 +1,4 @@
-# Class: newrelic::php
+# Class: newrelicnew::php
 #
 # This class install the New Relic PHP Agent
 #
@@ -19,7 +19,7 @@
 #
 # Sample Usage:
 #
-#  newrelic::php {
+#  newrelicnew::php {
 #    'appXYZ':
 #      newrelic_license_key        => 'your license key here',
 #      newrelic_php_package_ensure => 'latest',
@@ -31,10 +31,10 @@
 #
 # For detailed explanation about the parameters below see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
 #
-define newrelic::php (
+define newrelicnew::php (
   $newrelic_php_package_ensure                           = 'present',
   $newrelic_php_service_ensure                           = 'running',
-  $newrelic_php_conf_dir                                 = $newrelic::params::newrelic_php_conf_dir,
+  $newrelic_php_conf_dir                                 = $newrelicnew::params::newrelic_php_conf_dir,
   $newrelic_license_key                                  = undef,
   $newrelic_ini_appname                                  = undef,
   $newrelic_ini_browser_monitoring_auto_instrument       = undef,
@@ -85,10 +85,10 @@ define newrelic::php (
 
   include newrelic
 
-  $newrelic_php_package  = $newrelic::params::newrelic_php_package
-  $newrelic_php_service  = $newrelic::params::newrelic_php_service
+  $newrelic_php_package  = $newrelicnew::params::newrelic_php_package
+  $newrelic_php_service  = $newrelicnew::params::newrelic_php_service
 
-  warning('newrelic::php is deprecated. Please switch to the newrelic::agent::php class.')
+  warning('newrelicnew::php is deprecated. Please switch to the newrelicnew::agent::php class.')
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
@@ -96,7 +96,7 @@ define newrelic::php (
 
   package { $newrelic_php_package:
     ensure  => $newrelic_php_package_ensure,
-    require => Class['newrelic::params'],
+    require => Class['newrelicnew::params'],
   }
 
   service { $newrelic_php_service:
@@ -106,7 +106,7 @@ define newrelic::php (
     hasstatus  => true,
   }
 
-  ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
+  ::newrelicnew::php::newrelic_ini { $newrelic_php_conf_dir:
     newrelic_license_key => $newrelic_license_key,
     before               => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
     require              => Package[$newrelic_php_package],

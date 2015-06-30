@@ -1,4 +1,4 @@
-# Class: newrelic::agent::php
+# Class: newrelicnew::agent::php
 #
 # This class install the New Relic PHP Agent
 #
@@ -19,7 +19,7 @@
 #
 # Sample Usage:
 #
-#  class {'newrelic::agent::php':
+#  class {'newrelicnew::agent::php':
 #      newrelic_license_key        => 'your license key here',
 #      newrelic_php_package_ensure => 'latest',
 #      newrelic_php_service_ensure => 'running',
@@ -30,13 +30,13 @@
 #
 # For detailed explanation about the parameters below see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
 #
-class newrelic::agent::php (
+class newrelicnew::agent::php (
   $newrelic_php_package_ensure                           = 'present',
   $newrelic_php_service_ensure                           = 'running',
-  $newrelic_php_conf_dir                                 = $::newrelic::params::newrelic_php_conf_dir,
+  $newrelic_php_conf_dir                                 = $::newrelicnew::params::newrelic_php_conf_dir,
   $newrelic_php_exec_path                                = $::path,
-  $newrelic_php_package                                  = $::newrelic::params::newrelic_php_package,
-  $newrelic_php_service                                  = $::newrelic::params::newrelic_php_service,
+  $newrelic_php_package                                  = $::newrelicnew::params::newrelic_php_package,
+  $newrelic_php_service                                  = $::newrelicnew::params::newrelic_php_service,
   $newrelic_license_key                                  = undef,
   $newrelic_ini_appname                                  = undef,
   $newrelic_ini_browser_monitoring_auto_instrument       = undef,
@@ -81,7 +81,7 @@ class newrelic::agent::php (
 
   package { $newrelic_php_package:
     ensure  => $newrelic_php_package_ensure,
-    require => Class['newrelic::params'],
+    require => Class['newrelicnew::params'],
   }
 
   service { $newrelic_php_service:
@@ -91,7 +91,7 @@ class newrelic::agent::php (
     hasstatus  => true,
   }
 
-  ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
+  ::newrelicnew::php::newrelic_ini { $newrelic_php_conf_dir:
     exec_path            => $newrelic_php_exec_path,
     newrelic_license_key => $newrelic_license_key,
     before               => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
@@ -102,7 +102,7 @@ class newrelic::agent::php (
   file { '/etc/newrelic/newrelic.cfg':
     ensure  => $newrelic_daemon_cfgfile_ensure,
     path    => '/etc/newrelic/newrelic.cfg',
-    content => template('newrelic/newrelic.cfg.erb'),
+    content => template('newrelicnew/newrelic.cfg.erb'),
     before  => Service[$newrelic_php_service],
     notify  => Service[$newrelic_php_service],
   }

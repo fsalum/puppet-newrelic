@@ -1,4 +1,4 @@
-# == Class: newrelic::server::windows
+# == Class: newrelicnew::server::windows
 #
 # This class installs and configures NewRelic server monitoring.
 #
@@ -20,7 +20,7 @@
 #
 # === Examples
 #
-#  class {'newrelic::server::linux':
+#  class {'newrelicnew::server::linux':
 #      newrelic_license_key    => 'your license key here',
 #      newrelic_package_ensure => 'latest',
 #      newrelic_service_ensure => 'running',
@@ -34,15 +34,15 @@
 #
 # Copyright 20125 Ben Priestman, unless otherwise noted.
 #
-class newrelic::server::windows (
+class newrelicnew::server::windows (
   $newrelic_package_ensure           = 'present',
   $newrelic_service_enable           = true,
   $newrelic_service_ensure           = 'running',
   $newrelic_license_key              = undef,
-  $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
-  $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
-  $temp_dir                          = $::newrelic::params::temp_dir ,
-  $server_monitor_source             = $::newrelic::params::server_monitor_source,
+  $newrelic_package_name             = $::newrelicnew::params::newrelic_package_name,
+  $newrelic_service_name             = $::newrelicnew::params::newrelic_service_name,
+  $temp_dir                          = $::newrelicnew::params::temp_dir ,
+  $server_monitor_source             = $::newrelicnew::params::server_monitor_source,
 ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
@@ -65,7 +65,7 @@ class newrelic::server::windows (
       $destination_file = "NewRelicServerMonitor_${::architecture}_${newrelic_package_ensure}.msi"
     }
   }
-  
+
   if $package_source {
     download_file {$destination_file:
       url                   => $package_source,
@@ -74,7 +74,7 @@ class newrelic::server::windows (
       before                => Package[$newrelic_package_name],
     }
   }
-  
+
   package { $newrelic_package_name:
     ensure          => $newrelic_package_ensure,
     notify          => Service[$newrelic_service_name],
@@ -86,7 +86,7 @@ class newrelic::server::windows (
         'NR_LICENSE_KEY' => $newrelic_license_key
       }
     ],
-    require         => Class['newrelic::params'],
+    require         => Class['newrelicnew::params'],
   }
 
   service { $newrelic_service_name:

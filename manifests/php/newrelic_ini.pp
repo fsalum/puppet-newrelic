@@ -1,5 +1,5 @@
-# This module should not be used directly. It is used by newrelic::php.
-define newrelic::php::newrelic_ini (
+# This module should not be used directly. It is used by newrelicnew::php.
+define newrelicnew::php::newrelic_ini (
   $newrelic_license_key,
   $exec_path,
 ) {
@@ -15,7 +15,7 @@ define newrelic::php::newrelic_ini (
 
   file { "${name}/newrelic.ini":
     path    => "${name}/newrelic.ini",
-    content => template('newrelic/newrelic.ini.erb'),
+    content => template('newrelicnew/newrelic.ini.erb'),
     require => Exec["/usr/bin/newrelic-install ${name}"],
   }
 
