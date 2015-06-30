@@ -73,7 +73,7 @@ class newrelicnew::agent::php (
   $newrelic_daemon_proxy                                 = undef,
   $newrelic_daemon_collector_host                        = undef,
   $newrelic_daemon_auditlog                              = undef,
-) inherits ::newrelic {
+) inherits ::newrelicnew {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')

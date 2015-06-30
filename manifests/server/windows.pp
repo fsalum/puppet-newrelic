@@ -43,7 +43,7 @@ class newrelicnew::server::windows (
   $newrelic_service_name             = $::newrelicnew::params::newrelic_service_name,
   $temp_dir                          = $::newrelicnew::params::temp_dir ,
   $server_monitor_source             = $::newrelicnew::params::server_monitor_source,
-) inherits ::newrelic {
+) inherits ::newrelicnew {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
