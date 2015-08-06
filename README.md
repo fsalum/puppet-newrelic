@@ -9,7 +9,9 @@ Supported systems: Debian and RHEL osfamily Linux.
 Operating System
 ----------------
 
-Tested on CentOS, Debian and Ubuntu.
+Tested on CentOS, Debian, Ubuntu and Windows.
+
+Windows support added/tested/supported by [malaikah](https://github.com/malaikah).
 
 IMPORTANT
 ---------
@@ -36,6 +38,20 @@ To install the Newrelic Server Monitoring and the PHP agent packages, include th
            newrelic_ini_appname  => 'Your PHP Application',
          }
     }
+
+To do the same for a Windows .Net host, include the following:
+
+    node default {
+         class {'newrelic::server::windows':
+           newrelic_license_key => 'your license key here',
+         }
+
+         class {'newrelic::agent::dotnet':
+           newrelic_license_key  => 'your license key here',
+         }
+    }
+
+(Note that, while it is possible to specify a version of the .Net agent, caution should be excercised if doing this. Newrelic make only the last two releases available on http://download.newrelic.com/dot_net_agent/release/.)
 
 If you use Ubuntu 14.04 and php5-fpm you can pass an array of directories for PHP ini files:
 

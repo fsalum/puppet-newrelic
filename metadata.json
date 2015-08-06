@@ -1,36 +1,61 @@
 {
   "name": "fsalum-newrelic",
-  "version": "4.0.4",
+  "version": "4.1.1",
   "source": "git://github.com/fsalum/puppet-newrelic.git",
   "author": "Felipe Salum",
-  "license": "Apache License, Version 2.0",
+  "license": "Apache-2.0",
   "summary": "Puppet module for NewRelic",
   "description": "Module to install and configure New Relic server monitoring and New Relic PHP Agent",
   "project_page": "https://github.com/fsalum/puppet-newrelic",
   "issues_url": "https://github.com/fsalum/puppet-newrelic/issues",
+  "source": "git://github.com/fsalum/puppet-newrelic.git",
   "tags": ["newrelic", "monitoring", "metrics"],
   "operatingsystem_support": [
-        {"operatingsystem":"Centos",
-              "operatingsystemrelease":[ "5.0", "6.0" ] },
-        { "operatingsystem": "Ubuntu",
-              "operatingsystemrelease": [ "12.04", "13.10", "14.04" ] },
-        { "operatingsystem": "Debian",
-              "operatingsystemrelease": [ "6", "7" ] }
-    ],
+    {
+      "operatingsystem": "Centos",
+      "operatingsystemrelease": [
+        "5",
+        "6"
+      ]
+    },
+      {
+        "operatingsystem": "Ubuntu",
+        "operatingsystemrelease": [
+          "12.04",
+          "13.10",
+          "14.04"
+        ]
+      },
+      {
+        "operatingsystem": "Debian",
+        "operatingsystemrelease": [
+          "6",
+          "7"
+        ]
+      }
+  ],
   "requirements": [
-    { "name": "pe",
-      "version_requirement": "3.x" },
-    { "name": "puppet",
-      "version_requirement": "3.x" }
+    {
+      "name": "pe",
+      "version_requirement": "3.x"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": "3.x"
+    }
   ],
   "dependencies": [
     {
       "name": "puppetlabs/apt",
-      "version_requirement": ">= 1.5.0"
+      "version_requirement": ">= 2.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.1.0"
+    },
+    {
+      "name": "puppet/download_file",
+      "version_requirement": ">= 1.2.1"
     }
   ]
 }
