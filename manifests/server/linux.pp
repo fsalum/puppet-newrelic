@@ -41,6 +41,7 @@ class newrelic::server::linux (
   $newrelic_license_key              = undef,
   $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
   $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
+  $newrelic_nrsysmond_hostname       = undef,
   $newrelic_nrsysmond_loglevel       = undef,
   $newrelic_nrsysmond_logfile        = undef,
   $newrelic_nrsysmond_proxy          = undef,

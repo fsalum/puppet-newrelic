@@ -8,6 +8,24 @@
 #
 
 #
+# Option : hostname
+# Value  : Sets the hostname of the server as it appears in New Relic.
+#          The server agent does not support spaces, and special characters
+#          besides hyphens -, underscores _, and periods . are discouraged.
+#          The name is restricted to 64 characters
+#          /!\ The New Relic UI uses the hostname to link APM-monitored
+#          applications to their parent server. The hostname= setting may cause
+#          a different name to be reported for the server than what is reported
+#          by any monitored applications. This difference may cause the linkage
+#          between the APM app and the server in the New Relic user interface
+#          to break./!\
+# Default: OS-level hostname
+#
+<%- if @newrelic_nrsysmond_hostname -%>
+hostname=<%= @newrelic_nrsysmond_hostname %>
+<%- end -%>
+
+#
 # Option : license_key
 # Value  : 40-character hexadecimal string provided by New Relic. This is
 #          required in order for the server monitor to start.
