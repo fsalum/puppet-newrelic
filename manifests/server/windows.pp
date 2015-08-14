@@ -78,6 +78,7 @@ class newrelic::server::windows (
   package { $newrelic_package_name:
     ensure          => $newrelic_package_ensure,
     notify          => Service[$newrelic_service_name],
+    provider        => "windows",
     source          => "${temp_dir}\\${destination_file}",
     install_options => [
       '/L*v',
