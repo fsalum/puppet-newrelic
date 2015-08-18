@@ -202,3 +202,15 @@ collector_host=<%= @newrelic_daemon_collector_host %>
 <%- if @newrelic_daemon_auditlog -%>
 auditlog=<%= @newrelic_daemon_auditlog %>
 <%- end -%>
+
+#
+# Option : hostname
+# Value  : Sets the hostname of the server as it appears in New Relic. The
+# server agent does not support spaces, and special characters besides
+# hyphens -, underscores _, and periods . are discouraged. The name is
+# restricted to 64 characters.
+# Default: OS-level hostname
+#
+<%- if @newrelic_hostname -%>
+hostname=<%= @newrelic_hostname %>
+<%- end -%>

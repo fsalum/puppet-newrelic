@@ -70,6 +70,7 @@ define newrelic::php (
   $newrelic_daemon_proxy                                 = undef,
   $newrelic_daemon_collector_host                        = undef,
   $newrelic_daemon_auditlog                              = undef,
+  $newrelic_hostname                                     = undef,
   ### Deprecated below
   $newrelic_php_conf_appname              = undef,
   $newrelic_php_conf_enabled              = undef,

@@ -169,3 +169,15 @@ labels=<%= @newrelic_nrsysmond_labels %>
 <%- if @newrelic_nrsysmond_timeout -%>
 timeout=<%= @newrelic_nrsysmond_timeout %>
 <%- end -%>
+
+#
+# Option : hostname
+# Value  : Sets the hostname of the server as it appears in New Relic. The
+# server agent does not support spaces, and special characters besides
+# hyphens -, underscores _, and periods . are discouraged. The name is
+# restricted to 64 characters.
+# Default: OS-level hostname
+#
+<%- if @newrelic_nrsysmond_hostname -%>
+hostname=<%= @newrelic_nrsysmond_hostname %>
+<%- end -%>
