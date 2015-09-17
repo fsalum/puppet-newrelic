@@ -169,3 +169,10 @@ labels=<%= @newrelic_nrsysmond_labels %>
 <%- if @newrelic_nrsysmond_timeout -%>
 timeout=<%= @newrelic_nrsysmond_timeout %>
 <%- end -%>
+
+#
+# Below this line we include all the unofficial newrelic configuration
+#
+<%- newrelic_nrsysmond_options.each_pair do |key, value| -%>
+<%= key %>=<%= value %>
+<%- end -%>
