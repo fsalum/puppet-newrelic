@@ -49,6 +49,7 @@ define newrelic::server (
   $newrelic_nrsysmond_pidfile        = undef,
   $newrelic_nrsysmond_collector_host = undef,
   $newrelic_nrsysmond_timeout        = undef,
+  $newrelic_nrsysmond_options        = {},
 ) {
 
   include newrelic
