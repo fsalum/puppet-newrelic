@@ -79,7 +79,7 @@ class newrelic::agent::dotnet (
   }
 
   exec { "iisreset":
-    path        => 'C:/WINDOWS/System32'
+    path        => 'C:/WINDOWS/System32',
 	refreshonly => true
   }
 }
