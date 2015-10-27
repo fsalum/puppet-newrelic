@@ -4,7 +4,7 @@
 <configuration xmlns="urn:newrelic-config" agentEnabled="true">
   <service licenseKey="<%= @newrelic_license_key %>" ssl="true" />
   <application>
-    <name>My Application</name>
+    <name><%= @newrelic_application_name %></name>
   </application>
   <log level="info" />
   <transactionTracer enabled="true" transactionThreshold="apdex_f" stackTraceThreshold="500" recordSql="obfuscated" explainEnabled="true" explainThreshold="500" />
