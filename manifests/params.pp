@@ -77,6 +77,7 @@ class newrelic::params {
       $newrelic_dotnet_conf_dir       = 'C:\\ProgramData\\New Relic\\.NET Agent'
       $newrelic_dotnet_package        = "New Relic .NET Agent (${bitness}-bit)"
       $newrelic_dotnet_source         = 'http://download.newrelic.com/dot_net_agent/release/'
+      $newrelic_application_name      = 'My Application'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}")
