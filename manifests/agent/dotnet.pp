@@ -75,11 +75,11 @@ class newrelic::agent::dotnet (
   file { "${newrelic_dotnet_conf_dir}\\newrelic.config":
     ensure  => $newrelic_daemon_cfgfile_ensure,
     content => template('newrelic/newrelic.config.erb'),
-	notify  => Exec["iisreset"],
+    notify  => Exec["iisreset"],
   }
 
-  exec { "iisreset":
+  exec { 'iisreset':
     path        => 'C:/WINDOWS/System32',
-	refreshonly => true
+    refreshonly => true
   }
 }
