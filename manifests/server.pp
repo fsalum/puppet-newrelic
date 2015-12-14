@@ -50,6 +50,7 @@ define newrelic::server (
   $newrelic_nrsysmond_collector_host = undef,
   $newrelic_nrsysmond_labels         = undef,
   $newrelic_nrsysmond_timeout        = undef,
+  $newrelic_nrsysmond_disable_docker = undef,
 ) {
 
   include newrelic
