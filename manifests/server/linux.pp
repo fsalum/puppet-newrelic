@@ -51,7 +51,8 @@ class newrelic::server::linux (
   $newrelic_nrsysmond_collector_host = undef,
   $newrelic_nrsysmond_labels         = undef,
   $newrelic_nrsysmond_timeout        = undef,
-) inherits ::newrelic {
+  $newrelic_nrsysmond_disable_docker = undef,
+ ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
