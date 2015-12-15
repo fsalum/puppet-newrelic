@@ -169,3 +169,14 @@ labels=<%= @newrelic_nrsysmond_labels %>
 <%- if @newrelic_nrsysmond_timeout -%>
 timeout=<%= @newrelic_nrsysmond_timeout %>
 <%- end -%>
+
+#
+# Option : disable_docker
+# Type   : boolean
+# Value  : Set to true to disable Docker container statistics gathering.
+# Default: false
+#
+#disable_docker=false
+<%- if @newrelic_nrsysmond_disable_docker -%>
+disable_docker=<%= @newrelic_nrsysmond_disable_docker %>
+<%- end -%>
