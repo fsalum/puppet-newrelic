@@ -23,6 +23,10 @@ class newrelic::params {
         ensure   => present,
         source   => 'http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm',
         provider => rpm,
+      } ->
+      # Make sure repo file is in catalog in case /etc/yum.repos.d is purged
+      file { '/etc/yum.repos.d/newrelic.repo':
+        replace => false,
       }
     }
     'Debian': {
