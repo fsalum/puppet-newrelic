@@ -23,8 +23,8 @@ extension = "newrelic.so"
 ;          disable the agent on a per-directory basis.
 ;
 ;newrelic.enabled = true
-<%- if @newrelic_ini_enabled -%>
-newrelic.enabled = <%= @newrelic_ini_enabled %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_enabled'] -%>
+newrelic.enabled = <%= scope['::newrelic::agent::php::newrelic_ini_enabled'] %>
 <%- end -%>
 
 ;
@@ -52,7 +52,7 @@ newrelic.enabled = <%= @newrelic_ini_enabled %>
 ;          eliminate the potential for confusion about exactly where the key
 ;          is coming from.
 ;
-newrelic.license = "<%= @newrelic_license_key %>"
+newrelic.license = "<%= scope['::newrelic::agent::php::newrelic_license_key'] %>"
 
 ;
 ; Setting: newrelic.logfile
@@ -61,8 +61,8 @@ newrelic.license = "<%= @newrelic_license_key %>"
 ; Default: none
 ; Info   : Sets the name of the file to send log messages to.
 ;
-<%- if @newrelic_ini_logfile -%>
-newrelic.logfile = "<%= @newrelic_ini_logfile %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_logfile'] -%>
+newrelic.logfile = "<%= scope['::newrelic::agent::php::newrelic_ini_logfile'] %>"
 <%- else -%>
 newrelic.logfile = "/var/log/newrelic/php_agent.log"
 <%- end -%>
@@ -79,8 +79,8 @@ newrelic.logfile = "/var/log/newrelic/php_agent.log"
 ;            always, error, warning, info, verbose, debug, verbosedebug
 ;
 ;newrelic.loglevel = "info"
-<%- if @newrelic_ini_loglevel -%>
-newrelic.loglevel = "<%= @newrelic_ini_loglevel %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_loglevel'] -%>
+newrelic.loglevel = "<%= scope['::newrelic::agent::php::newrelic_ini_loglevel'] %>"
 <%- end -%>
 
 ;
@@ -108,8 +108,8 @@ newrelic.loglevel = "<%= @newrelic_ini_loglevel %>"
 ;          will be collected.
 ;
 ;newrelic.high_security = false
-<%- if @newrelic_ini_high_security -%>
-newrelic.high_security = <%= @newrelic_ini_high_security %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_high_security'] -%>
+newrelic.high_security = <%= scope['::newrelic::agent::php::newrelic_ini_high_security'] %>
 <%- end -%>
 
 ;
@@ -124,8 +124,8 @@ newrelic.high_security = <%= @newrelic_ini_high_security %>
 ;          for each account / license key.
 ;
 ;newrelic.appname = "PHP Application"
-<%- if @newrelic_ini_appname -%>
-newrelic.appname = "<%= @newrelic_ini_appname %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_appname'] -%>
+newrelic.appname = "<%= scope['::newrelic::agent::php::newrelic_ini_appname'] %>"
 <%- end -%>
 
 ;
@@ -158,8 +158,8 @@ newrelic.appname = "<%= @newrelic_ini_appname %>"
 ; Default: none
 ; Info   : Sets the name of the file to send daemon log messages to.
 ;
-<%- if @newrelic_daemon_logfile -%>
-newrelic.daemon.logfile = "<%= @newrelic_daemon_logfile %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_logfile'] -%>
+newrelic.daemon.logfile = "<%= scope['::newrelic::agent::php::newrelic_daemon_logfile'] %>"
 <%- else -%>
 newrelic.daemon.logfile = "/var/log/newrelic/newrelic-daemon.log"
 <%- end -%>
@@ -176,8 +176,8 @@ newrelic.daemon.logfile = "/var/log/newrelic/newrelic-daemon.log"
 ;            always, error, warning, info, verbose, debug, verbosedebug
 ;
 ;newrelic.daemon.loglevel = "info"
-<%- if @newrelic_daemon_loglevel -%>
-newrelic.daemon.loglevel = "<%= @newrelic_daemon_loglevel %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_loglevel'] -%>
+newrelic.daemon.loglevel = "<%= scope['::newrelic::agent::php::newrelic_daemon_loglevel'] %>"
 <%- end -%>
 
 ;
@@ -194,8 +194,8 @@ newrelic.daemon.loglevel = "<%= @newrelic_daemon_loglevel %>"
 ;          to use if you are using a chroot environment.
 ;
 ;newrelic.daemon.port = "/tmp/.newrelic.sock"
-<%- if @newrelic_daemon_port -%>
-newrelic.daemon.port = "<%= @newrelic_daemon_port %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_port'] -%>
+newrelic.daemon.port = "<%= scope['::newrelic::agent::php::newrelic_daemon_port'] %>"
 <%- end -%>
 
 ;
@@ -207,8 +207,8 @@ newrelic.daemon.port = "<%= @newrelic_daemon_port %>"
 ;          should use a secure HTTP connection or not.
 ;
 ;newrelic.daemon.ssl = true
-<%- if @newrelic_daemon_ssl -%>
-newrelic.daemon.ssl = <%= @newrelic_daemon_ssl %>
+<%- if scope['::newrelic::agent::php::newrelic_daemon_ssl'] -%>
+newrelic.daemon.ssl = <%= scope['::newrelic::agent::php::newrelic_daemon_ssl'] %>
 <%- end -%>
 
 ;
@@ -225,8 +225,8 @@ newrelic.daemon.ssl = <%= @newrelic_daemon_ssl %>
 ;          directory. This setting has no effect when newrelic.daemon.ssl
 ;          is set to false.
 ;newrelic.daemon.ssl_ca_bundle = ""
-<%- if @newrelic_daemon_ssl_ca_bundle -%>
-newrelic.daemon.ssl_ca_bundle = "<%= @newrelic_daemon_ssl_ca_bundle %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_ssl_ca_bundle'] -%>
+newrelic.daemon.ssl_ca_bundle = "<%= scope['::newrelic::agent::php::newrelic_daemon_ssl_ca_bundle'] %>"
 <%- end -%>
 
 ;
@@ -242,8 +242,8 @@ newrelic.daemon.ssl_ca_bundle = "<%= @newrelic_daemon_ssl_ca_bundle %>"
 ;          newrelic.daemon.ssl_ca_path. This setting has no effect when
 ;          newrelic.daemon.ssl is set to false.
 ;newrelic.daemon.ssl_ca_path = ""
-<%- if @newrelic_daemon_ssl_ca_path -%>
-newrelic.daemon.ssl_ca_path = "<%= @newrelic_daemon_ssl_ca_path %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_ssl_ca_path'] -%>
+newrelic.daemon.ssl_ca_path = "<%= scope['::newrelic::agent::php::newrelic_daemon_ssl_ca_path'] %>"
 <%- end -%>
 
 ;
@@ -259,12 +259,12 @@ newrelic.daemon.ssl_ca_path = "<%= @newrelic_daemon_ssl_ca_path %>"
 ;             hostname:port
 ;             user@hostname
 ;             user@hostname:port
-;             user:password@hostname
+;             user:password§hostname
 ;             user:password@hostname:port
 ;
 ;newrelic.daemon.proxy = ""
-<%- if @newrelic_daemon_proxy -%>
-newrelic.daemon.proxy = "<%= @newrelic_daemon_proxy %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_proxy'] -%>
+newrelic.daemon.proxy = "<%= scope['::newrelic::agent::php::newrelic_daemon_proxy'] %>"
 <%- end -%>
 
 ;
@@ -277,8 +277,8 @@ newrelic.daemon.proxy = "<%= @newrelic_daemon_proxy %>"
 ;          script to determine whether or not the daemon is already running.
 ;
 ;newrelic.daemon.pidfile = ""
-<%- if @newrelic_daemon_pidfile -%>
-newrelic.daemon.pidfile = "<%= @newrelic_daemon_pidfile %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_pidfile'] -%>
+newrelic.daemon.pidfile = "<%= scope['::newrelic::agent::php::newrelic_daemon_pidfile'] %>"
 <%- end -%>
 
 ;
@@ -292,8 +292,8 @@ newrelic.daemon.pidfile = "<%= @newrelic_daemon_pidfile %>"
 ;          /opt/newrelic/bin/newrelic-daemon.
 ;
 ;newrelic.daemon.location = "/usr/bin/newrelic-daemon"
-<%- if @newrelic_daemon_location -%>
-newrelic.daemon.location = "<%= @newrelic_daemon_location %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_location'] -%>
+newrelic.daemon.location = "<%= scope['::newrelic::agent::php::newrelic_daemon_location'] %>"
 <%- end -%>
 
 ;
@@ -309,8 +309,8 @@ newrelic.daemon.location = "<%= @newrelic_daemon_location %>"
 ;          person or support staff member.
 ;
 ;newrelic.daemon.collector_host = "collector.newrelic.com"
-<%- if @newrelic_daemon_collector_host -%>
-newrelic.daemon.collector_host = "<%= @newrelic_daemon_collector_host %>"
+<%- if scope['::newrelic::agent::php::newrelic_daemon_collector_host'] -%>
+newrelic.daemon.collector_host = "<%= scope['::newrelic::agent::php::newrelic_daemon_collector_host'] %>"
 <%- end -%>
 
 ;
@@ -327,8 +327,8 @@ newrelic.daemon.collector_host = "<%= @newrelic_daemon_collector_host %>"
 ;          that are meaningful to each transaction then you can enable this.
 ;
 ;newrelic.capture_params = true
-<%- if @newrelic_ini_capture_params -%>
-newrelic.capture_params = "<%= @newrelic_ini_capture_params %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_capture_params'] -%>
+newrelic.capture_params = "<%= scope['::newrelic::agent::php::newrelic_ini_capture_params'] %>"
 <%- end -%>
 
 ;
@@ -346,8 +346,8 @@ newrelic.capture_params = "<%= @newrelic_ini_capture_params %>"
 ;          3 - the agent will never start the daemon
 ;
 ;newrelic.daemon.dont_launch = 0
-<%- if @newrelic_daemon_dont_launch -%>
-newrelic.daemon.dont_launch = <%= @newrelic_daemon_dont_launch %>
+<%- if scope['::newrelic::agent::php::newrelic_daemon_dont_launch'] -%>
+newrelic.daemon.dont_launch = <%= scope['::newrelic::agent::php::newrelic_daemon_dont_launch'] %>
 <%- end -%>
 
 ;
@@ -361,8 +361,8 @@ newrelic.daemon.dont_launch = <%= @newrelic_daemon_dont_launch %>
 ;          this to be disabled regardless of any value you set for it.
 ;
 ;newrelic.error_collector.enabled = true
-<%- if @newrelic_ini_error_collector_enabled -%>
-newrelic.error_collector.enabled = <%= @newrelic_ini_error_collector_enabled %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_error_collector_enabled'] -%>
+newrelic.error_collector.enabled = <%= scope['::newrelic::agent::php::newrelic_ini_error_collector_enabled'] %>
 <%- end -%>
 
 ;
@@ -377,8 +377,8 @@ newrelic.error_collector.enabled = <%= @newrelic_ini_error_collector_enabled %>
 ;          above and the account subscription level permits error trapping.
 ;
 ;newrelic.error_collector.record_database_errors = false
-<%- if @newrelic_ini_error_collector_record_database_errors -%>
-newrelic.error_collector.record_database_errors = <%= @newrelic_ini_error_collector_record_database_errors %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_error_collector_record_database_errors'] -%>
+newrelic.error_collector.record_database_errors = <%= scope['::newrelic::agent::php::newrelic_ini_error_collector_record_database_errors'] %>
 <%- end -%>
 
 ;
@@ -391,8 +391,8 @@ newrelic.error_collector.record_database_errors = <%= @newrelic_ini_error_collec
 ;          priority to such errors.
 ;
 ;newrelic.error_collector.prioritize_api_errors = false
-<%- if @newrelic_ini_error_collector_prioritize_api_errors -%>
-newrelic.error_collector.prioritize_api_errors = <%= @newrelic_ini_error_collector_prioritize_api_errors %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_error_collector_prioritize_api_errors'] -%>
+newrelic.error_collector.prioritize_api_errors = <%= scope['::newrelic::agent::php::newrelic_ini_error_collector_prioritize_api_errors'] %>
 <%- end -%>
 
 ;
@@ -405,8 +405,8 @@ newrelic.error_collector.prioritize_api_errors = <%= @newrelic_ini_error_collect
 ;          in HTML output that will time the actual end-user experience.
 ;
 ;newrelic.browser_monitoring.auto_instrument = true
-<%- if @newrelic_ini_browser_monitoring_auto_instrument -%>
-newrelic.browser_monitoring.auto_instrument = <%= @newrelic_ini_browser_monitoring_auto_instrument %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_browser_monitoring_auto_instrument'] -%>
+newrelic.browser_monitoring.auto_instrument = <%= scope['::newrelic::agent::php::newrelic_ini_browser_monitoring_auto_instrument'] %>
 <%- end -%>
 
 ;
@@ -424,8 +424,8 @@ newrelic.browser_monitoring.auto_instrument = <%= @newrelic_ini_browser_monitori
 ;          regardless of what you set here.
 ;
 ;newrelic.transaction_tracer.enabled = true
-<%- if @newrelic_ini_transaction_tracer_enabled -%>
-newrelic.transaction_tracer.enabled = <%= @newrelic_ini_transaction_tracer_enabled %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_enabled'] -%>
+newrelic.transaction_tracer.enabled = <%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_enabled'] %>
 <%- end -%>
 
 ;
@@ -441,8 +441,8 @@ newrelic.transaction_tracer.enabled = <%= @newrelic_ini_transaction_tracer_enabl
 ;          is the default.
 ;
 ;newrelic.transaction_tracer.threshold = "apdex_f"
-<%- if @newrelic_ini_transaction_tracer_threshold -%>
-newrelic.transaction_tracer.threshold = "<%= @newrelic_ini_transaction_tracer_threshold %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_threshold'] -%>
+newrelic.transaction_tracer.threshold = "<%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_threshold'] %>"
 <%- end -%>
 
 ;
@@ -458,8 +458,8 @@ newrelic.transaction_tracer.threshold = "<%= @newrelic_ini_transaction_tracer_th
 ;          In earlier releases of the agent this was known as "top100".
 ;
 ;newrelic.transaction_tracer.detail = 1
-<%- if @newrelic_ini_transaction_tracer_detail -%>
-newrelic.transaction_tracer.detail = <%= @newrelic_ini_transaction_tracer_detail %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_detail'] -%>
+newrelic.transaction_tracer.detail = <%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_detail'] %>
 <%- end -%>
 
 ;
@@ -472,8 +472,8 @@ newrelic.transaction_tracer.detail = <%= @newrelic_ini_transaction_tracer_detail
 ;          where the call occurred in your code.
 ;
 ;newrelic.transaction_tracer.slow_sql = true
-<%- if @newrelic_ini_transaction_tracer_slow_sql -%>
-newrelic.transaction_tracer.slow_sql = <%= @newrelic_ini_transaction_tracer_slow_sql %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_slow_sql'] -%>
+newrelic.transaction_tracer.slow_sql = <%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_slow_sql'] %>
 <%- end -%>
 
 ;
@@ -485,8 +485,8 @@ newrelic.transaction_tracer.slow_sql = <%= @newrelic_ini_transaction_tracer_slow
 ;          stack trace for a transaction trace.
 ;
 ;newrelic.transaction_tracer.stack_trace_threshold = 500
-<%- if @newrelic_ini_transaction_tracer_stack_trace_threshold -%>
-newrelic.transaction_tracer.stack_trace_threshold = <%= @newrelic_ini_transaction_tracer_stack_trace_threshold %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_stack_trace_threshold'] -%>
+newrelic.transaction_tracer.stack_trace_threshold = <%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_stack_trace_threshold'] %>
 <%- end -%>
 
 ;
@@ -499,8 +499,8 @@ newrelic.transaction_tracer.stack_trace_threshold = <%= @newrelic_ini_transactio
 ;          requesting explain plans is defined below.
 ;
 ;newrelic.transaction_tracer.explain_enabled = true
-<%- if @newrelic_ini_transaction_tracer_explain_enabled -%>
-newrelic.transaction_tracer.explain_enabled = <%= @newrelic_ini_transaction_tracer_explain_enabled %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_explain_enabled'] -%>
+newrelic.transaction_tracer.explain_enabled = <%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_explain_enabled'] %>
 <%- end -%>
 
 ;
@@ -516,8 +516,8 @@ newrelic.transaction_tracer.explain_enabled = <%= @newrelic_ini_transaction_trac
 ;          Only relevant if explain_enabled above is set to true.
 ;
 ;newrelic.transaction_tracer.explain_threshold = 500
-<%- if @newrelic_ini_transaction_tracer_explain_threshold -%>
-newrelic.transaction_tracer.explain_threshold = <%= @newrelic_ini_transaction_tracer_explain_threshold %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_explain_threshold'] -%>
+newrelic.transaction_tracer.explain_threshold = <%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_explain_threshold'] %>
 <%- end -%>
 
 ;
@@ -532,8 +532,8 @@ newrelic.transaction_tracer.explain_threshold = <%= @newrelic_ini_transaction_tr
 ;          and private customer data.
 ;
 ;newrelic.transaction_tracer.record_sql = "obfuscated"
-<%- if @newrelic_ini_transaction_tracer_record_sql -%>
-newrelic.transaction_tracer.record_sql = <%= @newrelic_ini_transaction_tracer_record_sql %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_record_sql'] -%>
+newrelic.transaction_tracer.record_sql = <%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_record_sql'] %>
 <%- end -%>
 
 ; Setting: newrelic.transaction_tracer.custom
@@ -546,8 +546,8 @@ newrelic.transaction_tracer.record_sql = <%= @newrelic_ini_transaction_tracer_re
 ;          separated list of function or class method names.
 ;
 ;newrelic.transaction_tracer.custom = ""
-<%- if @newrelic_ini_transaction_tracer_custom -%>
-newrelic.transaction_tracer.custom = "<%= @newrelic_ini_transaction_tracer_custom %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_custom'] -%>
+newrelic.transaction_tracer.custom = "<%= scope['::newrelic::agent::php::newrelic_ini_transaction_tracer_custom'] %>"
 <%- end -%>
 
 ;
@@ -564,8 +564,8 @@ newrelic.transaction_tracer.custom = "<%= @newrelic_ini_transaction_tracer_custo
 ;          Note that "drupal" covers only Drupal 6 and 7.
 ;
 ;newrelic.framework = ""
-<%- if @newrelic_ini_framework -%>
-newrelic.framework = "<%= @newrelic_ini_framework %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_framework'] -%>
+newrelic.framework = "<%= scope['::newrelic::agent::php::newrelic_ini_framework'] %>"
 <%- end -%>
 
 ;
@@ -607,8 +607,8 @@ newrelic.framework = "<%= @newrelic_ini_framework %>"
 ;          expressions.
 ;
 ;newrelic.webtransaction.name.files = ""
-<%- if @newrelic_ini_webtransaction_name_files -%>
-newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_files %>"
+<%- if scope['::newrelic::agent::php::newrelic_ini_webtransaction_name_files'] -%>
+newrelic.webtransaction.name.files = "<%= scope['::newrelic::agent::php::newrelic_ini_webtransaction_name_files'] %>"
 <%- end -%>
 
 ;
