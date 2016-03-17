@@ -41,6 +41,7 @@ class newrelic::server::linux (
   $newrelic_license_key              = undef,
   $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
   $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
+  $newrelic_service_provider         = $::newrelic::params::newrelic_service_provider,
   $newrelic_nrsysmond_loglevel       = undef,
   $newrelic_nrsysmond_logfile        = undef,
   $newrelic_nrsysmond_proxy          = undef,
@@ -91,6 +92,7 @@ class newrelic::server::linux (
     enable     => $newrelic_service_enable,
     hasrestart => true,
     hasstatus  => true,
+    provider   => $newrelic_service_provider,
     require    => Exec[$newrelic_license_key],
   }
 
