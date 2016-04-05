@@ -4,6 +4,13 @@ Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
 
+#### 4.1.2 - 2016-04-05
+
+* Fixed Travis build for older versions of ruby
+* Style and Syntax updates
+* PR #52 - Added support for dotnet application name and iis reset (@jamesweakley)
+* PR #41 - Added support for overiding the hostname in nrsysmond.cfg (@scottley)
+
 #### 4.1.1 - 2015-06-16
 
 * This closes #38 - Minimum puppetlabs-apt version required 2.0.0
