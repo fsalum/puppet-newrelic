@@ -1,11 +1,17 @@
 source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
 group :development, :test do
-  gem 'rake',                   :require => false
   gem 'rspec-puppet',           :require => false
   gem 'puppetlabs_spec_helper', :require => false
   gem 'puppet_facts',           :require => false
   gem 'metadata-json-lint',     :require => false
+end
+
+# Older versions of ruby are not compatible with the current rake gem
+if rakeversion = ENV['RAKE_GEM_VERSION']
+  gem 'rake', rakeversion, :require => false
+else
+  gem 'rake', :require => false
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
