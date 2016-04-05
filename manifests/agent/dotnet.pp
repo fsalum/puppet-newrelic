@@ -34,7 +34,7 @@ class newrelic::agent::dotnet (
   $newrelic_daemon_cfgfile_ensure                        = 'present',
   $temp_dir                                              = $::newrelic::params::temp_dir ,
   $newrelic_dotnet_source                                = $::newrelic::params::newrelic_dotnet_source,
-  $newrelic_application_name                             = $::newrelic::params::newrelic_application_name,
+  $newrelic_dotnet_application_name                      = $::newrelic::params::newrelic_dotnet_application_name,
 ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
