@@ -65,7 +65,7 @@ class newrelic::server::linux (
   }
 
   case $::osfamily {
-    'Debian': {
+    'Debian', 'Ubuntu': {
       Exec[apt_update] -> Package[$newrelic_package_name]
     }
   }
