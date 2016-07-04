@@ -20,4 +20,6 @@ class newrelic {
 
   require newrelic::params
 
+  include newrelic::repo
+
 }
