@@ -22,7 +22,7 @@ class newrelic::repo (
 
   validate_bool($manage_repo)
 
-  if $(manage_repo){
+  if ($manage_repo){
 
     case $::osfamily {
       'RedHat': {
