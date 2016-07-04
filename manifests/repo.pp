@@ -16,13 +16,11 @@
 # Andrew Kroenert akroenert@viator.com
 #
 
-class newrelic::repo (
-  $manage_repo = newrelic::params::manage_repo,
-){
+class newrelic::repo {
 
   validate_bool($manage_repo)
 
-  if ($manage_repo){
+  if ($::newrelic::manage_repo){
 
     case $::osfamily {
       'RedHat': {

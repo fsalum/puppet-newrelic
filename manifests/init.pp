@@ -16,9 +16,9 @@
 #
 # Copyright 2012 Felipe Salum, unless otherwise noted.
 #
-class newrelic {
-
-  require newrelic::params
+class newrelic (
+  $manage_repo = $newrelic::params::manage_repo,
+) inherits newrelic::params {
 
   include newrelic::repo
 
