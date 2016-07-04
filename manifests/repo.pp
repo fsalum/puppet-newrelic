@@ -18,7 +18,7 @@
 
 class newrelic::repo {
 
-  validate_bool($manage_repo)
+  validate_bool($::newrelic::manage_repo)
 
   if ($::newrelic::manage_repo){
 
