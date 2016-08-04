@@ -18,7 +18,7 @@ class newrelic::params {
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
-      $newrelic_php_conf_dir  = ['/etc/php.d']
+      $newrelic_php_conf_dir  = '/etc/php.d'
       package { 'newrelic-repo-5-3.noarch':
         ensure   => present,
         source   => 'http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm',
@@ -46,25 +46,25 @@ class newrelic::params {
         'Debian': {
           case $::operatingsystemrelease {
             /^6/: {
-              $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+              $newrelic_php_conf_dir  = '/etc/php5/conf.d'
             }
             default: {
-              $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
+              $newrelic_php_conf_dir  = '/etc/php5/mods-available'
             }
           }
         }
         'Ubuntu': {
           case $::operatingsystemrelease {
             /^(10|12)/: {
-              $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+              $newrelic_php_conf_dir  = '/etc/php5/conf.d'
             }
             default: {
-              $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
+              $newrelic_php_conf_dir  = '/etc/php5/mods-available'
             }
           }
         }
         default: {
-          $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+          $newrelic_php_conf_dir  = '/etc/php5/conf.d'
         }
       }
     }
