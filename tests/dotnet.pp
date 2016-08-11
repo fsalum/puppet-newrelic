@@ -15,7 +15,7 @@ node default {
   windowsfeature{'Web-Filtering': }
   windowsfeature{'Web-Stat-Compression': }
   windowsfeature{'Web-Mgmt-Console': }
-  
+
   # Include .Net module
   $dotnet_modules = $::operatingsystemrelease ? {
     /2008/  => ['Web-Asp-Net'],
