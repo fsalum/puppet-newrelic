@@ -65,7 +65,7 @@ class newrelic::server::windows (
       $destination_file = "NewRelicServerMonitor_${::architecture}_${newrelic_package_ensure}.msi"
     }
   }
-  
+
   if $package_source {
     download_file {$destination_file:
       url                   => $package_source,
@@ -74,7 +74,7 @@ class newrelic::server::windows (
       before                => Package[$newrelic_package_name],
     }
   }
-  
+
   package { $newrelic_package_name:
     ensure          => $newrelic_package_ensure,
     notify          => Service[$newrelic_service_name],
