@@ -5,8 +5,8 @@ Release notes for the fsalum-newrelic module.
 ------------------------------------------
 #### 4.3.0
 
-* PR #44 Fixing apt::key deprecation warnings and correcting template scope @craigwatson
-
+* PR #44 Fixing apt::key deprecation warnings and correcting template scope (@craigwatson)
+* PR #62 Add support for enable/disable php service	(@flyinbutrs)
 
 #### 4.2.0 - 2016-04-05
 
