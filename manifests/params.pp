@@ -34,8 +34,8 @@ class newrelic::params {
         location => 'http://apt.newrelic.com/debian/',
         repos    => 'non-free',
         key      => {
-          id         => 'B60A3EC9BC013B9C23790EC8B31B29E5548C16BF',
-          key_source => 'https://download.newrelic.com/548C16BF.gpg',
+          id  => 'B60A3EC9BC013B9C23790EC8B31B29E5548C16BF',
+          key => 'https://download.newrelic.com/548C16BF.gpg',
         },
         include  => {
           src => false,
