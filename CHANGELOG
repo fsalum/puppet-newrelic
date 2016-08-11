@@ -3,6 +3,10 @@
 Release notes for the fsalum-newrelic module.
 
 ------------------------------------------
+#### 4.3.0
+
+* PR #44 Fixing apt::key deprecation warnings and correcting template scope @craigwatson
+
 
 #### 4.2.0 - 2016-04-05
 
