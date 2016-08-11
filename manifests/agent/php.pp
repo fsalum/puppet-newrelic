@@ -10,6 +10,9 @@
 # [*newrelic_php_service_ensure*]
 #   Specify the Newrelic PHP service running state. Defaults to 'running'. Possible value is 'stopped'.
 #
+# [*newrelic_php_service_enable*]
+#   Specify the Newrelic PHP service startup state. Defaults to true. Possible value is false.
+#
 # [*newrelic_daemon_cfgfile_ensure*]
 #   Specify the Newrelic daemon cfg file state. Change to absent for agent startup mode. Defaults to 'present'. Possible value is 'absent'.
 #
@@ -33,6 +36,7 @@
 class newrelic::agent::php (
   $newrelic_php_package_ensure                           = 'present',
   $newrelic_php_service_ensure                           = 'running',
+  $newrelic_php_service_enable                           = false,
   $newrelic_php_conf_dir                                 = $::newrelic::params::newrelic_php_conf_dir,
   $newrelic_php_exec_path                                = $::path,
   $newrelic_php_package                                  = $::newrelic::params::newrelic_php_package,
@@ -86,7 +90,7 @@ class newrelic::agent::php (
 
   service { $newrelic_php_service:
     ensure     => $newrelic_php_service_ensure,
-    enable     => true,
+    enable     => $newrelic_php_service_enable,
     hasrestart => true,
     hasstatus  => true,
   }
@@ -106,5 +110,4 @@ class newrelic::agent::php (
     before  => Service[$newrelic_php_service],
     notify  => Service[$newrelic_php_service],
   }
-
 }
