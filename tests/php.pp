@@ -12,9 +12,9 @@ node default {
   }
 
   class {'newrelic::agent::php':
-    newrelic_license_key   => '',
-    #newrelic_php_conf_dir => ['/etc/php5/apache2/conf.d','/etc/php5/fpm/conf.d'],
-    require                => Class['Apache::mod::php'],
+    newrelic_license_key  => '',
+    newrelic_php_conf_dir => ['/etc/php5/apache2/conf.d','/etc/php5/fpm/conf.d'],
+    require               => Class['Apache::mod::php'],
   }
 
 }
