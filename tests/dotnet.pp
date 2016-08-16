@@ -28,8 +28,8 @@ node default {
   }
 
   class {'newrelic::agent::dotnet':
-    newrelic_license_key   => '',
-    require                => Windowsfeature[$dotnet_modules],
+    newrelic_license_key => '',
+    require              => Windowsfeature[$dotnet_modules],
   }
 
 }
