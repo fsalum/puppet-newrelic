@@ -26,7 +26,7 @@ node default {
     newrelic_license_key => '',
   }
 
-  class { 'newrelic::agent::dotnet':
+  class {'newrelic::agent::dotnet':
     newrelic_license_key => '',
     require              => Windowsfeature[$dotnet_modules],
   }
