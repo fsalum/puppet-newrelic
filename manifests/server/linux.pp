@@ -80,6 +80,8 @@ class newrelic::server::linux (
 
   file { '/etc/newrelic/nrsysmond.cfg':
     ensure  => present,
+    owner   => 'newrelic',
+    group   => 'newrelic',
     path    => '/etc/newrelic/nrsysmond.cfg',
     content => template('newrelic/nrsysmond.cfg.erb'),
     require => Package[$newrelic_package_name],
