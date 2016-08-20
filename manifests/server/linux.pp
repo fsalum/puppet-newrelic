@@ -64,10 +64,8 @@ class newrelic::server::linux (
     require => Class['newrelic::params'],
   }
 
-  case $::osfamily {
-    'Debian', 'Ubuntu': {
-      Exec[apt_update] -> Package[$newrelic_package_name]
-    }
+  if $::osfamily in [ 'Debian', 'Ubuntu' ] {
+    Exec['apt_update'] -> Package[$newrelic_package_name]
   }
 
   if ! $newrelic_nrsysmond_logfile {
