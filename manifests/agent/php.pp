@@ -120,7 +120,7 @@ class newrelicnew::agent::php (
 
     exec {
       'systemd-reload':
-        command     => 'systemctl reload',
+        command     => 'systemctl daemon-reload',
         refreshonly => true,
         path        => '/bin',
         before      => Service[$newrelic_php_service],
