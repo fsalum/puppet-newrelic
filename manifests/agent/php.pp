@@ -107,4 +107,23 @@ class newrelicnew::agent::php (
     notify  => Service[$newrelic_php_service],
   }
 
+  if ($::lsbdistrelease == '16.04') {
+    file { '/lib/systemd/system/newrelic-daemon.service':
+      ensure => present,
+      source => 'puppet:///modules/newrelicnew/newrelic-daemon.service',
+      owner  => root,
+      group  => root,
+      mode   => '0644',
+      before => Service[$newrelic_php_service],
+      notify => [Exec['systemd-reload'], Service[$newrelic_php_service]],
+    }
+
+    exec {
+      'systemd-reload':
+        command     => 'systemctl reload',
+        refreshonly => true,
+        path        => '/bin',
+        before      => Service[$newrelic_php_service],
+    }
+  }
 }

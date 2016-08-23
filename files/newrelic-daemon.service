@@ -1,0 +1,12 @@
+[Unit]
+Description=The New Relic Proxy Daemon
+Documentation=https://docs.newrelic.com/docs
+After=network.target
+
+[Service]
+Type=simple
+PIDFile=/var/run/newrelic-daemon.pid
+ExecStart=/usr/bin/newrelic-daemon -f -c /etc/newrelic/newrelic.cfg
+
+[Install]
+WantedBy=multi-user.target
