@@ -19,4 +19,8 @@ define newrelicnew::php::newrelic_ini (
     require => Exec["/usr/bin/newrelic-install ${name}"],
   }
 
+  file { "${name}/newrelic.ini":
+    ensure => absent,
+  }
+
 }
