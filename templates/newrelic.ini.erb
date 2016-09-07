@@ -331,6 +331,19 @@ newrelic.daemon.collector_host = "<%= scope['::newrelic::agent::php::newrelic_da
 newrelic.capture_params = "<%= scope['::newrelic::agent::php::newrelic_ini_capture_params'] %>"
 <%- end -%>
 
+; Setting: newrelic.ignored_params
+; Type   : string
+; Scope  : per-directory
+; Default: none
+; Info   : A comma-separated list of parameters to always exclude if parameter
+;          capturing is enabled above. You can use this to filter out sensitive
+;          user data that may appear as a URL parameter.
+;
+; newrelic.ignored_params = ""
+<%- if @newrelic_ini_ignored_params -%>
+newrelic.ignored_params = "<%= @newrelic_ini_ignored_params %>"
+<%- end -%>
+
 ;
 ; Setting: newrelic.daemon.dont_launch
 ; Type   : integer (0, 1, 2 or 3)
