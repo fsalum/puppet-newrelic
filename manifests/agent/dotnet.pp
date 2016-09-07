@@ -40,7 +40,7 @@ class newrelic::agent::dotnet (
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
   }
-  
+
   case $newrelic_dotnet_package_ensure {
     'absent':   {
       $package_source = false
@@ -57,7 +57,7 @@ class newrelic::agent::dotnet (
       $destination_file = "NewRelicDotNetAgent_${::architecture}_${newrelic_dotnet_package_ensure}.msi"
     }
   }
-  
+
   if $package_source {
     download_file {$destination_file:
       url                   => $package_source,

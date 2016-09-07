@@ -13,7 +13,7 @@
 class newrelic::params {
 
   $manage_repo = true
-  
+
   case $::osfamily {
     'RedHat': {
       $newrelic_package_name  = 'newrelic-sysmond'
