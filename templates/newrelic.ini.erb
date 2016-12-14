@@ -741,3 +741,12 @@ newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_file
 ;
 ;newrelic.browser_monitoring.attributes.include = ""
 ;newrelic.browser_monitoring.attributes.exclude = ""
+
+;
+; Setting: newrelic.special
+; Type   : string
+; Default: empty
+; Info   : NewRelic hidden setting
+<%- if @newrelic_ini_special -%>
+newrelic.special = <%= @newrelic_ini_special %>
+<%- end -%>

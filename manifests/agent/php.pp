@@ -48,6 +48,7 @@ class newrelic::agent::php (
   $newrelic_ini_high_security                            = undef,
   $newrelic_ini_logfile                                  = undef,
   $newrelic_ini_loglevel                                 = undef,
+  $newrelic_ini_special                                  = undef,
   $newrelic_ini_transaction_tracer_custom                = undef,
   $newrelic_ini_transaction_tracer_detail                = undef,
   $newrelic_ini_transaction_tracer_enabled               = undef,
