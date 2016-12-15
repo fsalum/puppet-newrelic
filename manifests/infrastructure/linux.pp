@@ -4,16 +4,17 @@ class newrelic::infrastructure::linux {
   case $::osfamily {
     'Debian': {
       apt::source { 'newrelic-infra':
-        location => 'https://download.newrelic.com/infrastructure_agent/linux/apt',
-        repos    => 'main',
-        key      => {
+        location    => 'https://download.newrelic.com/infrastructure_agent/linux/apt',
+        repos       => 'main',
+        key         => {
           id  => 'A758B3FBCD43BE8D123A3476BB29EE038ECCE87C',
           key => 'https://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg',
         },
-        include  => {
+        include     => {
           src => false,
         },
-        release  => $::lsbdistcodename,
+        release     => $::lsbdistcodename,
+        architecure => 'amd64',
       }->
 
       package { 'newrelic-infra':
