@@ -14,6 +14,7 @@ class newrelic::params {
 
   case $::osfamily {
     'RedHat': {
+      $infra_conf_file        = '/etc/newrelic-infra.yml'
       $newrelic_package_name  = 'newrelic-sysmond'
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
@@ -26,6 +27,7 @@ class newrelic::params {
       }
     }
     'Debian': {
+      $infra_conf_file        = '/etc/newrelic-infra.yml'
       $newrelic_package_name  = 'newrelic-sysmond'
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
@@ -42,6 +44,7 @@ class newrelic::params {
         },
         release  => 'newrelic',
       }
+
       case $::operatingsystem {
         'Debian': {
           case $::operatingsystemrelease {
@@ -69,6 +72,7 @@ class newrelic::params {
       }
     }
     'windows': {
+      $infra_conf_file                  = 'C:/Program Files/New Relic/newrelic-infra/newrelic-infra.yml'
       $bitness                          = regsubst($::architecture,'^x([\d]{2})','\1')
       $newrelic_package_name            = 'New Relic Server Monitor'
       $newrelic_service_name            = 'nrsvrmon'
