@@ -1,9 +1,13 @@
 # == Class: newrelic::infrastructure
 #
+# [*service_ensure*]
+#   State for the service. Default: running
+#
 # [*newrelic_license_key*]
 #   License key from new relic. Required.
 #
 class newrelic::infrastructure (
+  $service_ensure = running,
   $newrelic_license_key = undef,
   $newrelic_infra_conf_file = $newrelic::params::infra_conf_file
 ) inherits newrelic::params {
@@ -39,7 +43,7 @@ class newrelic::infrastructure (
   }->
 
   service{'newrelic-infra':
-    ensure  => running,
+    ensure  => $service_ensure,
     require => Package['newrelic-infra'],
   }
 }
