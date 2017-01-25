@@ -70,6 +70,7 @@ class newrelic::agent::php (
   $newrelic_daemon_ssl                                   = undef,
   $newrelic_daemon_ssl_ca_bundle                         = undef,
   $newrelic_daemon_ssl_ca_path                           = undef,
+  $newrelic_daemon_app_timeout                           = undef,
   $newrelic_daemon_proxy                                 = undef,
   $newrelic_daemon_collector_host                        = undef,
   $newrelic_daemon_auditlog                              = undef,

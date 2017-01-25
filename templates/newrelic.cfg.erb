@@ -152,6 +152,19 @@ ssl_ca_path=<%= @newrelic_daemon_ssl_ca_path %>
 <%- end -%>
 
 #
+# Setting: app_timeout
+# Type   : Time specification string (i.e. "5m", "1h20m")
+# Purpose: Sets the elapsed time after which an application will be considered
+#          inactive. Inactive applications do not count against the maximum
+#          limit of 250 applications. Allowed units are "ns", "us", "ms", "s",
+#          "m", and "h".
+# Default: "10m"
+#app_timeout="10m"
+<%- if @newrelic_daemon_app_timeout -%>
+app_timeout=<%= @newrelic_daemon_app_timeout %>
+<%- end -%>
+
+#
 # Setting: proxy
 # Type   : string
 # Purpose: Some networks are configured to require the use of an egress proxy
