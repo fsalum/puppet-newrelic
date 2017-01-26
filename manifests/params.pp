@@ -73,10 +73,10 @@ class newrelic::params {
       $newrelic_package_name            = 'New Relic Server Monitor'
       $newrelic_service_name            = 'nrsvrmon'
       $temp_dir                         = 'C:/Windows/temp'
-      $server_monitor_source            = 'http://download.newrelic.com/windows_server_monitor/release/'
+      $server_monitor_source            = 'http://download.newrelic.com/windows_server_monitor/release'
       $newrelic_dotnet_conf_dir         = 'C:\\ProgramData\\New Relic\\.NET Agent'
       $newrelic_dotnet_package          = "New Relic .NET Agent (${bitness}-bit)"
-      $newrelic_dotnet_source           = 'http://download.newrelic.com/dot_net_agent/release/'
+      $newrelic_dotnet_source           = 'http://download.newrelic.com/dot_net_agent/release'
       $newrelic_dotnet_application_name = 'My Application'
     }
     default: {
