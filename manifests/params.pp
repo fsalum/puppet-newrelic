@@ -10,9 +10,7 @@
 #
 # Sample Usage:
 #
-class newrelic::params (
-  $newrelic_handle_repo = true,
-) {
+class newrelic::params {
 
   case $::osfamily {
     'RedHat': {
@@ -32,20 +30,6 @@ class newrelic::params (
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
-      if $newrelic_handle_repo {
-        apt::source { 'newrelic':
-          location => 'http://apt.newrelic.com/debian/',
-          repos    => 'non-free',
-          key      => {
-            id         => 'B60A3EC9BC013B9C23790EC8B31B29E5548C16BF',
-            key_source => 'https://download.newrelic.com/548C16BF.gpg',
-          },
-          include  => {
-            src => false,
-          },
-          release  => 'newrelic',
-        }
-      }
       case $::operatingsystem {
         'Debian': {
           case $::operatingsystemrelease {
