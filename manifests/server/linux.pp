@@ -52,6 +52,7 @@ class newrelic::server::linux (
   $newrelic_nrsysmond_labels         = undef,
   $newrelic_nrsysmond_timeout        = undef,
   $newrelic_nrsysmond_hostname       = undef,
+  $newrelic_nrsysmond_docker         = false,
 ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
@@ -103,6 +104,15 @@ class newrelic::server::linux (
     unless  => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
     require => Package[$newrelic_package_name],
     notify  => Service[$newrelic_service_name],
+  }
+
+  if ($newrelic_nrsysmond_docker == true) {
+    # Newrelic must belong to the Docker group to fetch metrics.
+    exec { 'newrelic-should-be-in-docker-group':
+      command => "/usr/sbin/usermod -aG docker newrelic",
+      unless  => "/bin/cat /etc/group | grep '^docker:' | grep -qw newrelic",
+      notify  => Service[$newrelic_service_name]
+    }
   }
 
 }
