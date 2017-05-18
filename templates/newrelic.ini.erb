@@ -747,6 +747,6 @@ newrelic.webtransaction.name.files = "<%= scope['::newrelic::agent::php::newreli
 ; Type   : string
 ; Default: empty
 ; Info   : NewRelic hidden setting
-<%- if @newrelic_ini_special -%>
-newrelic.special = <%= @newrelic_ini_special %>
+<%- if scope['::newrelic::agent::php::newrelic_ini_special'] -%>
+newrelic.special = <%= scope['::newrelic::agent::php::newrelic_ini_special'] %>
 <%- end -%>
