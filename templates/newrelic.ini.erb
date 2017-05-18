@@ -741,3 +741,12 @@ newrelic.webtransaction.name.files = "<%= scope['::newrelic::agent::php::newreli
 ;
 ;newrelic.browser_monitoring.attributes.include = ""
 ;newrelic.browser_monitoring.attributes.exclude = ""
+
+;
+; Setting: newrelic.special
+; Type   : string
+; Default: empty
+; Info   : NewRelic hidden setting
+<%- if scope['::newrelic::agent::php::newrelic_ini_special'] -%>
+newrelic.special = <%= scope['::newrelic::agent::php::newrelic_ini_special'] %>
+<%- end -%>
