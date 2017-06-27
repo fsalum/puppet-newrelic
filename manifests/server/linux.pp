@@ -59,6 +59,7 @@ class newrelic::server::linux (
   $newrelic_nrsysmond_logfile            = undef,
   $newrelic_nrsysmond_loglevel           = undef,
   $newrelic_nrsysmond_logrotate          = false,
+  $newrelic_nrsysmond_manage_repo        = true,
   $newrelic_nrsysmond_pidfile            = undef,
   $newrelic_nrsysmond_proxy              = undef,
   $newrelic_nrsysmond_ssl                = undef,
@@ -71,6 +72,34 @@ class newrelic::server::linux (
     fail('You must specify a valid License Key.')
   }
 
+  if $newrelic_nrsysmond_manage_repo {
+    case $::osfamily {
+      'RedHat': {
+        package { 'newrelic-repo-5-3.noarch':
+          ensure   => present,
+          source   => 'http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm',
+          provider => rpm,
+        }
+      }
+      'Debian': {
+        apt::source { 'newrelic':
+          location => 'http://apt.newrelic.com/debian/',
+          repos    => 'non-free',
+          key      => {
+            id  => 'B60A3EC9BC013B9C23790EC8B31B29E5548C16BF',
+            key => 'https://download.newrelic.com/548C16BF.gpg',
+          },
+          include  => {
+            src => false,
+          },
+          release  => 'newrelic',
+        }
+      }
+      default: {
+        fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}")
+      }
+    }
+  }
   package { $newrelic_package_name:
     ensure  => $newrelic_package_ensure,
     notify  => Service[$newrelic_service_name],
