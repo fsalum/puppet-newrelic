@@ -35,23 +35,36 @@
 # Copyright 2012 Felipe Salum, unless otherwise noted.
 #
 class newrelic::server::linux (
-  $newrelic_package_ensure           = 'present',
-  $newrelic_service_enable           = true,
-  $newrelic_service_ensure           = 'running',
-  $newrelic_license_key              = undef,
-  $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
-  $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
-  $newrelic_nrsysmond_loglevel       = undef,
-  $newrelic_nrsysmond_logfile        = undef,
-  $newrelic_nrsysmond_proxy          = undef,
-  $newrelic_nrsysmond_ssl            = undef,
-  $newrelic_nrsysmond_ssl_ca_bundle  = undef,
-  $newrelic_nrsysmond_ssl_ca_path    = undef,
-  $newrelic_nrsysmond_pidfile        = undef,
-  $newrelic_nrsysmond_collector_host = undef,
-  $newrelic_nrsysmond_labels         = undef,
-  $newrelic_nrsysmond_timeout        = undef,
-  $newrelic_nrsysmond_hostname       = undef,
+  $newrelic_license_key                  = undef,
+  $newrelic_package_ensure               = 'present',
+  $newrelic_package_name                 = $::newrelic::params::newrelic_package_name,
+  $newrelic_service_enable               = true,
+  $newrelic_service_ensure               = 'running',
+  $newrelic_service_name                 = $::newrelic::params::newrelic_service_name,
+  $newrelic_nrsysmond_cgroup_root        = undef,
+  $newrelic_nrsysmond_cgroup_style       = undef,
+  $newrelic_nrsysmond_collector_host     = undef,
+  $newrelic_nrsysmond_disable_docker     = undef,
+  $newrelic_nrsysmond_disable_nfs        = undef,
+  $newrelic_nrsysmond_docker             = false,
+  $newrelic_nrsysmond_docker_cacert      = undef,
+  $newrelic_nrsysmond_docker_cert        = undef,
+  $newrelic_nrsysmond_docker_cert_path   = undef,
+  $newrelic_nrsysmond_docker_connection  = undef,
+  $newrelic_nrsysmond_docker_key         = undef,
+  $newrelic_nrsysmond_host_root          = undef,
+  $newrelic_nrsysmond_hostname           = undef,
+  $newrelic_nrsysmond_ignore_reclaimable = undef,
+  $newrelic_nrsysmond_labels             = undef,
+  $newrelic_nrsysmond_logfile            = undef,
+  $newrelic_nrsysmond_loglevel           = undef,
+  $newrelic_nrsysmond_logrotate          = false,
+  $newrelic_nrsysmond_pidfile            = undef,
+  $newrelic_nrsysmond_proxy              = undef,
+  $newrelic_nrsysmond_ssl                = undef,
+  $newrelic_nrsysmond_ssl_ca_bundle      = undef,
+  $newrelic_nrsysmond_ssl_ca_path        = undef,
+  $newrelic_nrsysmond_timeout            = undef,
 ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
@@ -103,6 +116,15 @@ class newrelic::server::linux (
     unless  => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
     require => Package[$newrelic_package_name],
     notify  => Service[$newrelic_service_name],
+  }
+
+  if $newrelic_nrsysmond_docker {
+    # Newrelic must belong to the Docker group to fetch metrics.
+    exec { 'newrelic-should-be-in-docker-group':
+      command => '/usr/sbin/usermod -aG docker newrelic',
+      unless  => "/bin/cat /etc/group | grep '^docker:' | grep -qw newrelic",
+      notify  => Service[$newrelic_service_name]
+    }
   }
 
 }
