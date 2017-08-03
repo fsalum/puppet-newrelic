@@ -1,29 +1,27 @@
-source ENV['GEM_SOURCE'] || "https://rubygems.org"
+source "https://rubygems.org"
 
-group :development, :test do
-  gem 'rspec-puppet',           :require => false
-  gem 'puppetlabs_spec_helper', :require => false
-  gem 'puppet_facts',           :require => false
-  gem 'metadata-json-lint',     :require => false
+group :test do
+  gem 'rake'
+  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.8.7'
+  gem 'safe_yaml', '~> 1.0.4'
+  gem 'puppet-lint'
+  gem 'rspec-puppet', :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem 'rspec-puppet-facts'
+  gem 'puppet-syntax'
+  gem 'puppetlabs_spec_helper', '< 2.0.0'
+  gem 'metadata-json-lint', '1.1.0'
+  gem 'json', '< 2.0.0'
+  gem 'xmlrpc', :require => false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.4.0')
 end
 
-# Older versions of ruby are not compatible with the current rake gem
-if rakeversion = ENV['RAKE_GEM_VERSION']
-  gem 'rake', rakeversion, :require => false
-else
-  gem 'rake', :require => false
+group :development do
+  gem 'travis'
+  gem 'travis-lint'
+  gem 'vagrant-wrapper'
+  gem 'puppet-blacksmith'
+  gem 'guard-rake'
 end
 
-if facterversion = ENV['FACTER_GEM_VERSION']
-  gem 'facter', facterversion, :require => false
-else
-  gem 'facter', :require => false
+group :system_tests do
+  gem 'beaker'
 end
-
-if puppetversion = ENV['PUPPET_GEM_VERSION']
-  gem 'puppet', puppetversion, :require => false
-else
-  gem 'puppet', :require => false
-end
-
-# vim:ft=ruby
