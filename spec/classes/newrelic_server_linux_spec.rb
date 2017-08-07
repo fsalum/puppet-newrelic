@@ -1,14 +1,20 @@
 require 'spec_helper'
 
 describe 'newrelic::server::linux', :type => :class do
-  let(:facts) {{
-        :osfamily           => 'RedHat',
-  }}
+  let(:facts) do
+    {
+      'os' => {
+          'family' => 'RedHat',
 
-  let(:params) {{
+      }
+   }
+  end
+
+  let(:params) do 
+    {
     :newrelic_license_key => '1234567890qwerty',
-  }}
-
+    }
+  end
 
   it { is_expected.to compile }
 

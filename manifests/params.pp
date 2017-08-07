@@ -12,7 +12,7 @@
 #
 class newrelic::params {
 
-  case $osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       $newrelic_package_name  = 'newrelic-sysmond'
       $newrelic_service_name  = 'newrelic-sysmond'
@@ -42,7 +42,7 @@ class newrelic::params {
         },
         release  => 'newrelic',
       }
-      case $operatingsystem {
+      case $facts['operatingsystem'] {
         'Debian': {
           case $operatingsystemrelease {
             /^6/: {
@@ -54,7 +54,7 @@ class newrelic::params {
           }
         }
         'Ubuntu': {
-          case $operatingsystemrelease {
+          case $facts['operatingsystemrelease'] {
             /^(10|12)/: {
               $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
             }
