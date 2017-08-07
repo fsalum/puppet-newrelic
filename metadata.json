@@ -8,7 +8,6 @@
   "description": "Module to install and configure New Relic server monitoring and New Relic PHP Agent",
   "project_page": "https://github.com/fsalum/puppet-newrelic",
   "issues_url": "https://github.com/fsalum/puppet-newrelic/issues",
-  "source": "git://github.com/fsalum/puppet-newrelic.git",
   "tags": ["newrelic", "monitoring", "metrics"],
   "operatingsystem_support": [
     {
@@ -36,26 +35,22 @@
   ],
   "requirements": [
     {
-      "name": "pe",
-      "version_requirement": "3.x"
-    },
-    {
       "name": "puppet",
-      "version_requirement": "3.x"
+      "version_requirement": "4.x"
     }
   ],
   "dependencies": [
     {
       "name": "puppetlabs/apt",
-      "version_requirement": ">= 2.0.0"
+      "version_requirement": ">= 2.0.0 < 3.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.1.0"
+      "version_requirement": ">= 4.1.0 < 5.0.0"
     },
     {
       "name": "puppet/download_file",
-      "version_requirement": ">= 1.2.1"
+      "version_requirement": ">= 1.2.1 < 2.0.0"
     }
   ]
 }
