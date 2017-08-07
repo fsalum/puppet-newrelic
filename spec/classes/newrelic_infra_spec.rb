@@ -23,7 +23,7 @@ describe 'newrelic::infra::linux', :type => :class do
   it { is_expected.to compile }
   it { should contain_package('newrelic-infra') }
   it { should contain_service('newrelic-infra').that_requires('Package[newrelic-infra]') }
-  it { should contain_file('/etc/newrelic-infra.yml') }
+  it { should contain_file('/etc/newrelic-infra.yml').with_content("license_key: 1234567890qwerty\n") }
   
   context 'with newrelic_manage_repo => true' do
     let(:params)do 
