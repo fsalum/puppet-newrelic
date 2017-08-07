@@ -22,4 +22,10 @@ describe 'newrelic::agent::php', :type => :class do
   end
 
   it { is_expected.to compile }
+  it { should contain_class('newrelic::params') }
+  it { should contain_package('newrelic-php5') }
+  it { should contain_service('newrelic-daemon') }
+  it { should contain_file('/etc/newrelic/newrelic.cfg') }
+  it { should contain_newrelic__php__newrelic_ini('/opt/rh/php54/root/etc/php.d') }
+
 end

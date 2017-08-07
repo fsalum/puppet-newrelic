@@ -17,6 +17,12 @@ describe 'newrelic::server::linux', :type => :class do
   end
 
   it { is_expected.to compile }
+  it { should contain_class('newrelic') }
+  it { should contain_service('newrelic-sysmond') }
+  it { should contain_package('newrelic-sysmond') }
+  it { should contain_file('/var/log/newrelic') }
+  it { should contain_exec('1234567890qwerty') }
+  it { should contain_file('/etc/newrelic/nrsysmond.cfg') }
 
 end
 
