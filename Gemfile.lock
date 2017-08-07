@@ -274,8 +274,7 @@ GEM
     guard-rake (1.0.0)
       guard
       rake
-    hiera (1.3.4)
-      json_pure
+    hiera (3.4.0)
     highline (1.7.8)
     hocon (1.2.5)
     http-cookie (1.0.3)
@@ -289,7 +288,7 @@ GEM
     jgrep (1.4.1)
       json
     json (1.8.6)
-    json_pure (2.1.0)
+    json_pure (1.8.6)
     jwt (1.5.6)
     launchy (2.4.3)
       addressable (~> 2.3)
@@ -340,10 +339,12 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puppet (3.8.7)
-      facter (> 1.6, < 3)
-      hiera (~> 1.0)
-      json_pure
+    puppet (4.10.5)
+      facter (> 2.0, < 4)
+      gettext-setup (>= 0.10, < 1)
+      hiera (>= 2.0, < 4)
+      json_pure (~> 1.8)
+      locale (~> 2.1)
     puppet-blacksmith (3.4.0)
       puppet (>= 2.7.16)
       rest-client (~> 1.8.0)
@@ -444,7 +445,7 @@ DEPENDENCIES
   guard-rake
   json (< 2.0.0)
   metadata-json-lint (= 1.1.0)
-  puppet (~> 3.8.7)
+  puppet (< 5.0.0)
   puppet-blacksmith
   puppet-lint
   puppet-syntax
@@ -459,4 +460,4 @@ DEPENDENCIES
   xmlrpc
 
 BUNDLED WITH
-   1.14.6
+   1.15.3
