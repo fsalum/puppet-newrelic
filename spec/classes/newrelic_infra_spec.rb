@@ -16,7 +16,6 @@ describe 'newrelic::infra::linux', :type => :class do
   let(:params) do
    {
      :newrelic_license_key => '1234567890qwerty',
-     :newrelic_manage_repo => 'true'
    }
   end
 
@@ -25,7 +24,13 @@ describe 'newrelic::infra::linux', :type => :class do
   it { should contain_package('newrelic-infra') }
   it { should contain_service('newrelic-infra').that_requires('Package[newrelic-infra]') }
   it { should contain_file('/etc/newrelic-infra.yml') }
-  it { should contain_file('/etc/yum.repos.d/newrelic-infra.repo') }
+  
+  context 'with newrelic_manage_repo => true' do
+    let(:params)do 
+      super().merge({ 'newrelic_manage_repo' => 'true'})
+    end
 
+    it { should contain_file('/etc/yum.repos.d/newrelic-infra.repo') }
+  end
 end
 
