@@ -1,0 +1,31 @@
+require 'spec_helper'
+
+describe 'newrelic::infra::linux', :type => :class do
+
+  let(:facts) do
+  {
+    'os' => {
+      'family' => 'RedHat',
+    },
+      'operatingsystem' => 'Centos',
+      'operatingsystemmajrelease' => '7',
+  }
+  end
+
+
+  let(:params) do
+   {
+     :newrelic_license_key => '1234567890qwerty',
+     :newrelic_manage_repo => 'true'
+   }
+  end
+
+
+  it { is_expected.to compile }
+  it { should contain_package('newrelic-infra') }
+  it { should contain_service('newrelic-infra').that_requires('Package[newrelic-infra]') }
+  it { should contain_file('/etc/newrelic-infra.yml') }
+  it { should contain_file('/etc/yum.repos.d/newrelic-infra.repo') }
+
+end
+

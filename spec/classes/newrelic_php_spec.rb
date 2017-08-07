@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'newrelic::agent::php', :type => :class do
-  let(:title) { 'newrelic_php' }
     let(:facts) do
     {
       'os' => {
