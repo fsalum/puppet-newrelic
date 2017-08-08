@@ -2,7 +2,7 @@
   "name": "claranet-newrelic",
   "version": "1.0.0",
   "source": "git://github.com/claranet/puppet-newrelic.git",
-  "author": "Russell Whelan",
+  "author": "Claranet",
   "license": "Apache-2.0",
   "summary": "Puppet module for NewRelic",
   "description": "Module to install and configure New Relic server monitoring and New Relic PHP Agent",
