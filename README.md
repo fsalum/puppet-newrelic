@@ -69,7 +69,8 @@ Mandatory parameters:
 Copyright and License
 ---------------------
 
-Copyright (C) 2014 Claranet
+Copyright (C) 2014 Felipe Salum
+Copyright (C) 2017 Claranet
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
