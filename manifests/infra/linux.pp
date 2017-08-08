@@ -24,10 +24,13 @@ class newrelic::infra::linux (
 
     case $facts['os']['family'] {
       'redhat': {
-        file { '/etc/yum.repos.d/newrelic-infra.repo':
-          ensure => 'file',
-          mode   =>  '0644',
-          source => "https://download.newrelic.com/infrastructure_agent/linux/yum/el/${operatingsystemmajrelease}/x86_64/newrelic-infra.repo"
+        yumrepo { 'newrelic-infra':
+          ensure        => 'present',
+          descr         => 'New Relic Infrastructure',
+          baseurl       => "http://download.newrelic.com/infrastructure_agent/linux/yum/el/${operatingsystemmajrelease}/x86_64",
+          gpgkey        => 'http://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg',
+          gpgcheck      => '1',
+          repo_gpgcheck => '1',
         }
       }
       'debian': {

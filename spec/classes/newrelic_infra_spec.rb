@@ -30,7 +30,7 @@ describe 'newrelic::infra::linux', :type => :class do
       super().merge({ 'newrelic_manage_repo' => 'true'})
     end
 
-    it { should contain_file('/etc/yum.repos.d/newrelic-infra.repo') }
+    it { should contain_yumrepo('newrelic-infra') }
   end
 end
 
