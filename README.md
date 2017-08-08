@@ -2,7 +2,8 @@ Newrelic Module for Puppet
 ==========================
 [![Build Status](https://secure.travis-ci.org/claranet/puppet-newrelic.png)](http://travis-ci.org/claranet/puppet-newrelic)
 
-This module manages and installs the New Relic Server Monitoring and PHP agents.  
+This module manages and installs the New Relic Server Monitoring and PHP agents and is based on Felipe Salum's [puppet-newrelic](https://github.com/fsalum/puppet-newrelic) module. The
+code has been heavly refactored and support for Puppet 4 and 5 added. 
 
 Supported systems: Debian and RHEL osfamily Linux.
 
@@ -15,11 +16,6 @@ Windows support added/tested/supported by [malaikah](https://github.com/malaikah
 
 IMPORTANT
 ---------
-
-Module version 4.x was refactored. A lot of parameters were added, removed, renamed or changed.
-
-Module version 4.0.1 is moving away from defined classes, deprecation warnings were added.
-Using the new classes is backwards compatible.
 
 Review all the parameters you use before deploying this module in production.
 
@@ -74,8 +70,7 @@ Copyright and License
 ---------------------
 
 Copyright (C) 2014 Felipe Salum
-
-Felipe Salum can be contacted at: fsalum@gmail.com
+Copyright (C) 2017 Claranet
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

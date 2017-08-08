@@ -1,13 +1,13 @@
 {
-  "name": "fsalum-newrelic",
-  "version": "4.3.0",
-  "source": "git://github.com/fsalum/puppet-newrelic.git",
-  "author": "Felipe Salum",
+  "name": "claranet-newrelic",
+  "version": "1.0.0",
+  "source": "git://github.com/claranet/puppet-newrelic.git",
+  "author": "Claranet",
   "license": "Apache-2.0",
   "summary": "Puppet module for NewRelic",
   "description": "Module to install and configure New Relic server monitoring and New Relic PHP Agent",
-  "project_page": "https://github.com/fsalum/puppet-newrelic",
-  "issues_url": "https://github.com/fsalum/puppet-newrelic/issues",
+  "project_page": "https://github.com/claranet/puppet-newrelic",
+  "issues_url": "https://github.com/claranet/puppet-newrelic/issues",
   "tags": ["newrelic", "monitoring", "metrics"],
   "operatingsystem_support": [
     {
