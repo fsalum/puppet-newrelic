@@ -1,6 +1,6 @@
 {
   "name": "claranet-newrelic",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "source": "git://github.com/claranet/puppet-newrelic.git",
   "author": "Claranet",
   "license": "Apache-2.0",
