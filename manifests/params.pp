@@ -19,7 +19,7 @@ class newrelic::params {
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
       $newrelic_php_conf_dir  = ['/etc/php.d']
-      $newrelic_enable_repo   = 'true'
+      $newrelic_enable_repo   = true
       if $newrelic_enable_repo {
         package { 'newrelic-repo-5-3.noarch':
           ensure   => present,
@@ -33,7 +33,7 @@ class newrelic::params {
       $newrelic_service_name  = 'newrelic-sysmond'
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
-      $newrelic_enable_repo   = 'true'
+      $newrelic_enable_repo   = true
       if $newrelic_enable_repo {
         apt::source { 'newrelic':
           location => 'http://apt.newrelic.com/debian/',
