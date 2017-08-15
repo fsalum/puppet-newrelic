@@ -55,6 +55,10 @@ class newrelic (
   Boolean $enable_dotnet_agent = false,
 ) inherits newrelic::params {
 
+  if length($license_key) != 40 {
+    warning('Your license key is not 40 characters!')
+  }
+
   if $enable_infra == true {
     class { '::newrelic::infra':
       license_key => $license_key,
@@ -73,6 +77,9 @@ class newrelic (
       }
     }
   }
+
+  # == FIXME Untested below here
+
 
   if $enable_php_agent == true {
     class { '::newrelic::agent::php': }
