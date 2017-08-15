@@ -60,9 +60,9 @@ class newrelic::server::linux (
   $logdir = dirname($logfile)
 
   if $manage_repo == true {
-    include ::newrelic::server::linux::repo
+    include ::newrelic::legacy_repo
     Package[$package_name] {
-      require => $::newrelic::server::linux::repo::require,
+      require => $::newrelic::legacy_repo::require,
     }
   }
 
