@@ -78,12 +78,12 @@ class newrelic (
     }
   }
 
-  # == FIXME Untested below here
-
-
   if $enable_php_agent == true {
     class { '::newrelic::agent::php': }
   }
+
+
+    # == FIXME Untested below here
 
   if $enable_dotnet_agent == true {
     class { '::newrelic::agent::dotnet': }

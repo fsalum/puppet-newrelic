@@ -1,47 +1,51 @@
-# Class: newrelic::agent::php
+# == Class: newrelic::agent::php
 #
 # This class install the New Relic PHP Agent
 #
-# Parameters:
+# === Parameters:
 #
-# [*newrelic_php_package_ensure*]
-#   Specific the Newrelic PHP package update state. Defaults to 'present'. Possible value is 'latest'.
+# [*package_ensure*]
+#   Specific the Newrelic PHP package update state.
+#   Default: 'present' (String)
 #
-# [*newrelic_php_service_ensure*]
-#   Specify the Newrelic PHP service running state. Defaults to 'running'. Possible value is 'stopped'.
+# [*service_ensure*]
+#   Specify the Newrelic PHP service running state.
+#   Default: 'running' (String)
 #
-# [*newrelic_php_service_enable*]
-#   Specify the Newrelic PHP service startup state. Defaults to true. Possible value is false.
+# [*service_enable*]
+#   Specify the Newrelic PHP service startup state.
+#   Default: true (Boolean)
 #
-# [*newrelic_daemon_cfgfile_ensure*]
-#   Specify the Newrelic daemon cfg file state. Change to absent for agent startup mode. Defaults to 'present'. Possible value is 'absent'.
-#
-# Actions:
-#
-# Requires:
-#
-# Sample Usage:
-#
-#  class {'newrelic::agent::php':
-#      newrelic_license_key        => 'your license key here',
-#      newrelic_php_package_ensure => 'latest',
-#      newrelic_php_service_ensure => 'running',
-#      newrelic_ini_appname        => 'Your PHP Application',
-#    }
-#
-# If no parameters are set it will use the newrelic.ini defaults
+# [*daemon_config_ensure*]
+#   Specify the Newrelic daemon config file state. Change to absent for agent startup mode.
+#   Default: 'present' (String)
 #
 # For detailed explanation about the parameters below see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
 #
+# === Authors
+#
+# Felipe Salum <fsalum@gmail.com>
+# Craig Watson <craig.watson@claranet.uk>
+#
+# === Copyright
+#
+# Copyright 2012 Felipe Salum
+# Copyright 2017 Claranet
+#
 class newrelic::agent::php (
-  $newrelic_php_package_ensure                           = 'present',
-  $newrelic_php_service_ensure                           = 'running',
-  $newrelic_php_service_enable                           = false,
-  $newrelic_php_conf_dir                                 = $newrelic::params::newrelic_php_conf_dir,
-  $newrelic_php_exec_path                                = $path,
-  $newrelic_php_package                                  = $newrelic::params::newrelic_php_package,
-  $newrelic_php_service                                  = $newrelic::params::newrelic_php_service,
-  $newrelic_license_key                                  = undef,
+  String  $license_key,
+  Boolean $manage_repo                              = $::newrelic::params::manage_repo,
+  String  $package_ensure                           = 'present',
+  String  $service_ensure                           = 'running',
+  Boolean $service_enable                           = false,
+  String  $conf_dir                                 = $::newrelic::params::php_conf_dir,
+  String  $package_name                             = $newrelic::params::php_package_name,
+  String  $service_name                             = $newrelic::params::php_service_name,
+  String  $daemon_config_ensure                     = 'present',
+
+
+
+
   $newrelic_ini_appname                                  = undef,
   $newrelic_ini_browser_monitoring_auto_instrument       = undef,
   $newrelic_ini_enabled                                  = undef,
@@ -64,7 +68,7 @@ class newrelic::agent::php (
   $newrelic_ini_capture_params                           = undef,
   $newrelic_ini_ignored_params                           = undef,
   $newrelic_ini_webtransaction_name_files                = undef,
-  $newrelic_daemon_cfgfile_ensure                        = 'present',
+
   $newrelic_daemon_dont_launch                           = undef,
   $newrelic_daemon_pidfile                               = undef,
   $newrelic_daemon_location                              = undef,
@@ -77,37 +81,49 @@ class newrelic::agent::php (
   $newrelic_daemon_proxy                                 = undef,
   $newrelic_daemon_collector_host                        = undef,
   $newrelic_daemon_auditlog                              = undef,
-) inherits ::newrelic {
+) inherits newrelic::params {
 
-  if ! $newrelic_license_key {
-    fail('You must specify a valid License Key.')
+  if $manage_repo == true {
+    include ::newrelic::legacy_repo
+    Package[$package_name] {
+      require => $::newrelic::legacy_repo::require
+    }
   }
 
-  package { $newrelic_php_package:
-    ensure  => $newrelic_php_package_ensure,
-    require => Class['newrelic::params'],
+  package { $package_name:
+    ensure  => $package_ensure,
   }
 
-  service { $newrelic_php_service:
-    ensure     => $newrelic_php_service_ensure,
-    enable     => $newrelic_php_service_enable,
-    hasrestart => true,
-    hasstatus  => true,
-  }
+  $conf_dir.each |String $dir| {
+    exec { "newrelic install ${dir}":
+      command  => "/usr/bin/newrelic-install purge; NR_INSTALL_SILENT=yes, NR_INSTALL_KEY=${license_key} /usr/bin/newrelic-install install",
+      user     => 'root',
+      unless   => "grep -q ${license_key} ${dir}/newrelic.ini",
+      require  => Package[$package_name],
+    }
 
-  ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
-    exec_path            => $newrelic_php_exec_path,
-    newrelic_license_key => $newrelic_license_key,
-    before               => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
-    require              => Package[$newrelic_php_package],
-    notify               => Service[$newrelic_php_service],
+    file { "${dir}/newrelic.ini":
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('newrelic/newrelic.ini.erb'),
+      require => Exec["newrelic install ${dir}"],
+    }
   }
 
   file { '/etc/newrelic/newrelic.cfg':
-    ensure  => $newrelic_daemon_cfgfile_ensure,
+    ensure  => $daemon_config_ensure,
     path    => '/etc/newrelic/newrelic.cfg',
     content => template('newrelic/newrelic.cfg.erb'),
-    before  => Service[$newrelic_php_service],
-    notify  => Service[$newrelic_php_service],
+    before  => Service[$service_name],
+    notify  => Service[$service_name],
+  }
+
+  service { $service_name:
+    ensure     => $service_ensure,
+    enable     => $service_enable,
+    hasrestart => true,
+    hasstatus  => true,
   }
 }

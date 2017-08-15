@@ -18,6 +18,10 @@ class newrelic::infra (
   Boolean $manage_repo = $::newrelic::params::manage_repo,
 ) inherits newrelic::params {
 
+  if $facts['os']['family'] == 'Windows' {
+    fail('newrelic::infra is not supported yet on Windows.')
+  }
+
   if $::newrelic::infra::manage_repo == true {
     contain ::newrelic::infra::repo
     File['/etc/newrelic-infra.yml'] {
