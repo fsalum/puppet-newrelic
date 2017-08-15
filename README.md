@@ -9,7 +9,6 @@
 1. [Module Description - What does the module do?](#module-description)
 1. [Setup - The basics of getting started with puppet-newrelic](#setup)
     * [What puppet-newrelic affects](#what-puppet-newrelic-affects)
-    * [Setup requirements](#setup-requirements)
     * [Beginning with puppet-newrelic](#beginning-with-registry)
 1. [Usage - Configuration options and additional functionality](#usage)
 1. [Reference - An under-the-hood peek at what the module is doing](#reference)
@@ -30,64 +29,42 @@ On 31st December 2016, support for Puppet 3.x was withdrawn. As as a result, **t
 
 ### What puppet-newrelic affects
 
-### Setup Requirements
+  * Adds the upstream NewRelic Yum/Apt repositories
+  * Installs the NewRelic Server/Infrastructure agent and also the PHP or .NET agents
 
 ### Beginning with puppet-newrelic
 
-There are a lot of parameters you can customize, check the `.pp` files and the [New Relic documentation](https://docs.newrelic.com/docs/php/php-agent-phpini-settings) to understand them.
+By default, the module installs and configures the [NewRelic Infrastructure agent](https://docs.newrelic.com/docs/infrastructure/new-relic-infrastructure/installation/install-infrastructure-linux).
 
 ## Usage
 
-To install the Newrelic Server Monitoring and the PHP agent packages, include the following in your manifest file:
+To install the (deprecated) NewRelic Server Monitoring agent instead of the default NewRelic Infrastructure agent:
 
-    node default {
-         class {'newrelic::server::linux':
-           newrelic_license_key => 'your license key here',
-         }
-
-         class {'newrelic::agent::php':
-           newrelic_license_key  => 'your license key here',
-           newrelic_ini_appname  => 'Your PHP Application',
-         }
+    class { 'newrelic':
+      license_key   => 'your key here',
+      enable_infra  => false,
+      enable_server => true,
     }
-
-To do the same for a Windows .Net host, include the following:
-
-    node default {
-         class {'newrelic::server::windows':
-           newrelic_license_key => 'your license key here',
-         }
-
-         class {'newrelic::agent::dotnet':
-           newrelic_license_key  => 'your license key here',
-         }
-    }
-
-(Note that, while it is possible to specify a version of the .Net agent, caution should be excercised if doing this. Newrelic make only the last two releases available on http://download.newrelic.com/dot_net_agent/release/.)
-
-If you use Ubuntu 14.04 and php5-fpm you can pass an array of directories for PHP ini files:
-
-         class {'newrelic::agent::php':
-           newrelic_license_key  => 'your license key here',
-           newrelic_ini_appname  => 'Your PHP Application',
-           newrelic_php_conf_dir => ['/etc/php5/mods-available/conf.d','/etc/php5/fpm/conf.d'],
-         }
 
 ## Reference
 
 Mandatory parameters:
 
-* newrelic_license_key
+* `license_key`
+
+There are also a lot of parameters for the Server and PHP agents. Please check the manifest files and the [New Relic documentation](https://docs.newrelic.com/docs/php/php-agent-phpini-settings) to understand them.
 
 ### Classes
 
 ## Limitations
 
+* Moving from NewRelic Server to NewRelic Infrastructure - the module only installs the new client, and does not clean up the old one
+
 ### Supported Operating Systems
 
- * Debian/Ubuntu
- * CentOS/RHEL
- * Windows (currently untested)
+* Debian/Ubuntu
+* CentOS/RHEL
+* Windows (currently untested)
 
 ## Development
 
