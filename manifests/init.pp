@@ -79,11 +79,17 @@ class newrelic (
   }
 
   if $enable_php_agent == true {
-    class { '::newrelic::agent::php': }
+    class { '::newrelic::agent::php':
+      license_key => $license_key,
+      manage_repo => $manage_repo,
+    }
   }
 
 
-    # == FIXME Untested below here
+
+
+
+  # == FIXME Untested below here
 
   if $enable_dotnet_agent == true {
     class { '::newrelic::agent::dotnet': }

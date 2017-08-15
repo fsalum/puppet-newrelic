@@ -1,49 +1,4 @@
 #
-# This is a configuration template for the New Relic daemon - a communications
-# proxy between New Relic agents (such as the PHP agent) and the New Relic
-# data collectors. This configuration file is required *ONLY* if you need or
-# want to start the New Relic daemon at system boot time using init. In order
-# to do so you must execute the following commands (as root):
-#
-# For CentOS and RedHat systems:
-#    /sbin/chkconfig newrelic-daemon on
-#
-# For Ubuntu and Debian systems:
-#    /usr/sbin/update-rc.d newrelic-daemon defaults 90 10
-#    /usr/sbin/update-rc.d newrelic-daemon enable
-#
-# For other systems please consult your documentation on how to enable and
-# disable services.
-#
-# For all systems:
-#    /etc/init.d/newrelic-daemon start
-#
-# The startup scripts will only start the daemon if there is a valid daemon
-# configuration file in place. This file is, by default:
-#
-#    /etc/newrelic/newrelic.cfg
-#
-# If that file does not exist, you can copy this template file to that
-# location and edit it to suit your system needs.
-#
-# By default the daemon is not started at system boot time, and does not use
-# the /etc/newrelic/newrelic.cfg file. Rather, the daemon is started by the
-# agent automatically on startup and is configured by the agent (for example
-# when using the PHP agent the daemon parameters are set in the global INI
-# file and all begin with 'newrelic.daemon').
-#
-# There are certain circumstances under which you may want the daemon to be
-# started at boot time rather than by the agent. If you use a chroot jail for
-# running the agent in, if you have multiple web servers or FastCGI process
-# managers, or if you use PHP on the command line a lot for batch processing
-# then you may want to start the daemon once at system boot rather than having
-# the agent start it.
-#
-# Below are the various options you can change that affect the daemon. Each
-# one is explained in detail along with it's default value.
-#
-
-#
 # Setting: pidfile
 # Type   : string
 # Purpose: Sets the name of the file that the daemon writes its process ID
@@ -52,8 +7,8 @@
 # Default: OS-dependent. Uses a filename of newrelic-daemon.pid in the first
 #          directory from the list /var/run or /var/pid that is found.
 #pidfile=/var/run/newrelic-daemon.pid
-<%- if @newrelic_daemon_pidfile -%>
-pidfile=<%= @newrelic_daemon_pidfile %>
+<%- if scope['::newrelic::agent::php::daemon_pidfile'] -%>
+pidfile=<%= scope['::newrelic::agent::php::daemon_pidfile'] %>
 <%- end -%>
 
 #
@@ -65,8 +20,8 @@ pidfile=<%= @newrelic_daemon_pidfile %>
 #          controlled by the loglevel settings, defined below.
 # Default: /var/log/newrelic/newrelic-daemon.log
 #logfile=/var/log/newrelic/newrelic-daemon.log
-<%- if @newrelic_daemon_logfile -%>
-logfile=<%= @newrelic_daemon_logfile %>
+<%- if scope['::newrelic::agent::php::daemon_logfile'] -%>
+logfile=<%= scope['::newrelic::agent::php::daemon_logfile'] %>
 <%- end -%>
 
 #
@@ -85,8 +40,8 @@ logfile=<%= @newrelic_daemon_logfile %>
 #          verbosedebug - extremely verbose, creates massive log files
 # Default: info
 #loglevel=info
-<%- if @newrelic_daemon_loglevel -%>
-loglevel=<%= @newrelic_daemon_loglevel %>
+<%- if scope['::newrelic::agent::php::daemon_loglevel'] -%>
+loglevel=<%= scope['::newrelic::agent::php::daemon_loglevel'] %>
 <%- end -%>
 
 #
@@ -104,8 +59,8 @@ loglevel=<%= @newrelic_daemon_loglevel %>
 #          and not one imposed by the daemon itself.
 # Default: "/tmp/.newrelic.sock"
 #port="/tmp/.newrelic.sock"
-<%- if @newrelic_daemon_port -%>
-port=<%= @newrelic_daemon_port %>
+<%- if scope['::newrelic::agent::php::daemon_port'] -%>
+port=<%= scope['::newrelic::agent::php::daemon_port'] %>
 <%- end -%>
 
 #
@@ -116,8 +71,8 @@ port=<%= @newrelic_daemon_port %>
 #          to true.
 # Default: true (as of version 3.6)
 #ssl=true
-<%- if @newrelic_daemon_ssl -%>
-ssl=<%= @newrelic_daemon_ssl %>
+<%- if scope['::newrelic::agent::php::daemon_ssl'] -%>
+ssl=<%= scope['::newrelic::agent::php::daemon_ssl'] %>
 <%- end -%>
 
 #
@@ -132,8 +87,8 @@ ssl=<%= @newrelic_daemon_ssl %>
 #          is set to false.
 # Default: none
 #ssl_ca_bundle=
-<%- if @newrelic_daemon_ssl_ca_bundle -%>
-ssl_ca_bundle=<%= @newrelic_daemon_ssl_ca_bundle %>
+<%- if scope['::newrelic::agent::php::daemon_ssl_ca_bundle'] -%>
+ssl_ca_bundle=<%= scope['::newrelic::agent::php::daemon_ssl_ca_bundle'] %>
 <%- end -%>
 
 #
@@ -147,8 +102,8 @@ ssl_ca_bundle=<%= @newrelic_daemon_ssl_ca_bundle %>
 #          setting has no effect when ssl is set to false.
 # Default: none
 #ssl_ca_path=
-<%- if @newrelic_daemon_ssl_ca_path -%>
-ssl_ca_path=<%= @newrelic_daemon_ssl_ca_path %>
+<%- if scope['::newrelic::agent::php::daemon_ssl_ca_path'] -%>
+ssl_ca_path=<%= scope['::newrelic::agent::php::daemon_ssl_ca_path'] %>
 <%- end -%>
 
 #
@@ -167,8 +122,8 @@ ssl_ca_path=<%= @newrelic_daemon_ssl_ca_path %>
 #          proxy.mydomain.com
 # Default: none
 #proxy=
-<%- if @newrelic_daemon_proxy -%>
-proxy=<%= @newrelic_daemon_proxy %>
+<%- if scope['::newrelic::agent::php::daemon_proxy'] -%>
+proxy=<%= scope['::newrelic::agent::php::daemon_proxy'] %>
 <%- end -%>
 
 #
@@ -182,8 +137,8 @@ proxy=<%= @newrelic_daemon_proxy %>
 #          person or support staff member.
 # Default: collector.newrelic.com
 #collector_host=collector.newrelic.com
-<%- if @newrelic_daemon_collector_host -%>
-collector_host=<%= @newrelic_daemon_collector_host %>
+<%- if scope['::newrelic::agent::php::daemon_collector_host'] -%>
+collector_host=<%= scope['::newrelic::agent::php::daemon_collector_host'] %>
 <%- end -%>
 
 #
@@ -199,6 +154,6 @@ collector_host=<%= @newrelic_daemon_collector_host %>
 #          ignored.
 # Default: None
 #auditlog=/var/log/newrelic/audit.log
-<%- if @newrelic_daemon_auditlog -%>
-auditlog=<%= @newrelic_daemon_auditlog %>
+<%- if scope['::newrelic::agent::php::daemon_auditlog'] -%>
+auditlog=<%= scope['::newrelic::agent::php::daemon_auditlog'] %>
 <%- end -%>
