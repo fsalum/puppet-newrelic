@@ -18,17 +18,17 @@ class newrelic::infra (
   Boolean $manage_repo = $::newrelic::params::manage_repo,
 ) inherits newrelic::params {
 
+  if $::newrelic::infra::manage_repo == true {
+    contain ::newrelic::infra::repo
+    File['/etc/newrelic-infra.yml'] {
+      require => $::newrelic::infra::repo::require,
+    }
+  }
+
   file { '/etc/newrelic-infra.yml':
     ensure  => file,
     content => "license_key: $license_key\n",
     notify  => Service['newrelic-infra'],
-  }
-
-  if $::newrelic::infra::manage_repo == true {
-    contain ::newrelic::infra::repo
-    Package['newrelic-infra'] {
-      require => $::newrelic::infra::repo::require,
-    }
   }
 
   package { 'newrelic-infra':
