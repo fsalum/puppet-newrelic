@@ -2,3 +2,4 @@ pkg/
 .vagrant
 .bundle
 spec/fixtures
+*.log
