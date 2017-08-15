@@ -1,4 +1,4 @@
-# == Class: newrelic::repo
+# == Class: newrelic::server::linux::repo
 #
 # Installs the required repository for NewRelic packages
 #
@@ -10,18 +10,20 @@
 #
 # Copyright Claranet
 #
-class newrelic::repo {
+class newrelic::server::linux::repo {
 
   case $facts['os']['family'] {
     'RedHat' : {
+      $require = Package['newrelic-repo-5-3.noarch']
       package { 'newrelic-repo-5-3.noarch':
         ensure   => present,
         source   => 'http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm',
-        provider => rpm,
+        provider => 'rpm',
       }
     }
 
     'Debian' : {
+      $require = Apt::Source['newrelic']
       ::apt::source { 'newrelic':
         location => 'http://apt.newrelic.com/debian/',
         repos    => 'non-free',

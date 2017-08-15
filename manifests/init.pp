@@ -47,17 +47,13 @@
 # Copyright 2017 Claranet
 #
 class newrelic (
-  String $license_key,
+  String  $license_key,
   Boolean $manage_repo         = $::newrelic::params::manage_repo,
   Boolean $enable_infra        = true,
   Boolean $enable_server       = false,
   Boolean $enable_php_agent    = false,
   Boolean $enable_dotnet_agent = false,
 ) inherits newrelic::params {
-
-  if $manage_repo == true {
-    include ::newrelic::repo
-  }
 
   if $enable_infra == true {
     class { '::newrelic::infra':
@@ -67,8 +63,15 @@ class newrelic (
   }
 
   if $enable_server == true {
-    notify { 'Use of newrelic::server is deprecated and will be removed in a future release. Please use newrelic::infra instead.':}
-    include ::newrelic::server
+    warning('Use of newrelic::server is deprecated and will be removed in a future release. Please use newrelic::infra instead.')
+    if $facts['os']['family'] == 'Windows' {
+      class { '::newrelic::server::windows': }
+    } else {
+      class { '::newrelic::server::linux':
+        license_key => $license_key,
+        manage_repo => $manage_repo,
+      }
+    }
   }
 
   if $enable_php_agent == true {

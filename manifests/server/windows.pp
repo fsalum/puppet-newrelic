@@ -32,7 +32,7 @@
 #
 # === Copyright
 #
-# Copyright 20125 Ben Priestman, unless otherwise noted.
+# Copyright 2015 Ben Priestman, unless otherwise noted.
 #
 class newrelic::server::windows (
   $newrelic_package_ensure           = 'present',
@@ -43,7 +43,7 @@ class newrelic::server::windows (
   $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
   $temp_dir                          = $::newrelic::params::temp_dir ,
   $server_monitor_source             = $::newrelic::params::server_monitor_source,
-) inherits ::newrelic {
+) inherits newrelic::params {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
