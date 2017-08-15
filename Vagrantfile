@@ -73,7 +73,7 @@ Vagrant.configure("2") do |config|
       # == Run Puppet
       c.vm.provision :shell, :inline => "for MOD in puppetlabs-apt puppetlabs-apache puppetlabs-stdlib puppet-download_file; do /opt/puppetlabs/puppet/bin/puppet module install $MOD; done"
       c.vm.provision :shell, :inline => "if [ ! -L /etc/puppetlabs/code/environments/production/modules/newrelic ]; then ln -s /vagrant /etc/puppetlabs/code/environments/production/modules/newrelic; fi"
-      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose /vagrant/tests/infra_only.pp"
+      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/tests/server_only.pp"
     end
   end
 end
