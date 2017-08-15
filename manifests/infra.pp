@@ -25,25 +25,9 @@ class newrelic::infra (
   }
 
   if $::newrelic::infra::manage_repo == true {
-
-    include ::newrelic::infra::repo
-
-    case $facts['os']['family'] {
-      'RedHat': {
-        File['/etc/newrelic-infra.yml'] {
-          require => Yumrepo['newrelic-infra'],
-        }
-      }
-
-      'Debian': {
-        File['/etc/newrelic-infra.yml'] {
-          require => Apt::Source['newrelic-infra'],
-        }
-      }
-
-      default: {
-        fail("Repo not supported for $facts[os][family]")
-      }
+    contain ::newrelic::infra::repo
+    Package['newrelic-infra'] {
+      require => $::newrelic::infra::repo::require,
     }
   }
 

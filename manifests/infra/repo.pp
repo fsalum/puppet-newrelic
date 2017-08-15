@@ -14,10 +14,11 @@ class newrelic::infra::repo {
 
   case $facts['os']['family'] {
     'RedHat' : {
+      $require = Yumrepo['newrelic-infra']
       yumrepo { 'newrelic-infra':
         ensure        => 'present',
         descr         => 'New Relic Infrastructure',
-        baseurl       => "http://download.newrelic.com/infrastructure_agent/linux/yum/el/${operatingsystemmajrelease}/x86_64",
+        baseurl       => "http://download.newrelic.com/infrastructure_agent/linux/yum/el/${facts[operatingsystemmajrelease]}/x86_64",
         gpgkey        => 'http://download.newrelic.com/infrastructure_agent/gpg/newrelic-infra.gpg',
         gpgcheck      => '1',
         repo_gpgcheck => '1',
@@ -26,8 +27,10 @@ class newrelic::infra::repo {
 
     'Debian' : {
 
+      $require = Apt::Source['newrelic-infra']
+
       ensure_packages('apt-transport-https')
-      
+
       ::apt::source { 'newrelic-infra':
         location => 'https://download.newrelic.com/infrastructure_agent/linux/apt',
         repos    => 'main',
