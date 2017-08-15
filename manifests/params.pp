@@ -1,92 +1,57 @@
-# Class: newrelic::params
+# == Class: newrelic::params
 #
-# This class configures parameters for the puppet-newrelic module.
+# This class handles parameters for the newrelic module
 #
-# Parameters:
+# == Actions:
 #
-# Actions:
+# None
 #
-# Requires:
+# === Authors:
 #
-# Sample Usage:
+# Felipe Salum <fsalum@gmail.com>
+# Craig Watson <craig.watson@claranet.uk>
+#
+# === Copyright:
+#
+# Copyright 2012 Felipe Salum
+# Copyright 2017 Claranet
 #
 class newrelic::params {
 
   case $facts['os']['family'] {
     'RedHat': {
-      $newrelic_package_name  = 'newrelic-sysmond'
-      $newrelic_service_name  = 'newrelic-sysmond'
-      $newrelic_php_package   = 'newrelic-php5'
-      $newrelic_php_service   = 'newrelic-daemon'
-      $newrelic_php_conf_dir  = ['/etc/php.d']
-      $newrelic_enable_repo   = true
-      if $newrelic_enable_repo {
-        package { 'newrelic-repo-5-3.noarch':
-          ensure   => present,
-          source   => 'http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm',
-          provider => rpm,
-        }
-      } 
+      $manage_repo         = true
+      $server_package_name = 'newrelic-sysmond'
+      $server_service_name = 'newrelic-sysmond'
+      $php_package_name    = 'newrelic-php5'
+      $php_service_name    = 'newrelic-daemon'
+      $php_conf_dir        = ['/etc/php.d']
     }
+
     'Debian': {
-      $newrelic_package_name  = 'newrelic-sysmond'
-      $newrelic_service_name  = 'newrelic-sysmond'
-      $newrelic_php_package   = 'newrelic-php5'
-      $newrelic_php_service   = 'newrelic-daemon'
-      $newrelic_enable_repo   = true
-      if $newrelic_enable_repo {
-        apt::source { 'newrelic':
-          location => 'http://apt.newrelic.com/debian/',
-          repos    => 'non-free',
-          key      => {
-            id  => 'B60A3EC9BC013B9C23790EC8B31B29E5548C16BF',
-            key => 'https://download.newrelic.com/548C16BF.gpg',
-          },
-          include  => {
-            src => false,
-          },
-          release  => 'newrelic',
-        }
-      }
-      case $facts['operatingsystem'] {
-        'Debian': {
-          case $operatingsystemrelease {
-            /^6/: {
-              $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
-            }
-            default: {
-              $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
-            }
-          }
-        }
-        'Ubuntu': {
-          case $facts['operatingsystemrelease'] {
-            /^(10|12)/: {
-              $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
-            }
-            default: {
-              $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
-            }
-          }
-        }
-        default: {
-          $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
-        }
-      }
+      $manage_repo         = true
+      $server_package_name = 'newrelic-sysmond'
+      $server_service_name = 'newrelic-sysmond'
+      $php_package_name    = 'newrelic-php5'
+      $php_service_name    = 'newrelic-daemon'
+      $php_conf_dir        = ['/etc/php5/mods-available']
     }
-    'windows': {
-      $bitness                          = regsubst($architecture,'^x([\d]{2})','\1')
-      $newrelic_package_name            = 'New Relic Server Monitor'
-      $newrelic_service_name            = 'nrsvrmon'
-      $temp_dir                         = 'C:/Windows/temp'
-      $server_monitor_source            = 'http://download.newrelic.com/windows_server_monitor/release/'
-      $newrelic_dotnet_conf_dir         = 'C:\\ProgramData\\New Relic\\.NET Agent'
-      $newrelic_dotnet_package          = "New Relic .NET Agent (${bitness}-bit)"
-      $newrelic_dotnet_source           = 'http://download.newrelic.com/dot_net_agent/release/'
-      $newrelic_dotnet_application_name = 'My Application'
+
+    'Windows': {
+      $manage_repo             = false
+      $bitness                 = regsubst($facts['architecture'],'^x([\d]{2})','\1')
+      $server_package_name     = 'New Relic Server Monitor'
+      $server_service_name     = 'nrsvrmon'
+      $temp_dir                = 'C:/Windows/temp'
+      $server_monitor_source   = 'http://download.newrelic.com/windows_server_monitor/release/'
+      $dotnet_conf_dir         = 'C:\\ProgramData\\New Relic\\.NET Agent'
+      $dotnet_package          = "New Relic .NET Agent (${newrelic::params::bitness}-bit)"
+      $dotnet_source           = 'http://download.newrelic.com/dot_net_agent/release/'
+      $dotnet_application_name = 'My Application'
     }
+
     default: {
-      fail("Unsupported osfamily: ${osfamily} operatingsystem: ${operatingsystem}")
+      fail("Unsupported osfamily: ${facts[osfamily]} operatingsystem: ${facts[operatingsystem]}")
     }
   }
 
