@@ -1,41 +1,77 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-#
+Vagrant.require_version ">= 1.6.5"
 
-if ENV['VAGRANT_HOME'].nil?
-    ENV['VAGRANT_HOME'] = './'
+# ====================
+# BOX DEFINITIONS
+# ====================
+
+BOXES = [
+  {
+    name: "jessie",
+    box: "debian/jessie64"
+  }
+]
+
+# ====================
+# VAGRANT CONFIG
+# ====================
+
+unless Vagrant.has_plugin?("vagrant-puppet-install")
+  raise 'vagrant-puppet-install is not installed!'
 end
 
-newrelic = {
-    :'centos5'  => { :memory => '120', :ip => '10.1.2.10', :box => 'puppetlabs/centos-5.11-64-puppet',  :domain => 'newrelic.local' },
-    :'centos65' => { :memory => '120', :ip => '10.1.2.11', :box => 'puppetlabs/centos-6.5-64-puppet',   :domain => 'newrelic.local' },
-    :'precise'  => { :memory => '120', :ip => '10.1.2.20', :box => 'puppetlabs/ubuntu-12.04-64-puppet', :domain => 'newrelic.local' },
-    :'saucy'    => { :memory => '120', :ip => '10.1.2.21', :box => 'puppetlabs/ubuntu-13.10-64-puppet', :domain => 'newrelic.local' },
-    :'trusty'   => { :memory => '360', :ip => '10.1.2.22', :box => 'puppetlabs/ubuntu-14.04-64-puppet', :domain => 'newrelic.local' },
-    :'squeeze'  => { :memory => '120', :ip => '10.1.2.30', :box => 'puppetlabs/debian-6.0.9-64-puppet', :domain => 'newrelic.local' },
-    :'wheezy'   => { :memory => '120', :ip => '10.1.2.31', :box => 'puppetlabs/debian-7.5-64-puppet',   :domain => 'newrelic.local' },
-}
+Vagrant.configure("2") do |config|
 
-Vagrant::Config.run("2") do |config|
+  ssh_base_port = 2600
+  local_username ||= `whoami`.strip
+  config.puppet_install.puppet_version = "4.10.4"
 
-    newrelic.each_pair do |name, opts|
-        config.vm.define name do |n|
-            config.vm.provider :virtualbox do |vb|
-                vb.customize ["modifyvm", :id, "--memory", opts[:memory] ]
-            end
-            n.vm.network "private_network", ip: opts[:ip]
-            n.vm.box = opts[:box]
-            n.vm.host_name = "#{name}" + "." + opts[:domain]
-            n.vm.synced_folder "#{ENV['VAGRANT_HOME']}","/etc/puppet/modules/newrelic"
-            n.vm.provision :shell, :inline => "gem install puppet facter --no-ri --no-rdoc" if name == "trusty"
-            n.vm.provision :shell, :inline => "puppet module install puppetlabs-apt"
-            n.vm.provision :shell, :inline => "puppet module install puppetlabs-apache"
-            n.vm.provision :puppet do |puppet|
-                puppet.manifests_path = "tests"
-                puppet.manifest_file  = "php.pp"
-                puppet.module_path = "./"
-            end
+  # = Actually do some work
+  BOXES.each_with_index do |definition,idx|
+
+    name = definition[:name]
+    ip = 254 - idx
+
+    config.vm.define name, autostart: false do |c|
+
+      # == Basic box setup
+      c.vm.box         = definition[:box]
+      c.vm.box_version = definition[:version] unless definition[:version].nil?
+      c.vm.hostname    = "#{local_username}-vagrant-#{name}"
+      c.vm.network :private_network, ip: "10.0.255.#{ip}"
+
+      # == Shared folder
+      if Vagrant::Util::Platform.darwin?
+        config.vm.synced_folder ".", "/vagrant", nfs: true
+        c.nfs.map_uid = Process.uid
+        c.nfs.map_gid = Process.gid
+      else
+        c.vm.synced_folder ".", "/vagrant", type: "nfs"
+      end
+
+      # == Disable vagrant's default SSH port, then configure our override
+      new_ssh_port = ssh_base_port + idx
+      c.vm.network :forwarded_port, guest: 22, host: 2222, id: "ssh", disabled: "true"
+      c.ssh.port = new_ssh_port
+      c.vm.network :forwarded_port, guest: 22, host: new_ssh_port
+
+      # == Set resources if configured
+      c.vm.provider "virtualbox" do |v|
+        v.name = "puppet_newrelic_#{name}"
+        v.memory = definition[:memory] unless definition[:memory].nil?
+        v.cpus = definition[:cpus] unless definition[:cpus].nil?
+      end
+
+      # == Setup port forwarding if configugred
+      if not definition[:ports].nil?
+        definition[:ports].each do |port_info|
+          c.vm.network :forwarded_port, port_info
         end
-    end
+      end
 
+      # == Run Puppet
+      c.vm.provision :shell, :inline => "for MOD in puppetlabs-apt puppetlabs-apache puppetlabs-stdlib puppet-download_file; do /opt/puppetlabs/puppet/bin/puppet module install $MOD; done"
+      c.vm.provision :shell, :inline => "if [ ! -L /etc/puppetlabs/code/environments/production/modules/newrelic ]; then ln -s /vagrant /etc/puppetlabs/code/environments/production/modules/newrelic; fi"
+      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose /vagrant/tests/infra_only.pp"
+    end
+  end
 end

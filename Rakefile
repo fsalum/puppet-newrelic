@@ -1,10 +1,8 @@
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'puppet/vendor/semantic/lib/semantic'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
 
-# These gems aren't always present, for instance
-# on Travis with --without development
+# These gems aren't always present, for instance on Travis
 begin
   require 'puppet_blacksmith/rake_tasks'
 rescue LoadError
@@ -45,6 +43,6 @@ desc "Run syntax, lint, and spec tests."
 task :test => [
   :syntax,
   :lint,
-  :spec,
+#  :spec,
   :metadata_lint,
 ]

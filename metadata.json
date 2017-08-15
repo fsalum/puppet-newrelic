@@ -11,27 +11,15 @@
   "tags": ["newrelic", "monitoring", "metrics"],
   "operatingsystem_support": [
     {
-      "operatingsystem": "Centos",
-      "operatingsystemrelease": [
-        "5",
-        "6"
-      ]
-    },
-      {
-        "operatingsystem": "Ubuntu",
-        "operatingsystemrelease": [
-          "12.04",
-          "13.10",
-          "14.04"
-        ]
-      },
-      {
-        "operatingsystem": "Debian",
-        "operatingsystemrelease": [
-          "6",
-          "7"
-        ]
-      }
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": ["6","7"]
+    }, {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": ["14.04","16.04"]
+    }, {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": ["7","8","9"]
+    }
   ],
   "requirements": [
     {
@@ -42,13 +30,11 @@
   "dependencies": [
     {
       "name": "puppetlabs/apt",
-      "version_requirement": ">= 2.0.0 < 3.0.0"
-    },
-    {
+      "version_requirement": ">= 3.0.0 < 5.0.0"
+    },{
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.1.0 < 5.0.0"
-    },
-    {
+    },{
       "name": "puppet/download_file",
       "version_requirement": ">= 1.2.1 < 2.0.0"
     }

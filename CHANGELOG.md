@@ -1,8 +1,8 @@
-## claranet/puppet-newrelic changelog
+# Change Log
 
 Release notes for the claranet/puppet-newrelic module.
 
 ------------------------------------------
-#### 1.0.0
 
-* Inital Forge Release
+## TBC - 1.0.0
+  * Initial Forge Release
