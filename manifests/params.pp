@@ -45,7 +45,7 @@ class newrelic::params {
       $temp_dir                = 'C:/Windows/temp'
       $server_monitor_source   = 'http://download.newrelic.com/windows_server_monitor/release/'
       $dotnet_conf_dir         = 'C:\\ProgramData\\New Relic\\.NET Agent'
-      $dotnet_package          = "New Relic .NET Agent (${newrelic::params::bitness}-bit)"
+      $dotnet_package          = "New Relic .NET Agent (${bitness}-bit)"
       $dotnet_source           = 'http://download.newrelic.com/dot_net_agent/release/'
       $dotnet_application_name = 'My Application'
     }

@@ -1,4 +1,4 @@
-# == Class: newrelic::legacy_repo
+# == Class: newrelic::repo::legacy
 #
 # Installs the required repository for NewRelic packages
 #
@@ -10,7 +10,7 @@
 #
 # Copyright Claranet
 #
-class newrelic::legacy_repo {
+class newrelic::repo::legacy {
 
   case $facts['os']['family'] {
     'RedHat' : {

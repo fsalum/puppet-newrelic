@@ -16,11 +16,9 @@
 # [*license_key*]
 #   Specify your Newrelic License Key.
 #
-# === Variables
-#
 # === Examples
 #
-#  class {'newrelic::server::linux':
+#  class { 'newrelic::server::linux':
 #      license_key    => 'your license key here',
 #      package_ensure => 'latest',
 #      service_ensure => 'running',
@@ -57,12 +55,14 @@ class newrelic::server::linux (
   Variant[Undef,String] $hostname       = undef,
 ) inherits newrelic::params {
 
+  warning('Use of newrelic::server::linux is deprecated and will be removed in a future release. Please use newrelic::infra instead.')
+
   $logdir = dirname($logfile)
 
   if $manage_repo == true {
-    include ::newrelic::legacy_repo
+    include ::newrelic::repo::legacy
     Package[$package_name] {
-      require => $::newrelic::legacy_repo::require,
+      require => $::newrelic::repo::legacy::require,
     }
   }
 
@@ -88,7 +88,7 @@ class newrelic::server::linux (
   file { '/etc/newrelic/nrsysmond.cfg':
     ensure  => present,
     path    => '/etc/newrelic/nrsysmond.cfg',
-    content => template('newrelic/nrsysmond.cfg.erb'),
+    content => template('newrelic/server/nrsysmond.cfg.erb'),
     require => File[$logdir],
     notify  => Service[$service_name],
   }

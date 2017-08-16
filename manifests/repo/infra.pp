@@ -1,4 +1,4 @@
-# == Class: newrelic::infra::repo
+# == Class: newrelic::repo::infra
 #
 # Installs the required repository for NewRelic Infrastructure pages
 #
@@ -10,7 +10,7 @@
 #
 # Copyright Claranet
 #
-class newrelic::infra::repo {
+class newrelic::repo::infra {
 
   case $facts['os']['family'] {
     'RedHat' : {

@@ -20,7 +20,25 @@
 #   Specify the Newrelic daemon config file state. Change to absent for agent startup mode.
 #   Default: 'present' (String)
 #
-# For detailed explanation about the parameters below see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
+# [*conf_dir*]
+#   List of configuration directories used for PHP. Pass multiple directories for setups like PHP-FPM or mod_php.
+#   Default: OS dependant (see params.pp)
+#
+# [*ini_settings*]
+#   Key/Value hash of settings to add to newrelic.ini files within $conf_dir - see below example.
+#   NOTE that all settings are added to the [newrelic] section with the "newrelic." prefix.
+#   For more info on possible parameters, see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
+#   Default: {} (Hash)
+#
+# === Examples
+#
+# class { '::newrelic::agent::php':
+#   license_key          => 'your license key here',
+#   daemon_config_ensure => 'absent',
+#   ini_settings         => {
+#     'appname' => 'My PHP Application',
+#   },
+# }
 #
 # === Authors
 #
@@ -42,29 +60,7 @@ class newrelic::agent::php (
   String  $service_ensure                           = 'running',
   Boolean $service_enable                           = false,
   String  $daemon_config_ensure                     = 'present',
-
-  $ini_appname                                  = undef,
-  $ini_browser_monitoring_auto_instrument       = undef,
-  $ini_enabled                                  = undef,
-  $ini_error_collector_enabled                  = undef,
-  $ini_error_collector_prioritize_api_errors    = undef,
-  $ini_error_collector_record_database_errors   = undef,
-  $ini_framework                                = undef,
-  $ini_high_security                            = undef,
-  $ini_logfile                                  = undef,
-  $ini_loglevel                                 = undef,
-  $ini_transaction_tracer_custom                = undef,
-  $ini_transaction_tracer_detail                = undef,
-  $ini_transaction_tracer_enabled               = undef,
-  $ini_transaction_tracer_explain_enabled       = undef,
-  $ini_transaction_tracer_explain_threshold     = undef,
-  $ini_transaction_tracer_record_sql            = undef,
-  $ini_transaction_tracer_slow_sql              = undef,
-  $ini_transaction_tracer_stack_trace_threshold = undef,
-  $ini_transaction_tracer_threshold             = undef,
-  $ini_capture_params                           = undef,
-  $ini_ignored_params                           = undef,
-  $ini_webtransaction_name_files                = undef,
+  Hash    $ini_settings                             = {},
 
   $daemon_dont_launch                           = undef,
   $daemon_pidfile                               = undef,
@@ -81,9 +77,9 @@ class newrelic::agent::php (
 ) inherits newrelic::params {
 
   if $manage_repo == true {
-    include ::newrelic::legacy_repo
+    include ::newrelic::repo::legacy
     Package[$package_name] {
-      require => $::newrelic::legacy_repo::require
+      require => $::newrelic::repo::legacy::require
     }
   }
 
@@ -99,20 +95,35 @@ class newrelic::agent::php (
       require  => Package[$package_name],
     }
 
-    file { "${dir}/newrelic.ini":
-      ensure  => file,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('newrelic/newrelic.ini.erb'),
+    $ini_defaults = {
+      ensure  => present,
+      section => 'newrelic',
+      path    => "${dir}/newrelic.ini",
       require => Exec["newrelic install ${dir}"],
     }
+
+    ini_setting { 'newrelic.license':
+      setting => 'newrelic.license',
+      value   => $license_key,
+      *       => $ini_defaults,
+    }
+
+    $ini_settings.each |String $k, String $v| {
+      ini_setting { "newrelic.$k":
+        setting => "newrelic.$k",
+        value   => $v,
+        *       => $ini_defaults,
+      }
+    }
   }
+
+  # == Daemon
 
   file { '/etc/newrelic/newrelic.cfg':
     ensure  => $daemon_config_ensure,
     path    => '/etc/newrelic/newrelic.cfg',
-    content => template('newrelic/newrelic.cfg.erb'),
+    content => template('newrelic/daemon/newrelic.cfg.erb'),
+    require => Package[$package_name],
     before  => Service[$service_name],
     notify  => Service[$service_name],
   }

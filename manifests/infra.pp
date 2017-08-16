@@ -1,5 +1,4 @@
-# Class: newrelic::infra
-# =============================
+# == Class: newrelic::infra
 #
 # Installs and starts the New Relic Infrastrucure Agent, and replaces the
 # deprecated server class.
@@ -13,6 +12,15 @@
 #   Whether to install the NewRelic OS repositories
 #   Default: Varies depending on OS (Boolean)
 #
+# === Authors
+#
+# Russell Whelan <russell.whelan@claranet.uk>
+# Craig Watson <craig.watson@claranet.uk>
+#
+# === Copyright
+#
+# Copyright 2017 Claranet
+#
 class newrelic::infra (
   String $license_key,
   Boolean $manage_repo = $::newrelic::params::manage_repo,
@@ -23,9 +31,9 @@ class newrelic::infra (
   }
 
   if $::newrelic::infra::manage_repo == true {
-    contain ::newrelic::infra::repo
+    contain ::newrelic::repo::infra
     File['/etc/newrelic-infra.yml'] {
-      require => $::newrelic::infra::repo::require,
+      require => $::newrelic::repo::infra::require,
     }
   }
 

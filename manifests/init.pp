@@ -67,7 +67,6 @@ class newrelic (
   }
 
   if $enable_server == true {
-    warning('Use of newrelic::server is deprecated and will be removed in a future release. Please use newrelic::infra instead.')
     if $facts['os']['family'] == 'Windows' {
       class { '::newrelic::server::windows': }
     } else {
