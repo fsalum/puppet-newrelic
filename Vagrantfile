@@ -4,7 +4,8 @@ Vagrant.require_version ">= 1.6.5"
 # VARIABLES + BOX DEFINITIONS
 # ===========================
 
-WEB_PORT       = 6080
+WEB_BASE_PORT  = 6800
+SSH_BASE_PORT  = 2600
 PUPPET_VERSION = "4.10.6"
 BOXES          = [
   { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2", puppet_version: "4.10.6" },
@@ -25,7 +26,7 @@ end
 
 Vagrant.configure("2") do |config|
 
-  ssh_base_port = 2600
+  ssh_base_port =
   local_username ||= `whoami`.strip
 
   # = Actually do some work
@@ -53,7 +54,7 @@ Vagrant.configure("2") do |config|
       end
 
       # == Disable vagrant's default SSH port, then configure our override
-      new_ssh_port = ssh_base_port + idx
+      new_ssh_port = SSH_BASE_PORT + idx
       c.vm.network :forwarded_port, guest: 22, host: 2222, id: "ssh", disabled: "true"
       c.ssh.port = new_ssh_port
       c.vm.network :forwarded_port, guest: 22, host: new_ssh_port
@@ -66,7 +67,8 @@ Vagrant.configure("2") do |config|
       end
 
       # == Setup port forwarding for port 80, and extras if configured
-      c.vm.network :forwarded_port, guest: 80, host: WEB_PORT
+      web_port = WEB_BASE_PORT + idx
+      c.vm.network :forwarded_port, guest: 80, host: web_port
       if not definition[:ports].nil?
         definition[:ports].each do |port_info|
           c.vm.network :forwarded_port, port_info

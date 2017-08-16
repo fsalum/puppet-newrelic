@@ -15,9 +15,11 @@
 #   Main Configuration directory used for PHP.
 #   Default: OS dependant - see params.pp (String)
 #
-# [*symlink_conf_dir]
-#   List of direcories to symlink to the main configuration file - e.g. cli and apache2
-#   Default: [] (Array)
+# [*purge_files*]
+#   Any files which should be purged following the installation. This is only
+#   necessary as the NewRelic installer adds files to every possible location,
+#   resulting in duplicate configuration.
+#   Default: OS dependant - see params.pp (Array)
 #
 # [*package_name*]
 #   Name of the package to install
@@ -37,9 +39,10 @@
 #   Default: 'agent' (String)
 #
 # [*ini_settings*]
-#   Key/Value hash of settings to add to newrelic.ini files within $conf_dir - see below example.
-#   NOTE that all settings are added to the [newrelic] section with the "newrelic." prefix.
-#   For more info on possible parameters, see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
+#   Key/Value hash of settings to add to newrelic.ini files within $conf_dir,
+#   see below example. NOTE that all settings are added to the [newrelic]
+#   section with the "newrelic." prefix. For more info on possible parameters,
+#   see: https://docs.newrelic.com/docs/php/php-agent-phpini-settings
 #   Default: {} (Hash)
 #
 # === Examples
@@ -68,7 +71,7 @@ class newrelic::agent::php (
   String                   $license_key,
   Boolean                  $manage_repo      = $::newrelic::params::manage_repo,
   String                   $conf_dir         = $::newrelic::params::php_conf_dir,
-  Array                    $symlink_conf_dir = [],
+  Array                    $purge_files      = $::newrelic::params::php_purge_files,
   String                   $package_name     = $::newrelic::params::php_package_name,
   String                   $service_name     = $::newrelic::params::php_service_name,
   String                   $package_ensure   = 'present',
@@ -149,11 +152,9 @@ class newrelic::agent::php (
     }
   }
 
-  $symlink_conf_dir.each |String $dir| {
-    file { "${dir}/newrelic.ini":
-      ensure => link,
-      target => "${conf_dir}/newrelic.ini"
-    }
+  file { $purge_files:
+    ensure  => absent,
+    require => Exec['newrelic install']
   }
 
   service { $service_name:
