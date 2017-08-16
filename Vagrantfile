@@ -1,10 +1,12 @@
 Vagrant.require_version ">= 1.6.5"
 
-# ====================
-# BOX DEFINITIONS
-# ====================
+# ===========================
+# VARIABLES + BOX DEFINITIONS
+# ===========================
 
-BOXES = [
+WEB_PORT       = 6080
+PUPPET_VERSION = "4.10.6"
+BOXES          = [
   { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2", puppet_version: "4.10.6" },
   { name: "debian8",  box: "debian/jessie64",  version: "8.9.0", puppet_version: "4.10.6" },
   { name: "ubuntu14", box: "ubuntu/trusty64", version: "20170810.0.0" },
@@ -13,9 +15,9 @@ BOXES = [
   { name: "centos7",  box: "centos/7", version: "1707.01" }
 ]
 
-# ====================
+# ==============
 # VAGRANT CONFIG
-# ====================
+# ==============
 
 unless Vagrant.has_plugin?("vagrant-puppet-install")
   raise 'vagrant-puppet-install is not installed!'
@@ -32,7 +34,7 @@ Vagrant.configure("2") do |config|
     name = definition[:name]
     ip = 254 - idx
 
-    config.puppet_install.puppet_version = "4.10.6"
+    config.puppet_install.puppet_version = PUPPET_VERSION
     config.vm.define name, autostart: false do |c|
 
       # == Basic box setup
@@ -63,7 +65,8 @@ Vagrant.configure("2") do |config|
         v.cpus = definition[:cpus] unless definition[:cpus].nil?
       end
 
-      # == Setup port forwarding if configugred
+      # == Setup port forwarding for port 80, and extras if configured
+      c.vm.network :forwarded_port, guest: 80, host: WEB_PORT
       if not definition[:ports].nil?
         definition[:ports].each do |port_info|
           c.vm.network :forwarded_port, port_info
