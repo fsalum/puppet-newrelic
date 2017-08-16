@@ -11,7 +11,6 @@
     * [What puppet-newrelic affects](#what-puppet-newrelic-affects)
     * [Beginning with puppet-newrelic](#beginning-with-registry)
 1. [Usage - Configuration options and additional functionality](#usage)
-1. [Reference - An under-the-hood peek at what the module is doing](#reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
 
@@ -40,31 +39,50 @@ By default, the module installs and configures the [NewRelic Infrastructure agen
 
 To install the (deprecated) NewRelic Server Monitoring agent instead of the default NewRelic Infrastructure agent:
 
-    class { 'newrelic':
+    class { '::newrelic':
       license_key   => 'your key here',
       enable_infra  => false,
       enable_server => true,
     }
 
-## Reference
+To enable the PHP agent with default configuration:
 
-Mandatory parameters:
+    class { '::newrelic':
+      license_key      => 'your key here',
+      enable_php_agent => true,
+    }
 
-* `license_key`
+Further PHP agent configuration in Hiera:
 
-There are also a lot of parameters for the Server and PHP agents. Please check the manifest files and the [New Relic documentation](https://docs.newrelic.com/docs/php/php-agent-phpini-settings) to understand them.
+     newrelic::agent::php::settings:
+       appname: 'ACME PHP Application'
+       daemon.loglevel: 'error'
 
-### Classes
+### Advanced Usage Examples
+
+To configure the PHP agent using Apache's `mod_php` (this assumes usage of Puppetlabs/Apache):
+
+    class { '::apache': }
+    class { '::apache::mod::php': }
+
+    class { '::newrelic::agent::php':
+      license_key  => 'your key',
+      require      => Class['::apache::mod::php'],
+      notify       => Service['httpd'],
+    }
 
 ## Limitations
 
-* Moving from NewRelic Server to NewRelic Infrastructure - the module only installs the new client, and does not clean up the old one
+* When moving from NewRelic Server to NewRelic Infrastructure - the module only installs the new client, and does not clean up the old one
+
+### Windows Support
+
+Please note that Windows support is currently **untested**.
 
 ### Supported Operating Systems
 
 * Debian/Ubuntu
 * CentOS/RHEL
-* Windows (currently untested)
 
 ## Development
 
