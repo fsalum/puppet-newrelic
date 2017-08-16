@@ -71,8 +71,8 @@ class newrelic::agent::dotnet (
     ensure  => $newrelic_dotnet_package_ensure,
     source  => "${temp_dir}\\${destination_file}",
     require => Class['newrelic::params'],
-  } ->
-  file { "${newrelic_dotnet_conf_dir}\\newrelic.config":
+  }
+  -> file { "${newrelic_dotnet_conf_dir}\\newrelic.config":
     ensure  => $newrelic_daemon_cfgfile_ensure,
     content => template('newrelic/dotnet/newrelic.config.erb'),
     notify  => Exec['iisreset'],

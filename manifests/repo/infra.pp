@@ -47,7 +47,7 @@ class newrelic::repo::infra {
     }
 
     default: {
-      fail("Unknown osfamily: $facts[os][family]")
+      fail("Unknown osfamily: ${facts[os][family]}")
     }
   }
 }

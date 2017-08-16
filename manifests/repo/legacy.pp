@@ -39,7 +39,7 @@ class newrelic::repo::legacy {
     }
 
     default: {
-      fail("Unknown osfamily: $facts[os][family]")
+      fail("Unknown osfamily: ${facts[os][family]}")
     }
   }
 }

@@ -39,7 +39,7 @@ class newrelic::infra (
 
   file { '/etc/newrelic-infra.yml':
     ensure  => file,
-    content => "license_key: $license_key\n",
+    content => "license_key: ${license_key}\n",
     notify  => Service['newrelic-infra'],
   }
 
