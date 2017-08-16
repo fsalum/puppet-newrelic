@@ -12,8 +12,12 @@
 #   Default: OS dependant - see params.pp (Boolean)
 #
 # [*conf_dir*]
-#   List of configuration directories used for PHP. Pass multiple directories for setups like PHP-FPM or mod_php.
+#   Main Configuration directory used for PHP.
 #   Default: OS dependant - see params.pp (String)
+#
+# [*symlink_conf_dir]
+#   List of direcories to symlink to the main configuration file - e.g. cli and apache2
+#   Default: [] (Array)
 #
 # [*package_name*]
 #   Name of the package to install
@@ -27,9 +31,10 @@
 #   Specific the Newrelic PHP package update state.
 #   Default: 'present' (String)
 #
-# [*daemon_enable*]
-#   Enables the NewRelic Agent daemon. Change this to false to use agent-startup mode.
-#   Default: true (Boolean)
+# [*startup_mode*]
+#   Sets the startup mode to either 'agent' or 'external'.
+#   For more detail, see: https://docs.newrelic.com/docs/agents/php-agent/advanced-installation/starting-php-daemon-advanced
+#   Default: 'agent' (String)
 #
 # [*ini_settings*]
 #   Key/Value hash of settings to add to newrelic.ini files within $conf_dir - see below example.
@@ -61,15 +66,16 @@
 #
 class newrelic::agent::php (
   String                   $license_key,
-  Boolean                  $manage_repo    = $::newrelic::params::manage_repo,
-  Array                    $conf_dir       = $::newrelic::params::php_conf_dir,
-  String                   $package_name   = $::newrelic::params::php_package_name,
-  String                   $service_name   = $::newrelic::params::php_service_name,
-  String                   $package_ensure = 'present',
-  Enum['agent','external'] $startup_mode   = 'agent',
-  String                   $service_ensure = 'running',
-  Boolean                  $service_enable = true,
-  Hash                     $ini_settings   = {},
+  Boolean                  $manage_repo      = $::newrelic::params::manage_repo,
+  String                   $conf_dir         = $::newrelic::params::php_conf_dir,
+  Array                    $symlink_conf_dir = [],
+  String                   $package_name     = $::newrelic::params::php_package_name,
+  String                   $service_name     = $::newrelic::params::php_service_name,
+  String                   $package_ensure   = 'present',
+  Enum['agent','external'] $startup_mode     = 'agent',
+  String                   $service_ensure   = 'running',
+  Boolean                  $service_enable   = true,
+  Hash                     $ini_settings     = {},
 
   $daemon_dont_launch                           = undef,
   $daemon_pidfile                               = undef,
@@ -115,37 +121,40 @@ class newrelic::agent::php (
     notify  => Service[$service_name],
   }
 
-  $conf_dir.each |String $dir| {
-    exec { "newrelic install ${dir}":
-      command => "/usr/bin/newrelic-install purge; NR_INSTALL_SILENT=yes, NR_INSTALL_KEY=${license_key} /usr/bin/newrelic-install install",
-      user    => 'root',
-      unless  => "/bin/grep -q ${license_key} ${dir}/newrelic.ini",
-      require => Package[$package_name],
-    }
+  exec { 'newrelic install':
+    command => "/usr/bin/newrelic-install purge; NR_INSTALL_SILENT=yes, NR_INSTALL_KEY=${license_key} /usr/bin/newrelic-install install",
+    user    => 'root',
+    unless  => "/bin/grep -q ${license_key} ${conf_dir}/newrelic.ini",
+    require => Package[$package_name],
+  }
 
-    $ini_defaults = {
-      ensure  => present,
-      section => 'newrelic',
-      path    => "${dir}/newrelic.ini",
-      require => Exec["newrelic install ${dir}"],
-    }
+  $ini_defaults = {
+    ensure  => present,
+    section => 'newrelic',
+    path    => "${conf_dir}/newrelic.ini",
+    require => Exec['newrelic install'],
+  }
 
-    ini_setting { 'newrelic.license':
-      setting => 'newrelic.license',
-      value   => $license_key,
+  ini_setting { 'newrelic.license':
+    setting => 'newrelic.license',
+    value   => $license_key,
+    *       => $ini_defaults,
+  }
+
+  $ini_settings.each |String $k, String $v| {
+    ini_setting { "newrelic.${k}":
+      setting => "newrelic.${k}",
+      value   => $v,
       *       => $ini_defaults,
-    }
-
-    $ini_settings.each |String $k, String $v| {
-      ini_setting { "newrelic.${k}":
-        setting => "newrelic.${k}",
-        value   => $v,
-        *       => $ini_defaults,
-      }
     }
   }
 
-  # == Service
+  $symlink_conf_dir.each |String $dir| {
+    file { "${dir}/newrelic.ini":
+      ensure => link,
+      target => "${conf_dir}/newrelic.ini"
+    }
+  }
 
   service { $service_name:
     ensure     => $service_ensure,
@@ -153,4 +162,5 @@ class newrelic::agent::php (
     hasrestart => true,
     hasstatus  => true,
   }
+
 }

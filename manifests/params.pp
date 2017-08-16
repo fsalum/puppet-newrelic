@@ -25,7 +25,7 @@ class newrelic::params {
       $server_service_name = 'newrelic-sysmond'
       $php_package_name    = 'newrelic-php5'
       $php_service_name    = 'newrelic-daemon'
-      $php_conf_dir        = ['/etc/php.d']
+      $php_conf_dir        = '/etc/php.d'
     }
 
     'Debian': {
@@ -34,7 +34,7 @@ class newrelic::params {
       $server_service_name = 'newrelic-sysmond'
       $php_package_name    = 'newrelic-php5'
       $php_service_name    = 'newrelic-daemon'
-      $php_conf_dir        = ['/etc/php5/mods-available']
+      $php_conf_dir        = '/etc/php5/mods-available'
     }
 
     'Windows': {
