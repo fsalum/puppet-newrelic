@@ -7,7 +7,8 @@ Vagrant.require_version ">= 1.6.5"
 WEB_BASE_PORT  = 6800
 SSH_BASE_PORT  = 2600
 PUPPET_VERSION = "4.10.6"
-BOXES          = [
+
+BOXES = [
   { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2", puppet_version: "4.10.6" },
   { name: "debian8",  box: "debian/jessie64",  version: "8.9.0", puppet_version: "4.10.6" },
   { name: "ubuntu14", box: "ubuntu/trusty64", version: "20170810.0.0" },
@@ -78,7 +79,7 @@ Vagrant.configure("2") do |config|
       # == Run Puppet
       c.vm.provision :shell, :inline => "for MOD in puppetlabs-apt puppetlabs-inifile puppetlabs-apache puppetlabs-stdlib puppet-download_file; do /opt/puppetlabs/puppet/bin/puppet module install $MOD; done"
       c.vm.provision :shell, :inline => "if [ ! -L /etc/puppetlabs/code/environments/production/modules/newrelic ]; then ln -s /vagrant /etc/puppetlabs/code/environments/production/modules/newrelic; fi"
-      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/tests/php.pp"
+      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/tests/mod_php.pp"
     end
   end
 end
