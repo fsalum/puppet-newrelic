@@ -34,7 +34,8 @@
 #   Default: 'present' (String)
 #
 # [*startup_mode*]
-#   Sets the startup mode to either 'agent' or 'external'.
+#   Sets the startup mode to either 'agent' or 'external'. When set to 'agent',
+#   the newrelic-daemon service will not be managed by Puppet.
 #   For more detail, see: https://docs.newrelic.com/docs/agents/php-agent/advanced-installation/starting-php-daemon-advanced
 #   Default: 'agent' (String)
 #
@@ -74,10 +75,10 @@ class newrelic::agent::php (
   Array                    $purge_files      = $::newrelic::params::php_purge_files,
   String                   $package_name     = $::newrelic::params::php_package_name,
   String                   $service_name     = $::newrelic::params::php_service_name,
-  String                   $package_ensure   = 'present',
-  Enum['agent','external'] $startup_mode     = 'agent',
   String                   $service_ensure   = 'running',
   Boolean                  $service_enable   = true,
+  String                   $package_ensure   = 'present',
+  Enum['agent','external'] $startup_mode     = 'agent',
   Hash                     $ini_settings     = {},
 
   $daemon_dont_launch                           = undef,
@@ -115,13 +116,18 @@ class newrelic::agent::php (
 
   # == Configuration
 
+  if $startup_mode == 'external' {
+    File['/etc/newrelic/newrelic.cfg']{
+      before  => Service[$service_name],
+      notify  => Service[$service_name],
+    }
+  }
+
   file { '/etc/newrelic/newrelic.cfg':
     ensure  => $daemon_config_ensure,
     path    => '/etc/newrelic/newrelic.cfg',
     content => template('newrelic/daemon/newrelic.cfg.erb'),
     require => Package[$package_name],
-    before  => Service[$service_name],
-    notify  => Service[$service_name],
   }
 
   exec { 'newrelic install':
@@ -157,11 +163,13 @@ class newrelic::agent::php (
     require => Exec['newrelic install']
   }
 
-  service { $service_name:
-    ensure     => $service_ensure,
-    enable     => $service_enable,
-    hasrestart => true,
-    hasstatus  => true,
+  if $startup_mode == 'external' {
+    service { $service_name:
+      ensure     => $service_ensure,
+      enable     => $service_enable,
+      hasrestart => true,
+      hasstatus  => true,
+    }
   }
 
 }

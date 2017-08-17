@@ -26,6 +26,7 @@ class newrelic::params {
       $php_package_name    = 'newrelic-php5'
       $php_service_name    = 'newrelic-daemon'
       $php_conf_dir        = '/etc/php.d'
+      $php_purge_files     = []
     }
 
     'Debian': {
@@ -35,7 +36,7 @@ class newrelic::params {
       $php_package_name    = 'newrelic-php5'
       $php_service_name    = 'newrelic-daemon'
 
-      if $facts['os']['release']['full'] == "16.04" {
+      if $facts['os']['release']['full'] == '16.04' {
         $php_conf_dir        = '/etc/php/7.0/mods-available'
         $php_purge_files     = ['/etc/php/7.0/apache2/conf.d/newrelic.ini']
       } else {
