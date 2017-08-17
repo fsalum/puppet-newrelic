@@ -106,7 +106,7 @@ Vagrant.configure("2") do |config|
           c.vm.provision :shell, :inline => "/opt/puppetlabs/bin/puppet module install #{mod[:name]} --version #{mod[:version]}"
         else
           mod_name = mod[:name].split('-').last
-          c.vm.provision :shell, :inline => "if [ ! -d /etc/puppetlabs/code/environments/production/#{mod_name} ]; then git clone #{mod[:git]} /etc/puppetlabs/code/environments/production/#{mod_name}; fi"
+          c.vm.provision :shell, :inline => "if [ ! -d /etc/puppetlabs/code/environments/production/modules/#{mod_name} ]; then git clone #{mod[:git]} /etc/puppetlabs/code/environments/production/modules/#{mod_name}; fi"
         end
       end
       c.vm.provision :shell, :inline => "if [ ! -L /etc/puppetlabs/code/environments/production/modules/newrelic ]; then ln -s /vagrant /etc/puppetlabs/code/environments/production/modules/newrelic; fi"
