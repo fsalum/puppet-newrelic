@@ -10,8 +10,8 @@ PUPPET_VERSION = "4.10.6"
 DEFAULT_TEST   = "mod_php"
 
 BOXES = [
-  { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2" },
-  { name: "debian8",  box: "debian/jessie64",  version: "8.9.0" },
+  { name: "debian7",  box: "debian/wheezy64", version: "7.11.2" },
+  { name: "debian8",  box: "debian/jessie64", version: "8.9.0" },
   { name: "ubuntu14", box: "ubuntu/trusty64", version: "20170810.0.0" },
   { name: "ubuntu16", box: "ubuntu/xenial64", version: "20170811.0.0" },
   { name: "centos6",  box: "centos/6", version: "1707.01" },
@@ -26,7 +26,7 @@ MODULES = [
   { name: "puppetlabs-apt", version: "4.1.0" },
   # Test dependencies
   { name: "Slashbunny-phpfpm", version: "0.0.13" },
-  { name: "jfryman-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" },
+  { name: "puppet-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" },
   { name: "puppetlabs-concat", version: "4.0.1" },
   { name: "puppetlabs-apache", version: "2.0.0" }
 ]

@@ -29,6 +29,13 @@
 #   Name of the service running the PHP agent
 #   Default: OS dependant - see params.pp (String)
 #
+# [*extra_packages*]
+#   Any extra packages to install before running the install script. For example
+#   if using PHP-FPM on RedHat distros, some Puppet modules do not install the
+#   required php-cli package, so the installer fails to find any PHP
+#   installations.
+#   Default: OS dependant - see params.pp (Array)
+#
 # [*package_ensure*]
 #   Specific the Newrelic PHP package update state.
 #   Default: 'present' (String)
@@ -75,6 +82,7 @@ class newrelic::agent::php (
   Array                    $purge_files      = $::newrelic::params::php_purge_files,
   String                   $package_name     = $::newrelic::params::php_package_name,
   String                   $service_name     = $::newrelic::params::php_service_name,
+  Array                    $extra_packages   = $::newrelic::params::php_extra_packages,
   String                   $service_ensure   = 'running',
   Boolean                  $service_enable   = true,
   String                   $package_ensure   = 'present',
@@ -110,6 +118,9 @@ class newrelic::agent::php (
     }
   }
 
+  $all_packages = concat($extra_packages,[$package_name])
+  ensure_packages($extra_packages)
+
   package { $package_name:
     ensure  => $package_ensure,
   }
@@ -127,14 +138,14 @@ class newrelic::agent::php (
     ensure  => $daemon_config_ensure,
     path    => '/etc/newrelic/newrelic.cfg',
     content => template('newrelic/daemon/newrelic.cfg.erb'),
-    require => Package[$package_name],
+    require => Package[$all_packages],
   }
 
   exec { 'newrelic install':
     command => "/usr/bin/newrelic-install purge; NR_INSTALL_SILENT=yes, NR_INSTALL_KEY=${license_key} /usr/bin/newrelic-install install",
     user    => 'root',
     unless  => "/bin/grep -q ${license_key} ${conf_dir}/newrelic.ini",
-    require => Package[$package_name],
+    require => Package[$all_packages],
   }
 
   $ini_defaults = {
