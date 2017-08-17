@@ -7,14 +7,28 @@ Vagrant.require_version ">= 1.6.5"
 WEB_BASE_PORT  = 6800
 SSH_BASE_PORT  = 2600
 PUPPET_VERSION = "4.10.6"
+DEFAULT_TEST   = "mod_php"
 
 BOXES = [
-  { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2", puppet_version: "4.10.6" },
-  { name: "debian8",  box: "debian/jessie64",  version: "8.9.0", puppet_version: "4.10.6" },
+  { name: "debian7",  box: "debian/wheezy64",  version: "7.11.2" },
+  { name: "debian8",  box: "debian/jessie64",  version: "8.9.0" },
   { name: "ubuntu14", box: "ubuntu/trusty64", version: "20170810.0.0" },
   { name: "ubuntu16", box: "ubuntu/xenial64", version: "20170811.0.0" },
   { name: "centos6",  box: "centos/6", version: "1707.01" },
   { name: "centos7",  box: "centos/7", version: "1707.01" }
+]
+
+MODULES = [
+  # Module dependencies
+  { name: "puppetlabs-inifile", version: "2.0.0" },
+  { name: "puppet-download_file", version: "1.2.1" },
+  { name: "puppetlabs-stdlib", version: "4.18.0" },
+  { name: "puppetlabs-apt", version: "4.1.0" },
+  # Test dependencies
+  { name: "Slashbunny-phpfpm", version: "0.0.13" },
+  { name: "jfryman-nginx", git: "https://github.com/voxpupuli/puppet-nginx.git" },
+  { name: "puppetlabs-concat", version: "4.0.1" },
+  { name: "puppetlabs-apache", version: "2.0.0" }
 ]
 
 # ==============
@@ -76,10 +90,28 @@ Vagrant.configure("2") do |config|
         end
       end
 
-      # == Run Puppet
-      c.vm.provision :shell, :inline => "for MOD in puppetlabs-apt puppetlabs-inifile puppetlabs-apache puppetlabs-stdlib puppet-download_file; do /opt/puppetlabs/puppet/bin/puppet module install $MOD; done"
+      # == Allow passing a test file
+      if ENV['TEST_FILE'].nil?
+        test_file = DEFAULT_TEST
+      else
+        test_file = ENV['TEST_FILE']
+      end
+
+      # == Install git ... with Puppet!
+      c.vm.provision :shell, :inline => "/opt/puppetlabs/bin/puppet resource package git ensure=present"
+
+      # == Install modules
+      MODULES.each do |mod|
+        if mod[:git].nil?
+          c.vm.provision :shell, :inline => "/opt/puppetlabs/bin/puppet module install #{mod[:name]} --version #{mod[:version]}"
+        else
+          c.vm.provision :shell, :inline => "git clone #{mod[:git]} /etc/puppetlabs/code/environments/production/#{mod[:name]}"
+        end
+      end
       c.vm.provision :shell, :inline => "if [ ! -L /etc/puppetlabs/code/environments/production/modules/newrelic ]; then ln -s /vagrant /etc/puppetlabs/code/environments/production/modules/newrelic; fi"
-      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/tests/mod_php.pp"
+
+      # == Finally, run Puppet!
+      c.vm.provision :shell, :inline => "STDLIB_LOG_DEPRECATIONS=false /opt/puppetlabs/puppet/bin/puppet apply --verbose --show_diff /vagrant/tests/#{test_file}.pp"
     end
   end
 end
