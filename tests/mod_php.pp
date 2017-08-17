@@ -31,9 +31,6 @@ node default {
 
   file { "${apache_webroot}/index.php":
     ensure  => file,
-    owner   => 'www-data',
-    group   => 'www-data',
-    mode    => '0644',
     content => "<?php phpinfo(); ?>\n",
     require => Package['httpd'],
   }
