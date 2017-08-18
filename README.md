@@ -26,10 +26,6 @@ On 31st December 2016, support for Puppet 3.x was withdrawn. As as a result, **t
 
 ## Setup
 
-### Soft-Dependencies
-
-  * Please note that `puppetlabs/apt` is a *soft* dependency of this module. If you are using a Debian-based operating system, please ensure that this module is available, preferably version 3 or above.
-
 ### What puppet-newrelic affects
 
   * Adds the upstream NewRelic Yum/Apt repositories
