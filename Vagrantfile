@@ -20,7 +20,6 @@ BOXES = [
 
 MODULES = [
   # Module dependencies
-  { name: "puppetlabs-inifile", version: "2.0.0" },
   { name: "puppet-download_file", version: "1.2.1" },
   { name: "puppetlabs-stdlib", version: "4.18.0" },
   { name: "puppetlabs-apt", version: "4.1.0" },
