@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'newrelic::infra::linux', :type => :class do
+describe 'newrelic::infra', :type => :class do
 
   let(:facts) do
   {
@@ -15,7 +15,7 @@ describe 'newrelic::infra::linux', :type => :class do
 
   let(:params) do
    {
-     :newrelic_license_key => '1234567890qwerty',
+     :license_key => '1234567890qwerty',
    }
   end
 
@@ -25,12 +25,12 @@ describe 'newrelic::infra::linux', :type => :class do
   it { should contain_service('newrelic-infra').that_requires('Package[newrelic-infra]') }
   it { should contain_file('/etc/newrelic-infra.yml').with_content("license_key: 1234567890qwerty\n") }
   
-  context 'with newrelic_manage_repo => true' do
+  context 'with manage_repo => true' do
     let(:params)do 
-      super().merge({ 'newrelic_manage_repo' => 'true'})
+      super().merge({ 'manage_repo' => true })
     end
 
-    it { should contain_yumrepo('newrelic-infra') }
+    it { should contain_class('newrelic::repo::infra') }
   end
 end
 
