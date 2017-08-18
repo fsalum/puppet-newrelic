@@ -46,15 +46,15 @@ class newrelic::agent::dotnet (
       $package_source = false
     }
     'present','installed':  {
-      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${::architecture}.msi"
-      $destination_file = "NewRelicDotNetAgent_${::architecture}.msi"
+      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${facts[architecture]}.msi"
+      $destination_file = "NewRelicDotNetAgent_${facts[architecture]}.msi"
     }
     'latest':   {
       fail("'latest' is not a valid value for this package, as we have no way of determining which version is the latest one. You can specify a specific version, though.")
     }
     default:    {
-      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${::architecture}_${newrelic_dotnet_package_ensure}.msi"
-      $destination_file = "NewRelicDotNetAgent_${::architecture}_${newrelic_dotnet_package_ensure}.msi"
+      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${facts[architecture]}_${newrelic_dotnet_package_ensure}.msi"
+      $destination_file = "NewRelicDotNetAgent_${facts[architecture]}_${newrelic_dotnet_package_ensure}.msi"
     }
   }
 

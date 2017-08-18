@@ -54,15 +54,15 @@ class newrelic::server::windows (
       $package_source = false
     }
     'present','installed':  {
-      $package_source   = "${server_monitor_source}/${::architecture}"
-      $destination_file = "NewRelicServerMonitor_${::architecture}.msi"
+      $package_source   = "${server_monitor_source}/${facts[architecture]}"
+      $destination_file = "NewRelicServerMonitor_${facts[architecture]}.msi"
     }
     'latest':   {
       fail("'latest' is not a valid value for this package, as we have no way of determining which version is the latest one. You can specify a specific version, though.")
     }
     default:    {
-      $package_source   = "${server_monitor_source}/NewRelicServerMonitor_${::architecture}_${newrelic_package_ensure}.msi"
-      $destination_file = "NewRelicServerMonitor_${::architecture}_${newrelic_package_ensure}.msi"
+      $package_source   = "${server_monitor_source}/NewRelicServerMonitor_${facts[architecture]}_${newrelic_package_ensure}.msi"
+      $destination_file = "NewRelicServerMonitor_${facts[architecture]}_${newrelic_package_ensure}.msi"
     }
   }
 

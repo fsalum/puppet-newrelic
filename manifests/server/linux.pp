@@ -86,7 +86,7 @@ class newrelic::server::linux (
   }
 
   file { '/etc/newrelic/nrsysmond.cfg':
-    ensure  => present,
+    ensure  => file,
     path    => '/etc/newrelic/nrsysmond.cfg',
     content => template('newrelic/server/nrsysmond.cfg.erb'),
     require => File[$logdir],
