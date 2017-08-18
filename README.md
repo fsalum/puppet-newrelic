@@ -54,13 +54,17 @@ To enable the PHP agent with default configuration:
 
 Further PHP agent configuration in Hiera:
 
-     newrelic::agent::php::settings:
+     newrelic::agent::php::ini_settings:
        appname: 'ACME PHP Application'
        daemon.loglevel: 'error'
 
 ### Advanced Usage Examples
 
-To configure the PHP agent using Apache's `mod_php` (this assumes usage of Puppetlabs/Apache):
+The below examples show how to integrate the NewRelic PHP agent with the most common web-servers, with automatic service restarts.
+
+#### Apache and `mod_php`
+
+Assumes usage of the [Puppet Apache module](https://github.com/puppetlabs/puppetlabs-apache).
 
     class { '::apache': }
     class { '::apache::mod::php': }
@@ -69,6 +73,22 @@ To configure the PHP agent using Apache's `mod_php` (this assumes usage of Puppe
       license_key  => 'your key',
       require      => Class['::apache::mod::php'],
       notify       => Service['httpd'],
+    }
+
+#### PHP-FPM
+
+Assumes usage of the [Slashbunny PHP-FPM module](https://github.com/Slashbunny/puppet-phpfpm).
+
+    class { '::phpfpm':
+        poold_purge => true,
+    }
+
+    ::phpfpm::pool { 'main': }
+
+    class { '::newrelic::agent::php':
+      license_key  => '3522b44f4c3f89c8566d5781bac6e0bb7dedab7z',
+      require      => Class['::phpfpm'],
+      notify       => Class['::phpfpm::service'],
     }
 
 ## Limitations
