@@ -1,29 +1,37 @@
-source ENV['GEM_SOURCE'] || "https://rubygems.org"
+source "https://rubygems.org"
 
-group :development, :test do
-  gem 'rspec-puppet',           :require => false
-  gem 'puppetlabs_spec_helper', :require => false
-  gem 'puppet_facts',           :require => false
-  gem 'metadata-json-lint',     :require => false
+group :test do
+  gem 'rake'
+  gem 'puppet', ENV['PUPPET_VERSION'] || ' < 5.0.0'
+  gem 'safe_yaml', '~> 1.0.4'
+  gem 'puppet-lint'
+  gem 'puppet-lint-absolute_classname-check'
+  gem 'puppet-lint-alias-check'
+  gem 'puppet-lint-package_ensure-check'
+  gem 'puppet-lint-legacy_facts-check'
+  gem 'puppet-lint-leading_zero-check'
+  gem 'puppet-lint-global_resource-check'
+  gem 'puppet-lint-file_source_rights-check'
+  gem 'puppet-lint-file_ensure-check'
+  gem 'puppet-lint-empty_string-check'
+  gem 'puppet-lint-classes_and_types_beginning_with_digits-check'
+  gem 'rspec-puppet', :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem 'rspec-puppet-facts'
+  gem 'puppet-syntax'
+  gem 'puppetlabs_spec_helper', '< 2.0.0'
+  gem 'metadata-json-lint', '1.1.0'
+  gem 'json', '< 2.0.0'
+  gem 'xmlrpc', :require => false if Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.4.0')
 end
 
-# Older versions of ruby are not compatible with the current rake gem
-if rakeversion = ENV['RAKE_GEM_VERSION']
-  gem 'rake', rakeversion, :require => false
-else
-  gem 'rake', :require => false
+group :development do
+  gem 'travis'
+  gem 'travis-lint'
+  gem 'vagrant-wrapper'
+  gem 'puppet-blacksmith'
+  gem 'guard-rake'
 end
 
-if facterversion = ENV['FACTER_GEM_VERSION']
-  gem 'facter', facterversion, :require => false
-else
-  gem 'facter', :require => false
+group :system_tests do
+  gem 'beaker'
 end
-
-if puppetversion = ENV['PUPPET_GEM_VERSION']
-  gem 'puppet', puppetversion, :require => false
-else
-  gem 'puppet', :require => false
-end
-
-# vim:ft=ruby

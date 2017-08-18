@@ -17,17 +17,17 @@ node default {
   windowsfeature{'Web-Mgmt-Console': }
 
   # Include .Net module
-  $dotnet_modules = $::operatingsystemrelease ? {
+  $dotnet_modules = $facts['operatingsystemrelease'] ? {
     /2008/  => ['Web-Asp-Net'],
     default => ['Web-Asp-Net','Web-Asp-Net45'],
   }
   ensure_resource ('windowsfeature', $dotnet_modules)
 
-  class {'newrelic::server::windows':
+  class {'::newrelic::server::windows':
     newrelic_license_key => '',
   }
 
-  class {'newrelic::agent::dotnet':
+  class {'::newrelic::agent::dotnet':
     newrelic_license_key => '',
     require              => Windowsfeature[$dotnet_modules],
   }

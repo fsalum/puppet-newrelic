@@ -46,15 +46,15 @@ class newrelic::agent::dotnet (
       $package_source = false
     }
     'present','installed':  {
-      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${::architecture}.msi"
-      $destination_file = "NewRelicDotNetAgent_${::architecture}.msi"
+      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${facts[architecture]}.msi"
+      $destination_file = "NewRelicDotNetAgent_${facts[architecture]}.msi"
     }
     'latest':   {
       fail("'latest' is not a valid value for this package, as we have no way of determining which version is the latest one. You can specify a specific version, though.")
     }
     default:    {
-      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${::architecture}_${newrelic_dotnet_package_ensure}.msi"
-      $destination_file = "NewRelicDotNetAgent_${::architecture}_${newrelic_dotnet_package_ensure}.msi"
+      $package_source   = "${newrelic_dotnet_source}/NewRelicDotNetAgent_${facts[architecture]}_${newrelic_dotnet_package_ensure}.msi"
+      $destination_file = "NewRelicDotNetAgent_${facts[architecture]}_${newrelic_dotnet_package_ensure}.msi"
     }
   }
 
@@ -71,10 +71,10 @@ class newrelic::agent::dotnet (
     ensure  => $newrelic_dotnet_package_ensure,
     source  => "${temp_dir}\\${destination_file}",
     require => Class['newrelic::params'],
-  } ->
-  file { "${newrelic_dotnet_conf_dir}\\newrelic.config":
+  }
+  -> file { "${newrelic_dotnet_conf_dir}\\newrelic.config":
     ensure  => $newrelic_daemon_cfgfile_ensure,
-    content => template('newrelic/newrelic.config.erb'),
+    content => template('newrelic/dotnet/newrelic.config.erb'),
     notify  => Exec['iisreset'],
   }
 

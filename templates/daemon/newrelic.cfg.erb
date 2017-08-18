@@ -1,0 +1,8 @@
+############################################
+# WARNING:
+# Managed by Puppet - DO NOT modify locally!
+############################################
+
+<% scope['::newrelic::agent::php::daemon_settings'].each do |k,v| -%>
+<%= k %>=<%= v %>
+<%- end -%>

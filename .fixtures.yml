@@ -1,0 +1,13 @@
+fixtures:
+  repositories:
+    stdlib:
+      repo: "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+      ref: "4.18.0"
+    apt:
+      repo: "git://github.com/puppetlabs/puppetlabs-apt.git"
+      ref: "4.1.0"
+    download_file:
+      repo: "git://github.com/voxpupuli/puppet-download_file"
+      ref: "v1.2.1"
+  symlinks:
+    newrelic: "#{source_dir}"

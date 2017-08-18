@@ -13,7 +13,7 @@
 #          required in order for the server monitor to start.
 # Default: none
 #
-license_key=<%= @newrelic_license_key %>
+license_key=<%= scope['::newrelic::server::linux::license_key'] %>
 
 #
 # Option : loglevel
@@ -28,10 +28,8 @@ license_key=<%= @newrelic_license_key %>
 # Default: error
 # Note   : Can also be set with the -d command line option.
 #
-<%- if @newrelic_nrsysmond_loglevel -%>
-loglevel=<%= @newrelic_nrsysmond_loglevel %>
-<%- else -%>
-loglevel=info
+<%- if scope['::newrelic::server::linux::log_level'] %>
+loglevel=<%= scope['::newrelic::server::linux::log_level'] %>
 <%- end -%>
 
 #
@@ -42,11 +40,7 @@ loglevel=info
 # Default: none. However it is highly recommended you set a value for this.
 # Note   : Can also be set with the -l command line option.
 #
-<%- if @newrelic_nrsysmond_logfile -%>
-logfile=<%= @newrelic_nrsysmond_logfile %>
-<%- else -%>
-logfile=/var/log/newrelic/nrsysmond.log
-<%- end -%>
+logfile=<%= scope['::newrelic::server::linux::logfile'] %>
 
 #
 # Option : proxy
@@ -60,8 +54,8 @@ logfile=/var/log/newrelic/nrsysmond.log
 # Default: none (use a direct connection)
 #
 #proxy=
-<%- if @newrelic_nrsysmond_proxy -%>
-proxy=<%= @newrelic_nrsysmond_proxy %>
+<%- if scope['::newrelic::server::linux::proxy'] %>
+proxy=<%= scope['::newrelic::server::linux::proxy'] %>
 <%- end -%>
 
 #
@@ -73,8 +67,8 @@ proxy=<%= @newrelic_nrsysmond_proxy %>
 # Default: true (as of version 1.4)
 #
 #ssl=true
-<%- if @newrelic_nrsysmond_ssl -%>
-ssl=<%= @newrelic_nrsysmond_ssl %>
+<%- if scope['::newrelic::server::linux::ssl'] %>
+ssl=<%= scope['::newrelic::server::linux::ssl'] %>
 <%- end -%>
 
 #
@@ -91,8 +85,8 @@ ssl=<%= @newrelic_nrsysmond_ssl %>
 # Note   : Can also be set with the -b command line option.
 #
 #ssl_ca_bundle=
-<%- if @newrelic_nrsysmond_ssl_ca_bundle -%>
-ssl_ca_bundle=<%= @newrelic_nrsysmond_ssl_ca_bundle %>
+<%- if scope['::newrelic::server::linux::ssl_ca_bundle'] %>
+ssl_ca_bundle=<%= scope['::newrelic::server::linux::ssl_ca_bundle'] %>
 <%- end -%>
 
 #
@@ -108,8 +102,8 @@ ssl_ca_bundle=<%= @newrelic_nrsysmond_ssl_ca_bundle %>
 # Note   : Can also be set with the -S command line option.
 #
 #ssl_ca_path=
-<%- if @newrelic_nrsysmond_ssl_ca_path -%>
-ssl_ca_path=<%= @newrelic_nrsysmond_ssl_ca_path %>
+<%- if scope['::newrelic::server::linux::ssl_ca_path'] -%>
+ssl_ca_path=<%= scope['newrelic::server::linux::ssl_ca_path'] %>
 <%- end -%>
 
 #
@@ -122,8 +116,8 @@ ssl_ca_path=<%= @newrelic_nrsysmond_ssl_ca_path %>
 # Note   : Can also be set with the -p command line option.
 #
 #pidfile=/var/run/newrelic/nrsysmond.pid
-<%- if @newrelic_nrsysmond_pidfile -%>
-pidfile=<%= @newrelic_nrsysmond_pidfile %>
+<%- if scope['::newrelic::server::linux::pidfile'] -%>
+pidfile=<%= scope['newrelic::server::linux::pidfile'] %>
 <%- end -%>
 
 #
@@ -136,8 +130,8 @@ pidfile=<%= @newrelic_nrsysmond_pidfile %>
 # Default: collector.newrelic.com
 #
 #collector_host=collector.newrelic.com
-<%- if @newrelic_nrsysmond_collector_host -%>
-collector_host=<%= @newrelic_nrsysmond_collector_host %>
+<%- if scope['::newrelic::server::linux::collector_host'] -%>
+collector_host=<%= scope['newrelic::server::linux::collector_host'] %>
 <%- end -%>
 
 #
@@ -149,8 +143,8 @@ collector_host=<%= @newrelic_nrsysmond_collector_host %>
 # Default: ""
 #
 #labels=""
-<%- if @newrelic_nrsysmond_labels -%>
-labels=<%= @newrelic_nrsysmond_labels %>
+<%- if scope['::newrelic::server::linux::labels'] -%>
+labels=<%= scope['newrelic::server::linux::labels'] %>
 <%- end -%>
 
 #
@@ -166,8 +160,8 @@ labels=<%= @newrelic_nrsysmond_labels %>
 # Default: 30
 #
 #timeout=30
-<%- if @newrelic_nrsysmond_timeout -%>
-timeout=<%= @newrelic_nrsysmond_timeout %>
+<%- if scope['::newrelic::server::linux::timeout'] -%>
+timeout=<%= scope['newrelic::server::linux::timeout'] %>
 <%- end -%>
 
 #
@@ -178,6 +172,6 @@ timeout=<%= @newrelic_nrsysmond_timeout %>
 # Default: The system's actual hostname
 #
 # hostname=myserver-hostname
-<%- if @newrelic_nrsysmond_hostname -%>
-hostname=<%= @newrelic_nrsysmond_hostname %>
+<%- if scope['::newrelic::server::linux::hostname'] -%>
+hostname=<%= scope['newrelic::server::linux::hostname'] %>
 <%- end -%>

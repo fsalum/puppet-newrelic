@@ -4,105 +4,101 @@
 #
 # === Parameters
 #
-# [*newrelic_service_enable*]
+# [*service_enable*]
 #   Specify the service startup state. Defaults to true. Possible value is false.
 #
-# [*newrelic_service_ensure*]
+# [*service_ensure*]
 #   Specify the service running state. Defaults to 'running'. Possible value is 'stopped'.
 #
-# [*newrelic_package_ensure*]
+# [*package_ensure*]
 #   Specify the package update state. Defaults to 'present'. Possible value is 'latest'.
 #
-# [*newrelic_license_key*]
+# [*license_key*]
 #   Specify your Newrelic License Key.
-#
-# === Variables
 #
 # === Examples
 #
-#  class {'newrelic::server::linux':
-#      newrelic_license_key    => 'your license key here',
-#      newrelic_package_ensure => 'latest',
-#      newrelic_service_ensure => 'running',
+#  class { 'newrelic::server::linux':
+#      license_key    => 'your license key here',
+#      package_ensure => 'latest',
+#      service_ensure => 'running',
 #  }
 #
 # === Authors
 #
 # Felipe Salum <fsalum@gmail.com>
+# Craig Watson <craig.watson@claranet.uk>
 #
 # === Copyright
 #
-# Copyright 2012 Felipe Salum, unless otherwise noted.
+# Copyright 2012 Felipe Salum
+# Copyright 2017 Claranet
 #
 class newrelic::server::linux (
-  $newrelic_package_ensure           = 'present',
-  $newrelic_service_enable           = true,
-  $newrelic_service_ensure           = 'running',
-  $newrelic_license_key              = undef,
-  $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
-  $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
-  $newrelic_nrsysmond_loglevel       = undef,
-  $newrelic_nrsysmond_logfile        = undef,
-  $newrelic_nrsysmond_proxy          = undef,
-  $newrelic_nrsysmond_ssl            = undef,
-  $newrelic_nrsysmond_ssl_ca_bundle  = undef,
-  $newrelic_nrsysmond_ssl_ca_path    = undef,
-  $newrelic_nrsysmond_pidfile        = undef,
-  $newrelic_nrsysmond_collector_host = undef,
-  $newrelic_nrsysmond_labels         = undef,
-  $newrelic_nrsysmond_timeout        = undef,
-  $newrelic_nrsysmond_hostname       = undef,
-) inherits ::newrelic {
+  String                $license_key,
+  Boolean               $manage_repo    = $::newrelic::params::manage_repo,
+  String                $package_name   = $::newrelic::params::server_package_name,
+  String                $service_name   = $::newrelic::params::server_service_name,
+  String                $package_ensure = 'present',
+  Boolean               $service_enable = true,
+  String                $service_ensure = 'running',
+  String                $logfile        = '/var/log/newrelic/nrsysmond.log',
+  Variant[Undef,String] $log_level      = undef,
+  Variant[Undef,String] $proxy          = undef,
+  Variant[Undef,String] $ssl            = undef,
+  Variant[Undef,String] $ssl_ca_bundle  = undef,
+  Variant[Undef,String] $ssl_ca_path    = undef,
+  Variant[Undef,String] $pidfile        = undef,
+  Variant[Undef,String] $collector_host = undef,
+  Variant[Undef,String] $labels         = undef,
+  Variant[Undef,String] $timeout        = undef,
+  Variant[Undef,String] $hostname       = undef,
+) inherits newrelic::params {
 
-  if ! $newrelic_license_key {
-    fail('You must specify a valid License Key.')
+  warning('Use of newrelic::server::linux is deprecated and will be removed in a future release. Please use newrelic::infra instead.')
+
+  $logdir = dirname($logfile)
+
+  if $manage_repo == true {
+    include ::newrelic::repo::legacy
+    Package[$package_name] {
+      require => $::newrelic::repo::legacy::require,
+    }
   }
 
-  package { $newrelic_package_name:
-    ensure  => $newrelic_package_ensure,
-    notify  => Service[$newrelic_service_name],
-    require => Class['newrelic::params'],
+  package { $package_name:
+    ensure => $package_ensure,
   }
 
-  if ! $newrelic_nrsysmond_logfile {
-    $logdir = '/var/log/newrelic'
-  } else {
-    $logdir = dirname($newrelic_nrsysmond_logfile)
+  exec { 'install_newrelic_license_key':
+    command => "/usr/sbin/nrsysmond-config --set license_key=${license_key}",
+    user    => 'root',
+    unless  => "/bin/grep -q ${license_key} /etc/newrelic/nrsysmond.cfg",
+    notify  => Service[$service_name],
+    require => Package[$package_name]
   }
 
   file { $logdir:
     ensure  => directory,
     owner   => 'newrelic',
     group   => 'newrelic',
-    require => Package[$newrelic_package_name],
-    before  => Service[$newrelic_service_name],
+    require => Exec['install_newrelic_license_key'],
   }
 
   file { '/etc/newrelic/nrsysmond.cfg':
-    ensure  => present,
+    ensure  => file,
     path    => '/etc/newrelic/nrsysmond.cfg',
-    content => template('newrelic/nrsysmond.cfg.erb'),
-    require => Package[$newrelic_package_name],
-    before  => Service[$newrelic_service_name],
-    notify  => Service[$newrelic_service_name],
+    content => template('newrelic/server/nrsysmond.cfg.erb'),
+    require => File[$logdir],
+    notify  => Service[$service_name],
   }
 
-  service { $newrelic_service_name:
-    ensure     => $newrelic_service_ensure,
-    enable     => $newrelic_service_enable,
+  service { $service_name:
+    ensure     => $service_ensure,
+    enable     => $service_enable,
     hasrestart => true,
     hasstatus  => true,
-    require    => Exec[$newrelic_license_key],
-  }
-
-  exec { $newrelic_license_key:
-    path    => '/bin:/usr/bin',
-    command => "/usr/sbin/nrsysmond-config --set license_key=${newrelic_license_key}",
-    user    => 'root',
-    group   => 'root',
-    unless  => "cat /etc/newrelic/nrsysmond.cfg | grep ${newrelic_license_key}",
-    require => Package[$newrelic_package_name],
-    notify  => Service[$newrelic_service_name],
+    require    => File['/etc/newrelic/nrsysmond.cfg'],
   }
 
 }
