@@ -88,19 +88,7 @@ class newrelic::agent::php (
   String                   $package_ensure   = 'present',
   Enum['agent','external'] $startup_mode     = 'agent',
   Hash                     $ini_settings     = {},
-
-  $daemon_dont_launch                           = undef,
-  $daemon_pidfile                               = undef,
-  $daemon_location                              = undef,
-  $daemon_logfile                               = undef,
-  $daemon_loglevel                              = undef,
-  $daemon_port                                  = undef,
-  $daemon_ssl                                   = undef,
-  $daemon_ssl_ca_bundle                         = undef,
-  $daemon_ssl_ca_path                           = undef,
-  $daemon_proxy                                 = undef,
-  $daemon_collector_host                        = undef,
-  $daemon_auditlog                              = undef,
+  Hash                     $daemon_settings  = {},
 ) inherits newrelic::params {
 
   if $startup_mode == 'agent' {
@@ -148,31 +136,18 @@ class newrelic::agent::php (
     require => Package[$all_packages],
   }
 
-  $ini_defaults = {
-    ensure  => present,
-    section => 'newrelic',
-    path    => "${conf_dir}/newrelic.ini",
+  file { "${conf_dir}/newrelic.ini":
+    ensure  => file,
+    content => template('newrelic/php/newrelic.ini.erb'),
     require => Exec['newrelic install'],
-  }
-
-  ini_setting { 'newrelic.license':
-    setting => 'newrelic.license',
-    value   => $license_key,
-    *       => $ini_defaults,
-  }
-
-  $ini_settings.each |String $k, String $v| {
-    ini_setting { "newrelic.${k}":
-      setting => "newrelic.${k}",
-      value   => $v,
-      *       => $ini_defaults,
-    }
   }
 
   file { $purge_files:
     ensure  => absent,
     require => Exec['newrelic install']
   }
+
+  # == Service
 
   if $startup_mode == 'external' {
     service { $service_name:
