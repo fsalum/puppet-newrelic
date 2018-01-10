@@ -93,11 +93,12 @@ class newrelic::agent::php (
   }
 
   ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
-    exec_path            => $newrelic_php_exec_path,
-    newrelic_license_key => $newrelic_license_key,
-    before               => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
-    require              => Package[$newrelic_php_package],
-    notify               => Service[$newrelic_php_service],
+    newrelic_daemon_proxy => $newrelic_daemon_proxy,
+    exec_path             => $newrelic_php_exec_path,
+    newrelic_license_key  => $newrelic_license_key,
+    before                => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
+    require               => Package[$newrelic_php_package],
+    notify                => Service[$newrelic_php_service],
   }
 
   file { '/etc/newrelic/newrelic.cfg':

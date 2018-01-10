@@ -1,6 +1,7 @@
 # This module should not be used directly. It is used by newrelic::php.
 define newrelic::php::newrelic_ini (
   $newrelic_license_key,
+  $newrelic_daemon_proxy = undef,
   $exec_path,
 ) {
 
