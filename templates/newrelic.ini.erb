@@ -741,3 +741,13 @@ newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_file
 ;
 ;newrelic.browser_monitoring.attributes.include = ""
 ;newrelic.browser_monitoring.attributes.exclude = ""
+; Setting: newrelic.cross_application_tracer.enabled
+; Type   : boolean
+; Scope  : per-directory
+; Default: true
+; Info   : Enables or disables support for Cross Application Tracing, aka "CAT".
+;
+;newrelic.cross_application_tracer.enabled = true
+<%- if @newrelic_ini_cross_application_tracer_enabled -%>
+newrelic.cross_application_tracer.enabled = "<%= @newrelic_ini_cross_application_tracer_enabled %>"
+<%- end -%>
