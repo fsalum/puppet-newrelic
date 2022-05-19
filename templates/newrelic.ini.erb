@@ -751,3 +751,10 @@ newrelic.webtransaction.name.files = "<%= @newrelic_ini_webtransaction_name_file
 <%- if @newrelic_ini_cross_application_tracer_enabled -%>
 newrelic.cross_application_tracer.enabled = "<%= @newrelic_ini_cross_application_tracer_enabled %>"
 <%- end -%>
+
+;newrelic.cross_application_tracer.enabled = true
+; 
+<%- if @newrelic_distributed_tracing_enabled -%>
+newrelic.cross_application_tracer.enabled = "<%= @newrelic_distributed_tracing_enabled %>"
+<%- end -%>
+

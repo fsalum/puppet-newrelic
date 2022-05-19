@@ -5,6 +5,7 @@ define newrelic::php::newrelic_ini (
   $newrelic_ini_browser_monitoring_auto_instrument       = undef,
   $newrelic_ini_capture_params                           = undef,
   $newrelic_ini_cross_application_tracer_enabled         = undef,
+  $newrelic_distributed_tracing_enabled                  = undef,
   $newrelic_ini_enabled                                  = undef,
   $newrelic_ini_error_collector_enabled                  = undef,
   $newrelic_ini_error_collector_prioritize_api_errors    = undef,
