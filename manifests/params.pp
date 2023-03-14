@@ -11,8 +11,7 @@
 # Sample Usage:
 #
 class newrelic::params {
-
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
       $newrelic_package_name  = 'newrelic-sysmond'
       $newrelic_service_name  = 'newrelic-sysmond'
@@ -42,9 +41,9 @@ class newrelic::params {
         },
         release  => 'newrelic',
       }
-      case $::operatingsystem {
+      case $facts['os']['name'] {
         'Debian': {
-          case $::operatingsystemrelease {
+          case $facts['os']['release']['full'] {
             /^6/: {
               $newrelic_php_conf_dir  = '/etc/php5/conf.d'
             }
@@ -54,7 +53,7 @@ class newrelic::params {
           }
         }
         'Ubuntu': {
-          case $::operatingsystemrelease {
+          case $facts['os']['release']['full'] {
             /^(10|12)/: {
               $newrelic_php_conf_dir  = '/etc/php5/conf.d'
             }
@@ -69,7 +68,7 @@ class newrelic::params {
       }
     }
     'windows': {
-      $bitness                          = regsubst($::architecture,'^x([\d]{2})','\1')
+      $bitness                          = regsubst($facts['os']['architecture'],'^x([\d]{2})','\1')
       $newrelic_package_name            = 'New Relic Server Monitor'
       $newrelic_service_name            = 'nrsvrmon'
       $temp_dir                         = 'C:/Windows/temp'
@@ -80,8 +79,7 @@ class newrelic::params {
       $newrelic_dotnet_application_name = 'My Application'
     }
     default: {
-      fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}")
+      fail("Unsupported osfamily: ${facts['os']['family']} operatingsystem: ${facts['os']['name']}")
     }
   }
-
 }

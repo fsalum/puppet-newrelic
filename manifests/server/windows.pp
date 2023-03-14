@@ -39,12 +39,11 @@ class newrelic::server::windows (
   $newrelic_service_enable           = true,
   $newrelic_service_ensure           = 'running',
   $newrelic_license_key              = undef,
-  $newrelic_package_name             = $::newrelic::params::newrelic_package_name,
-  $newrelic_service_name             = $::newrelic::params::newrelic_service_name,
-  $temp_dir                          = $::newrelic::params::temp_dir ,
-  $server_monitor_source             = $::newrelic::params::server_monitor_source,
-) inherits ::newrelic {
-
+  $newrelic_package_name             = $newrelic::params::newrelic_package_name,
+  $newrelic_service_name             = $newrelic::params::newrelic_service_name,
+  $temp_dir                          = $newrelic::params::temp_dir ,
+  $server_monitor_source             = $newrelic::params::server_monitor_source,
+) inherits newrelic {
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
   }
@@ -54,27 +53,29 @@ class newrelic::server::windows (
       $package_source = false
     }
     'present','installed':  {
-      $package_source   = "${server_monitor_source}/${::architecture}"
-      $destination_file = "NewRelicServerMonitor_${::architecture}.msi"
+      $package_source   = "${server_monitor_source}/${facts['os']['architecture']}"
+      $destination_file = "NewRelicServerMonitor_${facts['os']['architecture']}.msi"
     }
     'latest':   {
-      fail("'latest' is not a valid value for this package, as we have no way of determining which version is the latest one. You can specify a specific version, though.")
+    fail("'latest' is not a valid value for this package, as we have no way of determining which version is the latest one.
+        You can specify a specific version, though.")
     }
     default:    {
-      $package_source   = "${server_monitor_source}/NewRelicServerMonitor_${::architecture}_${newrelic_package_ensure}.msi"
-      $destination_file = "NewRelicServerMonitor_${::architecture}_${newrelic_package_ensure}.msi"
+      $package_source   = "${server_monitor_source}/NewRelicServerMonitor_${facts['os']['architecture']}
+        _${newrelic_package_ensure}.msi"
+      $destination_file = "NewRelicServerMonitor_${facts['os']['architecture']}_${newrelic_package_ensure}.msi"
     }
   }
-  
+
   if $package_source {
-    download_file {$destination_file:
+    download_file { $destination_file:
       url                   => $package_source,
       destination_directory => $temp_dir,
       destination_file      => $destination_file,
       before                => Package[$newrelic_package_name],
     }
   }
-  
+
   package { $newrelic_package_name:
     ensure          => $newrelic_package_ensure,
     notify          => Service[$newrelic_service_name],
@@ -84,7 +85,7 @@ class newrelic::server::windows (
       "${temp_dir}\\NewRelicServerMonitor_install.log",
       {
         'NR_LICENSE_KEY' => $newrelic_license_key
-      }
+      },
     ],
     require         => Class['newrelic::params'],
   }
@@ -94,7 +95,4 @@ class newrelic::server::windows (
     enable     => $newrelic_service_enable,
     hasrestart => true,
     hasstatus  => true,
-  }
-
-
-}
+} }
